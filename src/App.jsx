@@ -1,8 +1,7 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import ListItem from '@material-ui/core/ListItem'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import Divider from '@material-ui/core/Divider'
 import Typography from '@material-ui/core/Typography'
@@ -10,13 +9,11 @@ import {
   Grid,
   List,
   CardMedia,
-  CardActions,
   Checkbox,
-  Button
 } from '@material-ui/core'
 
 function App() {
-  const [selectedPlayers, setSelectedPlayers] = useState([])
+  // const [selectedPlayers, setSelectedPlayers] = useState([])
   const array = [
     {
       name: 'Westbrook',
