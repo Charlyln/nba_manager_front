@@ -5,15 +5,9 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import Divider from '@material-ui/core/Divider'
 import Typography from '@material-ui/core/Typography'
-import {
-  Grid,
-  List,
-  CardMedia,
-  Checkbox,
-} from '@material-ui/core'
+import { Grid, List, CardMedia, Checkbox } from '@material-ui/core'
 
 function App() {
-  // const [selectedPlayers, setSelectedPlayers] = useState([])
   const array = [
     {
       name: 'Westbrook',
@@ -214,15 +208,6 @@ function App() {
         }
       ]
     }
-    // 'Westbrook',
-    // 'Lebron',
-    // 'Curry',
-    // 'George',
-    // 'Butler',
-    // 'Kidd',
-    // 'Iverson',
-    // 'Shaq',
-    // 'Dirk'
   ]
 
   const images = array.map((player) => {
