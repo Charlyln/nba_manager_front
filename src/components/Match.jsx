@@ -85,7 +85,12 @@ function Home({ text, team1, team2 }) {
         </Button>
         {!done ? (
           <>
-            <Button size="small" onClick={() => match(team1, team2)}>
+            <Button
+              variant="outlined"
+              color="primary"
+              size="small"
+              onClick={() => match(team1, team2)}
+            >
               Start
             </Button>
           </>
@@ -94,9 +99,11 @@ function Home({ text, team1, team2 }) {
             {win ? (
               <Button
                 size="small"
-                style={{ whiteSpace: 'nowrap' }}
+                style={{
+                  whiteSpace: 'nowrap',
+                  backgroundColor: 'rgb(76, 175, 80)'
+                }}
                 variant="contained"
-                color="primary"
                 onClick={handleClickOpen}
               >
                 {result || 'Done'}
