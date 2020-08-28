@@ -129,12 +129,7 @@ function Home({ text, team1, team2 }) {
         aria-labelledby="simple-dialog-title"
         open={open}
       >
-        <h1>
-          coucou bébé{' '}
-          <span role="img" aria-label="donut">
-            ❤️
-          </span>{' '}
-        </h1>
+        <h1>coucou</h1>
       </Dialog>
     </>
   )
