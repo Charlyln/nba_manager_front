@@ -1,18 +1,38 @@
-import React from 'react'
-import Card from '@material-ui/core/Card'
-import CardContent from '@material-ui/core/CardContent'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemText from '@material-ui/core/ListItemText'
-import Divider from '@material-ui/core/Divider'
-import Typography from '@material-ui/core/Typography'
-import { Grid, List, CardMedia, Checkbox } from '@material-ui/core'
+import React, { useState, useEffect } from 'react'
+import Axios from 'axios'
+import { Grid, Typography, CircularProgress } from '@material-ui/core'
+import PlayerCard from './PlayerCard'
+import { apiUrl } from './apiUrl'
 
 function App() {
+  const [isLoading, setIsLoading] = useState(true)
+  const [dataTeams, setDataTeams] = useState([])
+
+  useEffect(() => {
+    const getTeams = async () => {
+      try {
+        const res = await Axios.get(`${apiUrl}/teams`)
+        setDataTeams(res.data)
+
+        const timer = setTimeout(() => {
+          setIsLoading(false)
+        }, 500)
+        return () => clearTimeout(timer)
+      } catch (err) {
+        console.log(err)
+        console.log(dataTeams)
+      }
+    }
+    getTeams()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   const array = [
     {
-      name: 'Westbrook',
+      name: 'WESTBROOK',
+      lastName: 'RUSSELL',
       image:
-        'https://maddenratings.weebly.com/uploads/1/4/0/9/14097292/russell-westbrook_orig.jpg',
+        'https://a.espncdn.com/combiner/i?img=/i/headshots/nba/players/full/3468.png&w=350&h=254',
       skills: [
         {
           name: 'DRI',
@@ -33,8 +53,9 @@ function App() {
       ]
     },
     {
-      name: 'Lebron',
-      image: `https://maddenratings.weebly.com/uploads/1/4/0/9/14097292/lebron-james_orig.jpg`,
+      name: 'LEBRON',
+      lastName: 'JAMES',
+      image: `https://a.espncdn.com/combiner/i?img=/i/headshots/nba/players/full/1966.png&w=350&h=254`,
       skills: [
         {
           name: 'DRI',
@@ -55,8 +76,9 @@ function App() {
       ]
     },
     {
-      name: 'Curry',
-      image: `https://maddenratings.weebly.com/uploads/1/4/0/9/14097292/stephen-curry_orig.jpg`,
+      name: 'CURRY',
+      lastName: 'STEPHEN',
+      image: `https://a.espncdn.com/combiner/i?img=/i/headshots/nba/players/full/3975.png&w=350&h=254`,
       skills: [
         {
           name: 'DRI',
@@ -77,8 +99,9 @@ function App() {
       ]
     },
     {
-      name: 'Iverson',
-      image: `https://maddenratings.weebly.com/uploads/1/4/0/9/14097292/allen-iverson_orig.png`,
+      name: 'KLAY',
+      lastName: 'THOMPSON',
+      image: `https://a.espncdn.com/combiner/i?img=/i/headshots/nba/players/full/6475.png&w=350&h=254`,
       skills: [
         {
           name: 'DRI',
@@ -210,78 +233,39 @@ function App() {
     }
   ]
 
-  const images = array.map((player) => {
-    return (
-      <Card
-        style={{
-          display: 'flex',
-          margin: '30px',
-          width: '300px',
-          borderRadius: '10px'
-        }}
-      >
-        <CardMedia image={player.image} style={{ width: 150, height: '100%' }}>
-          {/* <img
-            key={player.name}
-            src={require(player.image)}
-            style={{ width: 150, height: '100%' }}
-          /> */}
-        </CardMedia>
-
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column'
-          }}
-        >
-          <CardContent style={{ width: '150px', padding: 0 }}>
-            <List>
-              <ListItem>
-                <Typography component="h3" variant="h6">
-                  {player.name}
-                </Typography>
-                <Checkbox />
-              </ListItem>
-
-              {player.skills.map((skill) => (
-                <>
-                  <ListItem>
-                    <ListItemText>{skill.score}</ListItemText>{' '}
-                    <ListItemText>{skill.name}</ListItemText>
-                  </ListItem>
-                  <Divider />
-                </>
-              ))}
-              {/* <ListItem>
-                <ListItemText>95</ListItemText> <ListItemText>DRI</ListItemText>
-              </ListItem>
-              <Divider />
-              <ListItem>
-                <ListItemText>95</ListItemText> <ListItemText>SHO</ListItemText>
-              </ListItem>
-              <Divider />
-              <ListItem>
-                <ListItemText>95</ListItemText> <ListItemText>PAS</ListItemText>
-              </ListItem>
-              <Divider />
-              <ListItem>
-                <ListItemText>95</ListItemText> <ListItemText>DUN</ListItemText>
-              </ListItem> */}
-            </List>
-          </CardContent>
-        </div>
-      </Card>
-    )
-  })
+  const checkoxChange = (name) => {
+    console.log(name)
+  }
 
   return (
-    <Grid container>
-      <Grid item xs={12}>
-        <Grid container justify="center">
-          {images}
+    <>
+      {isLoading ? (
+        <CircularProgress />
+      ) : (
+        <Grid container>
+          <Grid item xs={12}>
+            <Grid container justify="center">
+              <Typography variant="button" display="block" gutterBottom>
+                1. Choose your players
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Grid container justify="center">
+                {array.map((player) => (
+                  <PlayerCard
+                    name={player.name}
+                    lastName={player.lastName}
+                    image={player.image}
+                    skills={player.skills}
+                    checkoxChange={checkoxChange}
+                  />
+                ))}
+              </Grid>
+            </Grid>
+          </Grid>
         </Grid>
-      </Grid>
-    </Grid>
+      )}
+    </>
   )
 }
 
