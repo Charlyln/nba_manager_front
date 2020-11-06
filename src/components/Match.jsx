@@ -27,7 +27,8 @@ function Match({
   allGames,
   i,
   simulateAllGames,
-  allGameLoading
+  allGameLoading,
+  TeamUuid
 }) {
   // const [done, setDone] = useState(false)
   // const [result, setResult] = useState('')
@@ -50,6 +51,51 @@ function Match({
     setOpen(false)
   }
 
+  const displayButton = (game) => {
+    const team1Result = game.PlayerStats.filter(
+      (stat) => stat.Player.TeamUuid === TeamUuid
+    ).reduce((a, v) => (a = a + v.pts), 0)
+    // setScore1(team1Result)
+
+    const team2Result = game.PlayerStats.filter(
+      (stat) => stat.Player.TeamUuid !== TeamUuid
+    ).reduce((a, v) => (a = a + v.pts), 0)
+    // setScore2(team2Result)
+
+    return (
+      <>
+        {/* <Button
+          size="small"
+          style={{
+            whiteSpace: 'nowrap',
+            backgroundColor:
+              game.team1 > game.team2 && game.Team.choice
+                ? 'rgb(76, 175, 80)'
+                : game.team2 > game.team1 && game.Visitor.Team.choice
+                ? 'rgb(76, 175, 80)'
+                : 'rgb(217, 48, 33)'
+          }}
+          variant="contained"
+        >
+          {`${game.team1} - ${game.team2}`}
+        </Button> */}
+        <Button
+          variant="contained"
+          size="small"
+          style={{
+            whiteSpace: 'nowrap',
+            backgroundColor:
+              team1Result > team2Result
+                ? 'rgb(76, 175, 80)'
+                : 'rgb(217, 48, 33)'
+          }}
+        >{`${game.TeamUuid === TeamUuid ? team1Result : team2Result} - ${
+          game.TeamUuid === TeamUuid ? team2Result : team1Result
+        }`}</Button>
+      </>
+    )
+  }
+
   const match = (team1, team2) => {
     setMatchLoading(true)
     let team1Score = 0
@@ -64,7 +110,8 @@ function Match({
             PlayerUuid: player.uuid,
             GameUuid: gameUuid,
             pts: playerScore,
-            UserUuid
+            UserUuid,
+            teamIdAtTheGame: team1.uuid
           })
           team1Score = team1Score + playerScore
           // setScore1(team1Score)
@@ -91,7 +138,8 @@ function Match({
             PlayerUuid: player.uuid,
             GameUuid: gameUuid,
             pts: playerScore,
-            UserUuid
+            UserUuid,
+            teamIdAtTheGame: team2.uuid
           })
           team2Score = team2Score + playerScore
 
@@ -139,23 +187,7 @@ function Match({
           </>
         ) : (
           <>
-            <>
-              <Button
-                size="small"
-                style={{
-                  whiteSpace: 'nowrap',
-                  backgroundColor:
-                    game.team1 > game.team2 && game.Team.choice
-                      ? 'rgb(76, 175, 80)'
-                      : game.team2 > game.team1 && game.Visitor.Team.choice
-                      ? 'rgb(76, 175, 80)'
-                      : 'rgb(217, 48, 33)'
-                }}
-                variant="contained"
-              >
-                {`${game.team1} - ${game.team2}`}
-              </Button>
-            </>
+            <>{displayButton(game)}</>
 
             <Button
               variant="outlined"
@@ -189,15 +221,15 @@ function Match({
                       style={{ margin: '5px 20px' }}
                       primary={` ${team1.name}`}
                     />
-                    <ListItemSecondaryAction>
+                    {/* <ListItemSecondaryAction>
                       {game.team1}
-                    </ListItemSecondaryAction>
+                    </ListItemSecondaryAction> */}
                   </ListItem>
 
                   <Divider />
 
                   {playerStats
-                    .filter((player) => player.Player.TeamUuid === team1.uuid)
+                    .filter((stat) => stat.teamIdAtTheGame === team1.uuid)
                     .sort(function (a, b) {
                       return new Date(b.pts) - new Date(a.pts)
                     })
@@ -238,15 +270,15 @@ function Match({
                       style={{ margin: '5px 20px' }}
                       primary={` ${team2.name}`}
                     />
-                    <ListItemSecondaryAction>
+                    {/* <ListItemSecondaryAction>
                       {game.team2}
-                    </ListItemSecondaryAction>
+                    </ListItemSecondaryAction> */}
                   </ListItem>
 
                   <Divider />
 
                   {playerStats
-                    .filter((player) => player.Player.TeamUuid !== team1.uuid)
+                    .filter((stat) => stat.teamIdAtTheGame !== team1.uuid)
                     .sort(function (a, b) {
                       return new Date(b.pts) - new Date(a.pts)
                     })

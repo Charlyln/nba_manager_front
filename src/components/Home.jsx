@@ -52,7 +52,7 @@ function Home() {
       if (teamsDataFilter.length === 1) {
         // setNextSeason(true)
       }
-      getMyTeams()
+      await getMyTeams()
 
       setIsLoading(false)
       const timer = setTimeout(() => {
@@ -100,6 +100,7 @@ function Home() {
             pts: playerScore,
             UserUuid: uuid
           })
+
           team1Score = team1Score + playerScore
           await Axios.put(`${apiUrl}/games/${gameUuid}`, {
             team1: team1Score
@@ -245,6 +246,7 @@ function Home() {
                               i={i}
                               simulateAllGames={simulateAllGames}
                               allGameLoading={allGameLoading}
+                              TeamUuid={myteamsData.uuid}
                             />
                           </Card>
                         </Grid>
@@ -269,7 +271,7 @@ function Home() {
                           (game) =>
                             (game.TeamUuid === myteamsData.uuid &&
                               game.team1 === null) ||
-                            (game.VisitorUuid === myteamsData.uuid &&
+                            (game.Visitor.TeamUuid === myteamsData.uuid &&
                               game.team1 === null)
                         ) ? (
                           <Button
@@ -294,21 +296,23 @@ function Home() {
                             Simulate all games
                           </Button>
                         ) : (
-                          <Link
-                            to="/offseason"
-                            style={{ textDecoration: 'none' }}
-                          >
-                            <Button
-                              variant="contained"
-                              color="primary"
-                              endIcon={<ForwardIcon />}
-                              onClick={() =>
-                                window.localStorage.setItem('offseason', 1)
-                              }
+                          <>
+                            <Link
+                              to="/offseason"
+                              style={{ textDecoration: 'none' }}
                             >
-                              Go off season
-                            </Button>
-                          </Link>
+                              <Button
+                                variant="contained"
+                                color="primary"
+                                endIcon={<ForwardIcon />}
+                                onClick={() =>
+                                  window.localStorage.setItem('offseason', 1)
+                                }
+                              >
+                                Go off season
+                              </Button>
+                            </Link>
+                          </>
                         )}
                       </CardActions>
                     </Card>

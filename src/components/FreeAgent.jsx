@@ -8,12 +8,7 @@ import TableContainer from '@material-ui/core/TableContainer'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
-import {
-  Avatar,
-  Box,
-  CircularProgress,
-  Typography
-} from '@material-ui/core'
+import { Avatar, Box, CircularProgress, Typography } from '@material-ui/core'
 import SignPlayer from './SignPlayer'
 
 function FreeAgent() {
@@ -22,11 +17,9 @@ function FreeAgent() {
   const [isLoading, setIsLoading] = useState(true)
   const [namesFiltered, SetnamesFiltered] = useState([])
 
- 
-
   useEffect(() => {
     getPlayers()
-     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const getPlayers = async () => {
@@ -66,7 +59,10 @@ function FreeAgent() {
                 .sort(function (a, b) {
                   return new Date(b.value) - new Date(a.value)
                 })
-                .filter((player) => !player.TeamUuid)
+                .filter(
+                  (player) =>
+                    !player.TeamUuid && player.age > 20 && player.age < 35
+                )
                 .map((player) => (
                   <TableRow hover>
                     <TableCell align="center" component="th" scope="row">

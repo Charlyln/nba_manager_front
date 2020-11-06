@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Grid, Paper } from '@material-ui/core'
+import { Grid, Paper, Typography } from '@material-ui/core'
 import Stepper from '@material-ui/core/Stepper'
 import Step from '@material-ui/core/Step'
 import StepLabel from '@material-ui/core/StepLabel'
@@ -46,6 +46,9 @@ function Offseason() {
 
   return (
     <Grid style={{ marginTop: '100px' }}>
+      <Typography style={{ width: '50%', margin: ' 30px auto' }} variant="h6">
+        Off season
+      </Typography>
       <Stepper
         activeStep={activeStep}
         orientation="vertical"
