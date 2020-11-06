@@ -118,7 +118,7 @@ function MyAppBar() {
     <>
       <AppBar className="appBar">
         <Toolbar>
-          {page === '/offseason' || page2 === '/offseason' ? (
+          {page === '/offseason' && page2 === '/offseason' ? (
             ''
           ) : (
             <IconButton
