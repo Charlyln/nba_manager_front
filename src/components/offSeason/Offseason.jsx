@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Grid, Paper, Typography } from '@material-ui/core'
+import { Grid, Paper } from '@material-ui/core'
 import Stepper from '@material-ui/core/Stepper'
 import Step from '@material-ui/core/Step'
 import StepLabel from '@material-ui/core/StepLabel'
@@ -18,12 +18,7 @@ function Offseason() {
   // const [offSeasonStep, setOffSeasonStep] = useState(
   //   parseFloat(window.localStorage.getItem('offseason'))
   // )
-  const steps = [
-    'Retirements',
-    'Draft',
-    'Free agency',
-    'Player progress'
-  ]
+  const steps = ['Retirements', 'Draft', 'Free agency', 'Player progress']
 
   const handleNext = () => {
     const offseasonStepIn = parseFloat(window.localStorage.getItem('offseason'))
@@ -81,7 +76,9 @@ function Offseason() {
                       )
                     }
                   >
-                    {activeStep === steps.length - 1 ? 'Go next season' : 'Next'}
+                    {activeStep === steps.length - 1
+                      ? 'Go next season'
+                      : 'Next'}
                   </Button>
                 </div>
               </div>
@@ -96,7 +93,10 @@ function Offseason() {
             variant="contained"
             color="primary"
           >
-            Finichaide ! 😄
+            Finichaide !{' '}
+            <span role="img" aria-label="sheep">
+              😄
+            </span>
           </Button>
         </Paper>
       )}

@@ -7,8 +7,6 @@ import {
   Avatar,
   Box,
   CircularProgress,
-  ListItem,
-  TextField,
   Typography,
   Paper
 } from '@material-ui/core'

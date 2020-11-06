@@ -22,7 +22,7 @@ function Home() {
   const [allGameLoading, setAllGameLoading] = useState(false)
   const [logoLoading, setLogoLoading] = useState(true)
   // const [page1, setPage] = useState(useLocation().pathname)
-  const [offseasonPage, setPage] = useState(
+  const [offseasonPage] = useState(
     parseFloat(window.localStorage.getItem('offseason'))
   )
 

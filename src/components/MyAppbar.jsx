@@ -27,9 +27,9 @@ import HelpIcon from '@material-ui/icons/Help'
 function MyAppBar() {
   const [open, setOpen] = useState(false)
   const [pageName, setPageName] = useState('')
-  const [page, setPage] = useState(useLocation().pathname)
+  const [page] = useState(useLocation().pathname)
   const [page2, setPage2] = useState('ok')
-  const [offSeasonStep, setOffSeasonStep] = useState(
+  const [offSeasonStep] = useState(
     parseFloat(window.localStorage.getItem('offseason'))
   )
 
