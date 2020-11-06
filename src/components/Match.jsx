@@ -68,12 +68,10 @@ function Match({
           })
           team1Score = team1Score + playerScore
           // setScore1(team1Score)
-          const timer = setTimeout(() => {
-            Axios.put(`${apiUrl}/games/${gameUuid}`, {
-              team1: team1Score
-            })
-          }, 1000)
-          return () => clearTimeout(timer)
+
+          Axios.put(`${apiUrl}/games/${gameUuid}`, {
+            team1: team1Score
+          })
         } catch (err) {
           console.log(err)
         } finally {
@@ -97,15 +95,12 @@ function Match({
           })
           team2Score = team2Score + playerScore
 
-          const timer = setTimeout(async () => {
-            Axios.put(`${apiUrl}/games/${gameUuid}`, {
-              team2: team2Score
-            })
+          Axios.put(`${apiUrl}/games/${gameUuid}`, {
+            team2: team2Score
+          })
 
-            await getTeams()
-            await setMatchLoading(false)
-          }, 1000)
-          return () => clearTimeout(timer)
+          await getTeams()
+          await setMatchLoading(false)
         } catch (err) {
           console.log(err)
         } finally {
