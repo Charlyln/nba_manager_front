@@ -126,7 +126,7 @@ function Home() {
             GameUuid: gameUuid,
             pts: playerScore,
             UserUuid: uuid,
-            teamIdAtTheGame: team1.uuid
+            teamIdAtTheGame: team2.uuid
           })
           team2Score = team2Score + playerScore
 
