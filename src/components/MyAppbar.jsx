@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   AppBar,
   IconButton,
@@ -7,7 +7,7 @@ import {
   Paper,
   Typography
 } from '@material-ui/core'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import TodayIcon from '@material-ui/icons/Today'
 import SwapHorizIcon from '@material-ui/icons/SwapHoriz'
 import GroupIcon from '@material-ui/icons/Group'
@@ -27,10 +27,16 @@ import HelpIcon from '@material-ui/icons/Help'
 function MyAppBar() {
   const [open, setOpen] = useState(false)
   const [pageName, setPageName] = useState('')
-  // const [page, setPage] = useState(useLocation().pathname)
-  // const [offSeasonStep, setOffSeasonStep] = useState(
-  //   parseFloat(window.localStorage.getItem('offseason'))
-  // )
+  const [page, setPage] = useState(useLocation().pathname)
+  const [page2, setPage2] = useState('ok')
+  const [offSeasonStep, setOffSeasonStep] = useState(
+    parseFloat(window.localStorage.getItem('offseason'))
+  )
+
+  useEffect(() => {
+    setPage2('/offseason')
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [offSeasonStep])
 
   const links = [
     {
@@ -112,9 +118,9 @@ function MyAppBar() {
     <>
       <AppBar className="appBar">
         <Toolbar>
-          {/* {offSeasonStep ? (
+          {page === '/offseason' || page2 === '/offseason' ? (
             ''
-          ) : ( */}
+          ) : (
             <IconButton
               aria-label="menu"
               edge="start"
@@ -122,7 +128,7 @@ function MyAppBar() {
             >
               <MenuIcon style={{ color: '#2F2E2C' }} />
             </IconButton>
-          {/* )} */}
+          )}
 
           <Typography style={{ color: '#2F2E2C' }} variant="h6">
             {pageName}

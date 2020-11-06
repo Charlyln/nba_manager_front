@@ -4,18 +4,13 @@ import CardActionArea from '@material-ui/core/CardActionArea'
 import CardContent from '@material-ui/core/CardContent'
 import CardMedia from '@material-ui/core/CardMedia'
 import Typography from '@material-ui/core/Typography'
-import {
-  Grid,
-  CircularProgress,
-  Button,
-  CardActions
-} from '@material-ui/core'
+import { Grid, CircularProgress, Button, CardActions } from '@material-ui/core'
 import Match from './Match'
 import Axios from 'axios'
 import { apiUrl } from '../apiUrl'
 import Skeleton from '@material-ui/lab/Skeleton'
 import ForwardIcon from '@material-ui/icons/Forward'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 
 function Home() {
   const [isLoading, setIsLoading] = useState(true)
@@ -26,6 +21,10 @@ function Home() {
   // const [nextSeason, setNextSeason] = useState(false)
   const [allGameLoading, setAllGameLoading] = useState(false)
   const [logoLoading, setLogoLoading] = useState(true)
+  // const [page1, setPage] = useState(useLocation().pathname)
+  const [offseasonPage, setPage] = useState(
+    parseFloat(window.localStorage.getItem('offseason'))
+  )
 
   // const createNextSeason = async () => {
   //   const res = await Axios.post(`${apiUrl}/seasons`, {
@@ -35,6 +34,12 @@ function Home() {
   //   })
   //   window.localStorage.setItem('seasonUuid', res.data.uuid)
   // }
+
+  useEffect(() => {
+    getTeams()
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const getTeams = async () => {
     try {
@@ -143,10 +148,10 @@ function Home() {
     console.log(allGames)
   }
 
-  useEffect(() => {
-    getTeams()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  if (offseasonPage) {
+    return <Redirect to="/offseason" />
+  }
+
   return (
     <>
       <Grid container style={{ marginTop: '100px' }}>

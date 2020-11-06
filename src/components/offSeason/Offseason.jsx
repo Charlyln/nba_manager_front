@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Grid } from '@material-ui/core'
+import { Grid, Paper, Typography } from '@material-ui/core'
 import Stepper from '@material-ui/core/Stepper'
 import Step from '@material-ui/core/Step'
 import StepLabel from '@material-ui/core/StepLabel'
@@ -8,7 +8,7 @@ import Button from '@material-ui/core/Button'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import ForwardIcon from '@material-ui/icons/Forward'
 import OffSeasonDialog from './OffSeasonDialog'
-import { Redirect } from 'react-router-dom'
+// import { Redirect } from 'react-router-dom'
 
 function Offseason() {
   const [activeStep, setActiveStep] = useState(
@@ -22,17 +22,18 @@ function Offseason() {
     'Retirements',
     'Draft',
     'Free agency',
-    'Player progress',
-    'Training camp',
-    'Next season'
+    'Player progress'
   ]
 
   const handleNext = () => {
     const offseasonStepIn = parseFloat(window.localStorage.getItem('offseason'))
 
     if (offseasonStepIn === 6) {
-      window.localStorage.removeItem('offseason')
+      // window.localStorage.removeItem('offseason')
+      // setCanGoNext(false)
+      setActiveStep((prevActiveStep) => prevActiveStep + 1)
       setCanGoNext(false)
+      window.localStorage.setItem('offseason', offseasonStepIn + 1)
     } else {
       setActiveStep((prevActiveStep) => prevActiveStep + 1)
       setCanGoNext(false)
@@ -44,9 +45,9 @@ function Offseason() {
     setCanGoNext(true)
   }
 
-  if (!parseFloat(window.localStorage.getItem('offseason'))) {
-    return <Redirect to="/home" />
-  }
+  // if (!parseFloat(window.localStorage.getItem('offseason'))) {
+  //   return <Redirect to="/home" />
+  // }
 
   return (
     <Grid style={{ marginTop: '100px' }}>
@@ -80,7 +81,7 @@ function Offseason() {
                       )
                     }
                   >
-                    {activeStep === steps.length - 1 ? 'Go' : 'Next'}
+                    {activeStep === steps.length - 1 ? 'Go next season' : 'Next'}
                   </Button>
                 </div>
               </div>
@@ -88,6 +89,17 @@ function Offseason() {
           </Step>
         ))}
       </Stepper>
+      {activeStep === steps.length && (
+        <Paper style={{ width: '50%', margin: 'auto' }} square elevation={0}>
+          <Button
+            style={{ margin: '10px 25px' }}
+            variant="contained"
+            color="primary"
+          >
+            Finichaide ! 😄
+          </Button>
+        </Paper>
+      )}
     </Grid>
   )
 }
