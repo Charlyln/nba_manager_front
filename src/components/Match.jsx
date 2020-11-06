@@ -6,6 +6,7 @@ import Axios from 'axios'
 import { apiUrl } from '../apiUrl'
 import {
   Avatar,
+  CircularProgress,
   Divider,
   Grid,
   List,
@@ -15,11 +16,31 @@ import {
   ListItemText
 } from '@material-ui/core'
 
-function Match({ team2, myTeam, gameUuid, playerStats, getTeams }) {
-  const [done, setDone] = useState(false)
-  const [result, setResult] = useState('')
-  const [win, setWin] = useState('')
+function Match({
+  team2,
+  team1,
+  gameUuid,
+  playerStats,
+  getTeams,
+  game,
+  previousItem,
+  allGames,
+  i,
+  simulateAllGames,
+  allGameLoading
+}) {
+  // const [done, setDone] = useState(false)
+  // const [result, setResult] = useState('')
+  // const [win, setWin] = useState('')
   const [open, setOpen] = useState(false)
+  // const [score1, setScore1] = useState(0)
+  // const [score2, setScore2] = useState(0)
+  const [matchLoading, setMatchLoading] = useState(false)
+  const [UserUuid] = useState(window.localStorage.getItem('uuid'))
+
+  // useEffect(() => {
+  //   getTeams()
+  // }, [])
 
   const handleClickOpen = () => {
     setOpen(true)
@@ -29,125 +50,118 @@ function Match({ team2, myTeam, gameUuid, playerStats, getTeams }) {
     setOpen(false)
   }
 
-  const match = async (myTeam, team2) => {
-    let myteamScore = 0
-    console.log(myTeam, team2)
-    // await Axios.post(`${apiUrl}/games`, {
-    //   team1: myTeam.uuid,
-    //   team2: team2.uuid
-    // })
+  const match = (team1, team2) => {
+    setMatchLoading(true)
+    let team1Score = 0
 
-    myTeam.Players.map(async (player) => {
-      const playerScore = Math.floor(
-        Math.random() * (player.ptsMax - player.ptsMin) + player.ptsMin
-      )
-
-      await Axios.post(`${apiUrl}/playerStats`, {
-        PlayerUuid: player.uuid,
-        GameUuid: gameUuid,
-        pts: playerScore
+    Promise.all(
+      team1.Players.map(async (player) => {
+        const playerScore = Math.floor(
+          Math.random() * (player.ptsMax - player.ptsMin) + player.ptsMin
+        )
+        try {
+          await Axios.post(`${apiUrl}/playerStats`, {
+            PlayerUuid: player.uuid,
+            GameUuid: gameUuid,
+            pts: playerScore,
+            UserUuid
+          })
+          team1Score = team1Score + playerScore
+          // setScore1(team1Score)
+          const timer = setTimeout(() => {
+            Axios.put(`${apiUrl}/games/${gameUuid}`, {
+              team1: team1Score
+            })
+          }, 1000)
+          return () => clearTimeout(timer)
+        } catch (err) {
+          console.log(err)
+        } finally {
+        }
       })
-
-      //   console.log(
-      //     player.name,
-      //     'Points',
-      //     playerScore,
-      //     'Passes',
-      //     Math.floor(
-      //       Math.random() * (player.passeMax - player.passeMin) + player.passeMin
-      //     ),
-      //     'Rebonds',
-      //     Math.floor(
-      //       Math.random() * (player.rebondsMax - player.rebondsMin) +
-      //         player.rebondsMin
-      //     )
-      //   )
-
-      myteamScore = myteamScore + playerScore
-      return myteamScore
-    })
-    console.log(myteamScore)
+    )
 
     let team2Score = 0
-    team2.Players.map(async (player) => {
-      const playerScore = Math.floor(
-        Math.random() * (player.ptsMax - player.ptsMin) + player.ptsMin
-      )
-      await Axios.post(`${apiUrl}/playerStats`, {
-        PlayerUuid: player.uuid,
-        GameUuid: gameUuid,
-        pts: playerScore
+
+    Promise.all(
+      team2.Players.map(async (player) => {
+        const playerScore = Math.floor(
+          Math.random() * (player.ptsMax - player.ptsMin) + player.ptsMin
+        )
+        try {
+          await Axios.post(`${apiUrl}/playerStats`, {
+            PlayerUuid: player.uuid,
+            GameUuid: gameUuid,
+            pts: playerScore,
+            UserUuid
+          })
+          team2Score = team2Score + playerScore
+
+          const timer = setTimeout(async () => {
+            Axios.put(`${apiUrl}/games/${gameUuid}`, {
+              team2: team2Score
+            })
+
+            await getTeams()
+            await setMatchLoading(false)
+          }, 1000)
+          return () => clearTimeout(timer)
+        } catch (err) {
+          console.log(err)
+        } finally {
+          window.localStorage.setItem('trainingLeft', 2)
+        }
       })
-
-      //   console.log(
-      //     player.name,
-      //     'Points',
-      //     playerScore,
-      //     'Passes',
-      //     Math.floor(
-      //       Math.random() * (player.passeMax - player.passeMin) + player.passeMin
-      //     ),
-      //     'Rebonds',
-      //     Math.floor(
-      //       Math.random() * (player.rebondsMax - player.rebondsMin) +
-      //         player.rebondsMin
-      //     )
-      //   )
-      team2Score = team2Score + playerScore
-      return team2Score
-    })
-    // console.log(team2Score)
-
-    if (myteamScore > team2Score) {
-      setWin(true)
-    } else if (myteamScore < team2Score) {
-      setWin(false)
-    }
-
-    setResult(`${myteamScore} - ${team2Score}`)
-    setDone(true)
-    getTeams()
+    )
   }
 
   return (
     <>
       <CardActions>
-        {!done ? (
+        {!game.team1 && !game.team2 ? (
           <>
-            <Button
-              variant="outlined"
-              color="primary"
-              size="small"
-              onClick={() => match(myTeam, team2)}
-            >
-              Simulate
-            </Button>
+            {matchLoading || allGameLoading ? (
+              <Button variant="contained" size="small" disabled>
+                <CircularProgress size={23} />
+              </Button>
+            ) : (
+              <Button
+                variant="outlined"
+                color="primary"
+                size="small"
+                onClick={() => match(team1, team2)}
+                disabled={
+                  previousItem.team1
+                    ? false
+                    : previousItem === 'first'
+                    ? false
+                    : true
+                }
+              >
+                Simulate
+              </Button>
+            )}
           </>
         ) : (
           <>
-            {win ? (
+            <>
               <Button
                 size="small"
                 style={{
                   whiteSpace: 'nowrap',
-                  backgroundColor: 'rgb(76, 175, 80)'
+                  backgroundColor:
+                    game.team1 > game.team2 && game.Team.choice
+                      ? 'rgb(76, 175, 80)'
+                      : game.team2 > game.team1 && game.Visitor.Team.choice
+                      ? 'rgb(76, 175, 80)'
+                      : 'rgb(217, 48, 33)'
                 }}
                 variant="contained"
               >
-                {result || 'Done'}
+                {`${game.team1} - ${game.team2}`}
               </Button>
-            ) : (
-              <>
-                <Button
-                  size="small"
-                  style={{ whiteSpace: 'nowrap' }}
-                  variant="contained"
-                  color="secondary"
-                >
-                  {result || 'Done'}
-                </Button>
-              </>
-            )}
+            </>
+
             <Button
               variant="outlined"
               color="primary"
@@ -170,22 +184,40 @@ function Match({ team2, myTeam, gameUuid, playerStats, getTeams }) {
               <Grid item>
                 <List>
                   <ListItem>
-                    <h1>{` ${myTeam.name}`}</h1>
+                    <ListItemAvatar style={{ margin: '0px 5px' }}>
+                      <Avatar
+                        src={team1.logo}
+                        style={{ width: '60px', height: '60px' }}
+                      />
+                    </ListItemAvatar>
+                    <ListItemText
+                      style={{ margin: '5px 20px' }}
+                      primary={` ${team1.name}`}
+                    />
+                    <ListItemSecondaryAction>
+                      {game.team1}
+                    </ListItemSecondaryAction>
                   </ListItem>
 
+                  <Divider />
+
                   {playerStats
-                    .filter((player) => player.Player.TeamUuid === myTeam.uuid)
+                    .filter((player) => player.Player.TeamUuid === team1.uuid)
+                    .sort(function (a, b) {
+                      return new Date(b.pts) - new Date(a.pts)
+                    })
                     .map((player) => {
                       return (
                         <ListItem>
-                          <ListItemAvatar>
+                          <ListItemAvatar style={{ margin: '0px 5px' }}>
                             <Avatar
                               alt={player.Player.lastName}
                               src={player.Player.photo}
-                              style={{ width: '50px', height: '50px' }}
+                              style={{ width: '60px', height: '60px' }}
                             />
                           </ListItemAvatar>
                           <ListItemText
+                            style={{ margin: '5px 20px' }}
                             primary={player.Player.firstName}
                             secondary={player.Player.lastName}
                           />
@@ -201,21 +233,40 @@ function Match({ team2, myTeam, gameUuid, playerStats, getTeams }) {
               <Grid item>
                 <List>
                   <ListItem>
-                    <h1>{`${team2.name}`}</h1>
+                    <ListItemAvatar style={{ margin: '0px 5px' }}>
+                      <Avatar
+                        src={team2.logo}
+                        style={{ width: '60px', height: '60px' }}
+                      />
+                    </ListItemAvatar>
+                    <ListItemText
+                      style={{ margin: '5px 20px' }}
+                      primary={` ${team2.name}`}
+                    />
+                    <ListItemSecondaryAction>
+                      {game.team2}
+                    </ListItemSecondaryAction>
                   </ListItem>
+
+                  <Divider />
+
                   {playerStats
-                    .filter((player) => player.Player.TeamUuid !== myTeam.uuid)
+                    .filter((player) => player.Player.TeamUuid !== team1.uuid)
+                    .sort(function (a, b) {
+                      return new Date(b.pts) - new Date(a.pts)
+                    })
                     .map((player) => {
                       return (
                         <ListItem>
-                          <ListItemAvatar>
+                          <ListItemAvatar style={{ margin: '0px 5px' }}>
                             <Avatar
                               alt={player.Player.lastName}
                               src={player.Player.photo}
-                              style={{ width: '50px', height: '50px' }}
+                              style={{ width: '60px', height: '60px' }}
                             />
                           </ListItemAvatar>
                           <ListItemText
+                            style={{ margin: '5px 20px' }}
                             primary={player.Player.firstName}
                             secondary={player.Player.lastName}
                           />

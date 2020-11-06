@@ -21,12 +21,13 @@ function TeamChoice() {
   const [postLoading, setPostLoading] = useState(false)
   const [postSuccess, setPostSuccess] = useState(false)
   const [redirect, setRedirect] = useState(false)
+  const [seasonUuid] = useState(window.localStorage.getItem('seasonUuid'))
 
   const putTeamChoice = (uuid) => {
     setTeamChoice(uuid)
   }
 
-  const SignupPost = async (e) => {
+  const SignupPost1 = async (e) => {
     e.preventDefault()
     setPostLoading(true)
     try {
@@ -36,20 +37,27 @@ function TeamChoice() {
         })
 
         await Axios.post(`${apiUrl}/dataCreation/games/${uuid}`)
-        await Axios.post(`${apiUrl}/dataCreation/games2/${uuid}/${teamChoice}`)
 
         const timer = setTimeout(() => {
           setPostLoading(false)
+          setPostSuccess(true)
         }, 1000)
-        setPostSuccess(true)
 
-        const timer3 = setTimeout(() => {
-          setPostSuccess(false)
-          setRedirect(true)
-        }, 3000)
-
-        return () => clearTimeout(timer3, timer)
+        return () => clearTimeout(timer)
       }
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  const SignupPost2 = async (e) => {
+    e.preventDefault()
+    setPostLoading(true)
+    try {
+      await Axios.post(`${apiUrl}/dataCreation/games2/${uuid}/${teamChoice}`)
+      window.localStorage.setItem('canPlay', '1')
+      window.localStorage.setItem('trainingLeft', 2)
+      setRedirect(true)
     } catch (err) {
       console.log(err)
     }
@@ -75,7 +83,7 @@ function TeamChoice() {
     }
   }
 
-  if (redirect) {
+  if (redirect || seasonUuid || window.localStorage.getItem('canPlay')) {
     return <Redirect to="/home" />
   }
 
@@ -107,18 +115,33 @@ function TeamChoice() {
                   <CircularProgress size={23} />
                 </Button>
               ) : postSuccess ? (
-                <Button
-                  style={{
-                    width: '85px',
-                    height: '35px',
-                    marginLeft: 'auto'
-                  }}
-                  variant="contained"
-                  endIcon={<CheckIcon />}
-                  color="secondary"
-                >
-                  Done
-                </Button>
+                <>
+                  <Button
+                    style={{
+                      width: '85px',
+                      height: '35px',
+                      marginLeft: 'auto'
+                    }}
+                    variant="contained"
+                    endIcon={<CheckIcon />}
+                    color="secondary"
+                  >
+                    Done
+                  </Button>
+                  <Button
+                    style={{
+                      width: '85px',
+                      height: '35px',
+                      marginLeft: '10px'
+                    }}
+                    color="secondary"
+                    variant="outlined"
+                    onClick={SignupPost2}
+                    disabled={!postSuccess}
+                  >
+                    Start
+                  </Button>
+                </>
               ) : (
                 <Button
                   style={{
@@ -128,9 +151,9 @@ function TeamChoice() {
                   }}
                   color="secondary"
                   variant="contained"
-                  onClick={SignupPost}
+                  onClick={SignupPost1}
                 >
-                  Play
+                  Next
                 </Button>
               )}
             </>
