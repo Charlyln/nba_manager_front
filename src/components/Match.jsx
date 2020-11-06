@@ -69,7 +69,7 @@ function Match({
           team1Score = team1Score + playerScore
           // setScore1(team1Score)
 
-          Axios.put(`${apiUrl}/games/${gameUuid}`, {
+          await Axios.put(`${apiUrl}/games/${gameUuid}`, {
             team1: team1Score
           })
         } catch (err) {
@@ -95,7 +95,7 @@ function Match({
           })
           team2Score = team2Score + playerScore
 
-          Axios.put(`${apiUrl}/games/${gameUuid}`, {
+          await Axios.put(`${apiUrl}/games/${gameUuid}`, {
             team2: team2Score
           })
 

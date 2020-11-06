@@ -46,9 +46,9 @@ function Home() {
       const UserUuid = uuid
       const res = await Axios.get(`${apiUrl}/games/${UserUuid}`)
       setTeamsData(res.data)
-      console.log(res.data)
+
       const teamsDataFilter = res.data.filter((game) => !game.team1)
-      console.log(teamsDataFilter)
+
       if (teamsDataFilter.length === 1) {
         // setNextSeason(true)
       }
@@ -145,7 +145,6 @@ function Home() {
 
   const simulateAllGames = () => {
     setAllGames(allGames + 1)
-    console.log(allGames)
   }
 
   if (offseasonPage) {
