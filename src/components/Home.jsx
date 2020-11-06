@@ -98,7 +98,8 @@ function Home() {
             PlayerUuid: player.uuid,
             GameUuid: gameUuid,
             pts: playerScore,
-            UserUuid: uuid
+            UserUuid: uuid,
+            teamIdAtTheGame: team1.uuid
           })
 
           team1Score = team1Score + playerScore
@@ -124,7 +125,8 @@ function Home() {
             PlayerUuid: player.uuid,
             GameUuid: gameUuid,
             pts: playerScore,
-            UserUuid: uuid
+            UserUuid: uuid,
+            teamIdAtTheGame: team1.uuid
           })
           team2Score = team2Score + playerScore
 
@@ -166,6 +168,9 @@ function Home() {
                     (team) => team.Visitor.Team.choice || team.Team.choice
                   )
                   // .filter((team) => team.Team.choice)
+                  .sort(function (a, b) {
+                    return new Date(b.uuid) - new Date(a.uuid)
+                  })
                   .map((team, i, arr) => {
                     let previousItem = arr[i - 1]
 
