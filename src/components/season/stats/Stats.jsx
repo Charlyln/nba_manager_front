@@ -1,6 +1,6 @@
 import Axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { apiUrl } from '../apiUrl'
+import { apiUrl } from '../../../apiUrl'
 import {
   Grid
 } from '@material-ui/core'

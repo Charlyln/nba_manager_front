@@ -10,7 +10,7 @@ import {
 } from '@material-ui/core'
 import { Redirect } from 'react-router-dom'
 import TeamChoiceCard from './TeamChoiceCard'
-import { apiUrl } from '../apiUrl'
+import { apiUrl } from '../../apiUrl'
 import CheckIcon from '@material-ui/icons/Check'
 
 function TeamChoice() {

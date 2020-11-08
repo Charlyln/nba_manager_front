@@ -3,7 +3,7 @@ import CardActions from '@material-ui/core/CardActions'
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
 import Axios from 'axios'
-import { apiUrl } from '../apiUrl'
+import { apiUrl } from '../../../apiUrl'
 import {
   Avatar,
   CircularProgress,

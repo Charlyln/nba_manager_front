@@ -19,7 +19,7 @@ import {
   ListItemAvatar,
   Typography
 } from '@material-ui/core'
-import { apiUrl } from '../apiUrl'
+import { apiUrl } from '../../../apiUrl'
 import Axios from 'axios'
 import TradeSelect from './TradeSelect'
 import SportsBasketballIcon from '@material-ui/icons/SportsBasketball'

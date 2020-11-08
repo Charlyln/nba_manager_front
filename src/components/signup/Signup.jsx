@@ -12,7 +12,7 @@ import {
 import { Redirect } from 'react-router-dom'
 import CheckIcon from '@material-ui/icons/Check'
 
-import { apiUrl } from '../apiUrl'
+import { apiUrl } from '../../apiUrl'
 
 function SignUp() {
   const [pseudo, setPseudo] = useState('')
