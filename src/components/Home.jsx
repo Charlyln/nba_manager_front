@@ -79,72 +79,82 @@ function Home() {
     }
   }
 
-  const matchAllGames = async (team1, team2, gameUuid) => {
-    await matchIt(team1, team2, gameUuid)
-    await getTeams()
-  }
-
-  const matchIt = (team1, team2, gameUuid) => {
+  const matchAllGames = async () => {
     setAllGameLoading(true)
-    let team1Score = 0
+    const SeasonUuid = teamsData[0].SeasonUuid
+    const res = await Axios.post(`${apiUrl}/gamePlayed/all/${SeasonUuid}`)
 
-    Promise.all(
-      team1.Players.map(async (player) => {
-        const playerScore = Math.floor(
-          Math.random() * (player.ptsMax - player.ptsMin) + player.ptsMin
-        )
-        try {
-          await Axios.post(`${apiUrl}/playerStats`, {
-            PlayerUuid: player.uuid,
-            GameUuid: gameUuid,
-            pts: playerScore,
-            UserUuid: uuid,
-            teamIdAtTheGame: team1.uuid
-          })
+    const timer1 = setTimeout(() => {
+      getTeams()
+    }, 2500)
 
-          team1Score = team1Score + playerScore
-          await Axios.put(`${apiUrl}/games/${gameUuid}`, {
-            team1: team1Score
-          })
-        } catch (err) {
-          console.log(err)
-        } finally {
-        }
-      })
-    )
-
-    let team2Score = 0
-
-    Promise.all(
-      team2.Players.map(async (player) => {
-        const playerScore = Math.floor(
-          Math.random() * (player.ptsMax - player.ptsMin) + player.ptsMin
-        )
-        try {
-          await Axios.post(`${apiUrl}/playerStats`, {
-            PlayerUuid: player.uuid,
-            GameUuid: gameUuid,
-            pts: playerScore,
-            UserUuid: uuid,
-            teamIdAtTheGame: team2.uuid
-          })
-          team2Score = team2Score + playerScore
-
-          await Axios.put(`${apiUrl}/games/${gameUuid}`, {
-            team2: team2Score
-          })
-
-          const timer = setTimeout(async () => {
-            await setAllGameLoading(false)
-          }, 3000)
-          return () => clearTimeout(timer)
-        } catch (err) {
-          console.log(err)
-        } finally {
-        }
-      })
-    )
+    const timer2 = setTimeout(() => {
+      setAllGameLoading(false)
+    }, 5000)
+    return () => clearTimeout(timer1, timer2)
   }
+
+  // const matchIt = (team1, team2, gameUuid) => {
+  //   setAllGameLoading(true)
+  //   let team1Score = 0
+
+  //   Promise.all(
+  //     team1.Players.map(async (player) => {
+  //       const playerScore = Math.floor(
+  //         Math.random() * (player.ptsMax - player.ptsMin) + player.ptsMin
+  //       )
+  //       try {
+  //         await Axios.post(`${apiUrl}/playerStats`, {
+  //           PlayerUuid: player.uuid,
+  //           GameUuid: gameUuid,
+  //           pts: playerScore,
+  //           UserUuid: uuid,
+  //           teamIdAtTheGame: team1.uuid
+  //         })
+
+  //         team1Score = team1Score + playerScore
+  //         await Axios.put(`${apiUrl}/games/${gameUuid}`, {
+  //           team1: team1Score
+  //         })
+  //       } catch (err) {
+  //         console.log(err)
+  //       } finally {
+  //       }
+  //     })
+  //   )
+
+  //   let team2Score = 0
+
+  //   Promise.all(
+  //     team2.Players.map(async (player) => {
+  //       const playerScore = Math.floor(
+  //         Math.random() * (player.ptsMax - player.ptsMin) + player.ptsMin
+  //       )
+  //       try {
+  //         await Axios.post(`${apiUrl}/playerStats`, {
+  //           PlayerUuid: player.uuid,
+  //           GameUuid: gameUuid,
+  //           pts: playerScore,
+  //           UserUuid: uuid,
+  //           teamIdAtTheGame: team2.uuid
+  //         })
+  //         team2Score = team2Score + playerScore
+
+  //         await Axios.put(`${apiUrl}/games/${gameUuid}`, {
+  //           team2: team2Score
+  //         })
+
+  //         const timer = setTimeout(async () => {
+  //           await setAllGameLoading(false)
+  //         }, 3000)
+  //         return () => clearTimeout(timer)
+  //       } catch (err) {
+  //         console.log(err)
+  //       } finally {
+  //       }
+  //     })
+  //   )
+  // }
 
   const simulateAllGames = () => {
     setAllGames(allGames + 1)
@@ -209,7 +219,7 @@ function Home() {
                                   variant="button"
                                   component="h2"
                                 >
-                                  {`Match ${i + 1}`}
+                                  {`Match ${team.date}`}
                                 </Typography>
                               </CardContent>
                               {logoLoading ? (
@@ -282,21 +292,7 @@ function Home() {
                           <Button
                             variant="contained"
                             color="primary"
-                            onClick={() =>
-                              teamsData
-                                .filter(
-                                  (game) =>
-                                    game.Visitor.Team.choice || game.Team.choice
-                                )
-                                .filter((game) => !game.team1)
-                                .map((game) =>
-                                  matchAllGames(
-                                    game.Team,
-                                    game.Visitor.Team,
-                                    game.uuid
-                                  )
-                                )
-                            }
+                            onClick={matchAllGames}
                           >
                             Simulate all games
                           </Button>
