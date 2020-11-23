@@ -8,17 +8,30 @@ import Button from '@material-ui/core/Button'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import ForwardIcon from '@material-ui/icons/Forward'
 import OffSeasonDialog from './OffSeasonDialog'
+import Axios from 'axios'
+import { apiUrl } from '../../apiUrl'
+import { Redirect } from 'react-router-dom'
 // import { Redirect } from 'react-router-dom'
 
 function Offseason() {
   const [activeStep, setActiveStep] = useState(
     parseFloat(window.localStorage.getItem('offseason')) - 1
   )
+  const [redirect, setRedirect] = useState(false)
+  const [TeamUuid] = useState(window.localStorage.getItem('TeamUuid'))
+
   const [canGoNext, setCanGoNext] = useState(false)
+  const [uuid] = useState(window.localStorage.getItem('uuid'))
   // const [offSeasonStep, setOffSeasonStep] = useState(
   //   parseFloat(window.localStorage.getItem('offseason'))
   // )
-  const steps = ['Retirements', 'Draft', 'Free agency', 'Player progress']
+  const steps = [
+    'Retirements',
+    'Draft',
+    'Player options',
+    'Free agency',
+    'Player progress'
+  ]
 
   const handleNext = () => {
     const offseasonStepIn = parseFloat(window.localStorage.getItem('offseason'))
@@ -36,13 +49,26 @@ function Offseason() {
     }
   }
 
+  const NextSeason = async (e) => {
+    e.preventDefault()
+
+    try {
+      const res = await Axios.post(`${apiUrl}/dataCreation/games2/${uuid}`)
+      console.log(res.data)
+      window.localStorage.setItem('SeasonUuid', res.data.uuid)
+      setRedirect(true)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   const goNext = () => {
     setCanGoNext(true)
   }
 
-  // if (!parseFloat(window.localStorage.getItem('offseason'))) {
-  //   return <Redirect to="/home" />
-  // }
+  if (redirect) {
+    return <Redirect to="/home" />
+  }
 
   return (
     <Grid style={{ marginTop: '100px' }}>
@@ -64,12 +90,15 @@ function Offseason() {
                     goNext={goNext}
                     canGoNext={canGoNext}
                     step={step}
+                    TeamUuid={TeamUuid}
                   />
                   <Button
                     disabled={!canGoNext}
                     variant="contained"
                     color="primary"
-                    onClick={handleNext}
+                    onClick={
+                      activeStep === steps.length - 1 ? NextSeason : handleNext
+                    }
                     style={{ marginLeft: '10px' }}
                     endIcon={
                       activeStep === steps.length - 1 ? (

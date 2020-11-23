@@ -2,31 +2,32 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
-import Home from './components/Home'
-import SignUp from './components/Signup'
-import TeamChoice from './components/TeamChoice'
 import { createMuiTheme } from '@material-ui/core/styles'
 import { ThemeProvider } from '@material-ui/styles'
-
 import { CssBaseline } from '@material-ui/core'
-import Trade from './components/Trade'
-import MyTeam from './components/MyTeam'
-import Training from './components/Training'
-import PlayerFinder from './components/PlayerFinder'
-import Stats from './components/Stats'
+
+import Home from './components/season/home/Home'
+import SignUp from './components/signup/Signup'
+import TeamChoice from './components/signup/TeamChoice'
+import Trade from './components/season/trade/Trade'
+import MyTeam from './components/season/myteam/MyTeam'
+import Training from './components/season/training/Training'
+import PlayerFinder from './components/season/playerfinder/PlayerFinder'
+import Stats from './components/season/stats/Stats'
 import MyAppBar from './components/MyAppbar'
-import Contracts from './components/Contracts'
-// import BestPlayers from './components/BestPlayers'
-import FreeAgent from './components/FreeAgent'
-import Extensions from './components/Extensions'
-import Help from './components/Help'
+import Contracts from './components/season/contracts/Contracts'
+import FreeAgent from './components/season/freeagents/FreeAgent'
+import Extensions from './components/season/extensions/Extensions'
+import Help from './components/season/help/Help'
 import Offseason from './components/offSeason/Offseason'
+import Ranking from './components/season/ranking/Ranking'
+import Start from './components/signup/Start'
 
 const darkTheme = createMuiTheme({
   palette: {
     type: 'dark',
     primary: {
-      main: '#E59923'
+      main: '#FB8B3C'
     },
     secondary: {
       main: '#021EA8'
@@ -44,7 +45,8 @@ ReactDOM.render(
       <BrowserRouter>
       <MyAppBar />
         <Switch>
-          <Route exact path="/" component={SignUp} />
+          <Route exact path="/" component={Start} />
+          <Route exact path="/signup" component={SignUp} />
           <Route exact path="/teamchoice" component={TeamChoice} />
           <Route exact path="/home" component={Home} />
           <Route exact path="/trade" component={Trade} />
@@ -57,6 +59,7 @@ ReactDOM.render(
           <Route exact path="/extension" component={Extensions} />
           <Route exact path="/help" component={Help} />
           <Route exact path="/offseason" component={Offseason} />
+          <Route exact path="/ranking" component={Ranking} />
         </Switch>
       </BrowserRouter>
     </ThemeProvider>

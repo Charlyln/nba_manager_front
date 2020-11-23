@@ -1,6 +1,6 @@
 import Axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { apiUrl } from '../apiUrl'
+import { apiUrl } from '../../../apiUrl'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
@@ -14,7 +14,7 @@ import {
   CircularProgress,
   Typography
 } from '@material-ui/core'
-import SignPlayer from './SignPlayer'
+import SignPlayer from '../freeagents/SignPlayer'
 
 function Extensions() {
   const [myteamData, setMyTeamData] = useState({})

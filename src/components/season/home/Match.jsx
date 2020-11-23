@@ -3,7 +3,7 @@ import CardActions from '@material-ui/core/CardActions'
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
 import Axios from 'axios'
-import { apiUrl } from '../apiUrl'
+import { apiUrl } from '../../../apiUrl'
 import {
   Avatar,
   CircularProgress,
@@ -37,7 +37,7 @@ function Match({
   // const [score1, setScore1] = useState(0)
   // const [score2, setScore2] = useState(0)
   const [matchLoading, setMatchLoading] = useState(false)
-  const [UserUuid] = useState(window.localStorage.getItem('uuid'))
+  const [SeasonUuid] = useState(window.localStorage.getItem('SeasonUuid'))
 
   // useEffect(() => {
   //   getTeams()
@@ -79,9 +79,11 @@ function Match({
         >
           {`${game.team1} - ${game.team2}`}
         </Button> */}
+
         <Button
           variant="contained"
           size="small"
+          onClick={handleClickOpen}
           style={{
             whiteSpace: 'nowrap',
             backgroundColor:
@@ -96,110 +98,58 @@ function Match({
     )
   }
 
-  const match = (team1, team2) => {
+  const matchit = async (uuid) => {
     setMatchLoading(true)
-    let team1Score = 0
-
-    Promise.all(
-      team1.Players.map(async (player) => {
-        const playerScore = Math.floor(
-          Math.random() * (player.ptsMax - player.ptsMin) + player.ptsMin
-        )
-        try {
-          await Axios.post(`${apiUrl}/playerStats`, {
-            PlayerUuid: player.uuid,
-            GameUuid: gameUuid,
-            pts: playerScore,
-            UserUuid,
-            teamIdAtTheGame: team1.uuid
-          })
-          team1Score = team1Score + playerScore
-          // setScore1(team1Score)
-
-          await Axios.put(`${apiUrl}/games/${gameUuid}`, {
-            team1: team1Score
-          })
-        } catch (err) {
-          console.log(err)
-        } finally {
-        }
-      })
-    )
-
-    let team2Score = 0
-
-    Promise.all(
-      team2.Players.map(async (player) => {
-        const playerScore = Math.floor(
-          Math.random() * (player.ptsMax - player.ptsMin) + player.ptsMin
-        )
-        try {
-          await Axios.post(`${apiUrl}/playerStats`, {
-            PlayerUuid: player.uuid,
-            GameUuid: gameUuid,
-            pts: playerScore,
-            UserUuid,
-            teamIdAtTheGame: team2.uuid
-          })
-          team2Score = team2Score + playerScore
-
-          await Axios.put(`${apiUrl}/games/${gameUuid}`, {
-            team2: team2Score
-          })
-
-          await getTeams()
-          await setMatchLoading(false)
-        } catch (err) {
-          console.log(err)
-        } finally {
-          window.localStorage.setItem('trainingLeft', 2)
-        }
-      })
-    )
+    try {
+      const res = await Axios.post(
+        `${apiUrl}/gamePlayed/${uuid}/${SeasonUuid}/${TeamUuid}`
+      )
+      console.log(res.data)
+      window.localStorage.setItem('trainingLeft', 2)
+      getTeams()
+      const timer = setTimeout(() => {
+        setMatchLoading(false)
+      }, 2000)
+      return () => clearTimeout(timer)
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   return (
     <>
       <CardActions>
-        {!game.team1 && !game.team2 ? (
-          <>
-            {matchLoading || allGameLoading ? (
-              <Button variant="contained" size="small" disabled>
-                <CircularProgress size={23} />
-              </Button>
-            ) : (
-              <Button
-                variant="outlined"
-                color="primary"
-                size="small"
-                onClick={() => match(team1, team2)}
-                disabled={
-                  previousItem.team1
-                    ? false
-                    : previousItem === 'first'
-                    ? false
-                    : true
-                }
-              >
-                Simulate
-              </Button>
-            )}
-          </>
-        ) : (
+        {matchLoading || (allGameLoading && game.PlayerStats.length < 1) ? (
+          <Button variant="contained" size="small" disabled>
+            <CircularProgress size={22} />
+          </Button>
+        ) : game.PlayerStats.length > 0 ? (
           <>
             <>{displayButton(game)}</>
 
-            <Button
-              variant="outlined"
-              color="primary"
-              size="small"
-              onClick={handleClickOpen}
-            >
+            <Button variant="outlined" size="small" onClick={handleClickOpen}>
               Stats
             </Button>
           </>
+        ) : (
+          <Button
+            variant="outlined"
+            color="primary"
+            size="small"
+            onClick={() => matchit(game.uuid)}
+            // disabled={
+            //   previousItem.team1
+            //     ? false
+            //     : previousItem === 'first'
+            //     ? false
+            //     : true
+            // }
+          >
+            Simulate
+          </Button>
         )}
       </CardActions>
+
       <Dialog
         onClose={handleClose}
         aria-labelledby="simple-dialog-title"

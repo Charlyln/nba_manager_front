@@ -32,24 +32,21 @@ const PlayerCardCollapse = ({ teamChoice, uuid, putTeamChoice, players }) => {
         {teamChoice === uuid ? (
           <Button
             style={{
-              width: '140px',
-              height: '35px'
+              whiteSpace: 'nowrap'
             }}
             variant="contained"
             endIcon={<CheckIcon />}
             color="secondary"
+            size="small"
           >
-            This one !
+            This one
           </Button>
         ) : (
           <Button
             type="submit"
-            style={{
-              width: '140px',
-              height: '35px'
-            }}
             onClick={() => putTeamChoice(uuid)}
             variant="contained"
+            size="small"
             color="primary"
             endIcon={<AddIcon />}
           >

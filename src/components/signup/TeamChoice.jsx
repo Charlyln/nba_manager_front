@@ -10,7 +10,7 @@ import {
 } from '@material-ui/core'
 import { Redirect } from 'react-router-dom'
 import TeamChoiceCard from './TeamChoiceCard'
-import { apiUrl } from '../apiUrl'
+import { apiUrl } from '../../apiUrl'
 import CheckIcon from '@material-ui/icons/Check'
 
 function TeamChoice() {
@@ -21,10 +21,13 @@ function TeamChoice() {
   const [postLoading, setPostLoading] = useState(false)
   const [postSuccess, setPostSuccess] = useState(false)
   const [redirect, setRedirect] = useState(false)
-  const [seasonUuid] = useState(window.localStorage.getItem('seasonUuid'))
+  const [TeamUuid] = useState(window.localStorage.getItem('TeamUuid'))
+  const [SeasonUuid] = useState(window.localStorage.getItem('SeasonUuid'))
+  const [canPlay] = useState(window.localStorage.getItem('canPlay'))
 
   const putTeamChoice = (uuid) => {
     setTeamChoice(uuid)
+    window.localStorage.setItem('TeamUuid', uuid)
   }
 
   const SignupPost1 = async (e) => {
@@ -54,7 +57,9 @@ function TeamChoice() {
     e.preventDefault()
     setPostLoading(true)
     try {
-      await Axios.post(`${apiUrl}/dataCreation/games2/${uuid}/${teamChoice}`)
+      const res = await Axios.post(`${apiUrl}/dataCreation/games2/${uuid}`)
+      console.log(res.data)
+      window.localStorage.setItem('SeasonUuid', res.data.uuid)
       window.localStorage.setItem('canPlay', '1')
       window.localStorage.setItem('trainingLeft', 2)
       setRedirect(true)
@@ -83,7 +88,7 @@ function TeamChoice() {
     }
   }
 
-  if (redirect || seasonUuid || window.localStorage.getItem('canPlay')) {
+  if ((SeasonUuid && TeamUuid && uuid && canPlay) || redirect) {
     return <Redirect to="/home" />
   }
 
@@ -163,49 +168,33 @@ function TeamChoice() {
         </Toolbar>
       </AppBar>
 
-      {/* <Grid container className={classes.root} spacing={2}>
-        <Grid item xs={12}>
-          <Grid container justify="center" spacing={spacing}>
-            {[0, 1, 2].map((value) => (
-              <Grid key={value} item>
-                <Paper className={classes.paper} />
+      {isLoading ? (
+        <CircularProgress style={{ margin: 'auto' }} />
+      ) : (
+        <Grid
+          container
+          justify="center"
+          style={{
+            marginTop: '100px'
+          }}
+        >
+          {teamsData.map((team) => (
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+              <Grid container justify="center">
+                <TeamChoiceCard
+                  name={team.name}
+                  logo={team.logo}
+                  uuid={team.uuid}
+                  putTeamChoice={putTeamChoice}
+                  teamChoice={teamChoice}
+                  players={team.Players}
+                  key={team.uuid}
+                />
               </Grid>
-            ))}
-          </Grid>
-        </Grid>
-      </Grid> */}
-
-      <Grid container style={{ marginTop: '100px', marginBottom: '100px' }}>
-        {isLoading ? (
-          <CircularProgress style={{ margin: 'auto' }} />
-        ) : (
-          <Grid item xs={12}>
-            <Grid container justify="center">
-              {teamsData.map((team) => (
-                <Grid
-                  item
-                  xs={12}
-                  sm={6}
-                  md={4}
-                  lg={4}
-                  style={{ marginTop: '20px' }}
-                >
-                  <Grid container alignItems="center" justify="center">
-                    <TeamChoiceCard
-                      name={team.name}
-                      logo={team.logo}
-                      uuid={team.uuid}
-                      putTeamChoice={putTeamChoice}
-                      teamChoice={teamChoice}
-                      players={team.Players}
-                    />
-                  </Grid>
-                </Grid>
-              ))}
             </Grid>
-          </Grid>
-        )}
-      </Grid>
+          ))}
+        </Grid>
+      )}
     </>
   )
 }

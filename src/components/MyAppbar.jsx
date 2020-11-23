@@ -1,4 +1,4 @@
-import React, {  useState } from 'react'
+import React, { useState } from 'react'
 import {
   AppBar,
   IconButton,
@@ -23,20 +23,20 @@ import HistoryIcon from '@material-ui/icons/History'
 import StarsIcon from '@material-ui/icons/Stars'
 import PostAddIcon from '@material-ui/icons/PostAdd'
 import HelpIcon from '@material-ui/icons/Help'
+import TocIcon from '@material-ui/icons/Toc'
 
 function MyAppBar() {
   const [open, setOpen] = useState(false)
   const [pageName, setPageName] = useState('')
+  // const [TeamUuid] = useState(window.localStorage.getItem('TeamUuid'))
+  // const [SeasonUuid] = useState(window.localStorage.getItem('SeasonUuid'))
+  // const [canPlay] = useState(window.localStorage.getItem('canPlay'))
+  // const [UserUuid] = useState(window.localStorage.getItem('uuid'))
   // const [page] = useState(useLocation().pathname)
   // const [page2, setPage2] = useState('ok')
   // const [offSeasonStep] = useState(
   //   parseFloat(window.localStorage.getItem('offseason'))
   // )
-
-  // useEffect(() => {
-  //   setPage2('/offseason')
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [offSeasonStep])
 
   const links = [
     {
@@ -85,6 +85,11 @@ function MyAppBar() {
       icon: <HistoryIcon />
     },
     {
+      to: '/ranking',
+      name: 'Ranking',
+      icon: <TocIcon />
+    },
+    {
       to: '/standings',
       name: 'Best players',
       icon: <StarsIcon />
@@ -114,6 +119,15 @@ function MyAppBar() {
     handleClose()
   }
 
+  const reload = () => {
+    window.localStorage.removeItem('offseason')
+    window.localStorage.removeItem('TeamUuid')
+    window.localStorage.removeItem('uuid')
+    window.localStorage.removeItem('SeasonUuid')
+    window.localStorage.removeItem('trainingLeft')
+    window.localStorage.removeItem('canPlay')
+  }
+
   return (
     <>
       <AppBar className="appBar">
@@ -121,18 +135,19 @@ function MyAppBar() {
           {/* {page === '/offseason' && page2 === '/offseason' ? (
             ''
           ) : ( */}
-            <IconButton
-              aria-label="menu"
-              edge="start"
-              onClick={handleClickOpen}
-            >
-              <MenuIcon style={{ color: '#2F2E2C' }} />
-            </IconButton>
+          <IconButton aria-label="menu" edge="start" onClick={handleClickOpen}>
+            <MenuIcon style={{ color: '#2F2E2C' }} />
+          </IconButton>
           {/* // )} */}
 
           <Typography style={{ color: '#2F2E2C' }} variant="h6">
             {pageName}
           </Typography>
+
+          <IconButton onClick={reload}></IconButton>
+          <Link to="/">
+            <IconButton></IconButton>
+          </Link>
         </Toolbar>
       </AppBar>
       <Dialog fullScreen open={open} onClose={handleClose}>
@@ -150,7 +165,7 @@ function MyAppBar() {
         </AppBar>
         <div
           style={{
-            margin: 'auto 100px',
+            margin: '100px auto ',
             display: 'flex',
             flexWrap: 'wrap',
             justifyContent: 'center'

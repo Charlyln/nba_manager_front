@@ -15,7 +15,8 @@
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.3",
     "react-router-dom": "^5.1.2",
-    "axios": "^0.19.2"
+    "axios": "^0.19.2",
+    "react-reveal": "^1.2.2"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -13,10 +13,16 @@ import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
-import { apiUrl } from '../apiUrl'
+import { apiUrl } from '../../../apiUrl'
 import Axios from 'axios'
 
-function SignPlayer({ player, getPlayers, contractLeft, getMyTeamData }) {
+function SignPlayer({
+  player,
+  getPlayers,
+  contractLeft,
+  getMyTeamData,
+  getMyTeamInDialog,
+}) {
   const [open, setOpen] = useState(false)
   const [myteamData, setMyTeamData] = useState({})
   const [userUuid] = useState(window.localStorage.getItem('uuid'))
@@ -26,7 +32,7 @@ function SignPlayer({ player, getPlayers, contractLeft, getMyTeamData }) {
 
   useEffect(() => {
     getMyTeam()
-     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const getMyTeam = async () => {
@@ -54,8 +60,11 @@ function SignPlayer({ player, getPlayers, contractLeft, getMyTeamData }) {
         contractLeft: duration
       })
       handleClose()
-      getPlayers()
-      getMyTeam()
+      if (getPlayers) {
+        getPlayers()
+      } else if (getMyTeamInDialog) {
+        getMyTeamInDialog()
+      }
     }
   }
 
@@ -127,7 +136,7 @@ function SignPlayer({ player, getPlayers, contractLeft, getMyTeamData }) {
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
-          {myteamData.Players.length > 4 && !contractLeft ? (
+          {myteamData.Players.length > 4 && contractLeft > 1 ? (
             <DialogTitle>
               Your team is already full ! Release a player in your team to sign
               a other player.

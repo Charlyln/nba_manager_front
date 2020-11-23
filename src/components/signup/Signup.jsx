@@ -12,17 +12,27 @@ import {
 import { Redirect } from 'react-router-dom'
 import CheckIcon from '@material-ui/icons/Check'
 
-import { apiUrl } from '../apiUrl'
+import { apiUrl } from '../../apiUrl'
 
 function SignUp() {
   const [pseudo, setPseudo] = useState('')
   const [postLoading, setPostLoading] = useState(false)
   const [postSuccess, setPostSuccess] = useState(false)
   const [uuid, setUuid] = useState('')
-  const [redirect, setRedirect] = useState(window.localStorage.getItem('uuid'))
+  const [redirect, setRedirect] = useState(false)
+  const [TeamUuid] = useState(window.localStorage.getItem('TeamUuid'))
+  const [SeasonUuid] = useState(window.localStorage.getItem('SeasonUuid'))
+  const [canPlay] = useState(window.localStorage.getItem('canPlay'))
+  const [UserUuid] = useState(window.localStorage.getItem('uuid'))
 
   const SignupPost = async (e) => {
     e.preventDefault()
+    window.localStorage.removeItem('offseason')
+    window.localStorage.removeItem('TeamUuid')
+    window.localStorage.removeItem('uuid')
+    window.localStorage.removeItem('SeasonUuid')
+    window.localStorage.removeItem('trainingLeft')
+    window.localStorage.removeItem('canPlay')
     setPostLoading(true)
     try {
       if (pseudo) {
@@ -51,7 +61,9 @@ function SignUp() {
     }
   }
 
-  if (redirect) {
+  if (UserUuid && TeamUuid && SeasonUuid && canPlay) {
+    return <Redirect to="/home" />
+  } else if (redirect) {
     return <Redirect to="/teamchoice" />
   }
 
