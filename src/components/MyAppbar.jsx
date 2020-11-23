@@ -119,14 +119,14 @@ function MyAppBar() {
     handleClose()
   }
 
-  const reload = () => {
-    window.localStorage.removeItem('offseason')
-    window.localStorage.removeItem('TeamUuid')
-    window.localStorage.removeItem('uuid')
-    window.localStorage.removeItem('SeasonUuid')
-    window.localStorage.removeItem('trainingLeft')
-    window.localStorage.removeItem('canPlay')
-  }
+  // const reload = () => {
+  //   window.localStorage.removeItem('offseason')
+  //   window.localStorage.removeItem('TeamUuid')
+  //   window.localStorage.removeItem('uuid')
+  //   window.localStorage.removeItem('SeasonUuid')
+  //   window.localStorage.removeItem('trainingLeft')
+  //   window.localStorage.removeItem('canPlay')
+  // }
 
   return (
     <>
@@ -144,10 +144,10 @@ function MyAppBar() {
             {pageName}
           </Typography>
 
-          <IconButton onClick={reload}></IconButton>
+          {/* <IconButton onClick={reload}></IconButton>
           <Link to="/">
             <IconButton></IconButton>
-          </Link>
+          </Link> */}
         </Toolbar>
       </AppBar>
       <Dialog fullScreen open={open} onClose={handleClose}>
