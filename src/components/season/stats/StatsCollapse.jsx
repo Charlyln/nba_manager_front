@@ -3,10 +3,7 @@ import Accordion from '@material-ui/core/Accordion'
 import AccordionSummary from '@material-ui/core/AccordionSummary'
 import AccordionDetails from '@material-ui/core/AccordionDetails'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import {
-  Avatar,
-  Typography,
-} from '@material-ui/core'
+import { Avatar, Typography } from '@material-ui/core'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
@@ -58,7 +55,7 @@ function StatsCollapse({ player }) {
               </TableHead>
               <TableBody>
                 {player.PlayerStats.sort(function (a, b) {
-                  return new Date(b.Game.date) + new Date(a.Game.date)
+                  return new Date(b.Game.uuid) - new Date(a.Game.uuid)
                 }).map((stat, i) => (
                   <TableRow>
                     <TableCell>{`Match ${i + 1}`}</TableCell>
@@ -75,10 +72,16 @@ function StatsCollapse({ player }) {
                   <TableCell>Average</TableCell>
                   <TableCell> </TableCell>
                   <TableCell>
-                    {` ${ 
-                      (player.PlayerStats.reduce((a, v) => (a = a + v.pts), 0) /
-                      player.PlayerStats.length).toFixed(1)
-                    }`}
+                    {player.PlayerStats.length > 0 ? (
+                      <>{` ${(
+                        player.PlayerStats.reduce(
+                          (a, v) => (a = a + v.pts),
+                          0
+                        ) / player.PlayerStats.length
+                      ).toFixed(1)}`}</>
+                    ) : (
+                      ''
+                    )}
                   </TableCell>
                 </TableRow>
               </TableBody>

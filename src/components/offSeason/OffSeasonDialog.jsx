@@ -20,8 +20,9 @@ import Axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { apiUrl } from '../../apiUrl'
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward'
+import SignPlayer from '../season/freeagents/SignPlayer'
 
-function OffSeasonDialog({ goNext, canGoNext, step }) {
+function OffSeasonDialog({ goNext, canGoNext, step, TeamUuid }) {
   const [open, setOpen] = React.useState(false)
   const [playersData, setPlayersData] = useState({})
   const [userUuid] = useState(window.localStorage.getItem('uuid'))
@@ -36,10 +37,19 @@ function OffSeasonDialog({ goNext, canGoNext, step }) {
   const handleClose = () => {
     setOpen(false)
   }
-  const goNextStep = () => {
+  const goNextStep = async () => {
+    if (step === 'Retirements') {
+      await Axios.post(`${apiUrl}/players/retirements/${userUuid}`)
+    } else if (step === 'Player options') {
+      await Axios.post(`${apiUrl}/players/playerOptions/${TeamUuid}`)
+    }
     goNext()
     handleClose()
   }
+
+  // const addPlayerDoNotExtand = (playerId) => {
+  //   PlayersDoNotExtend.push(playerId)
+  // }
 
   useEffect(() => {
     getPlayers()
@@ -87,30 +97,46 @@ function OffSeasonDialog({ goNext, canGoNext, step }) {
             <TableContainer component={Paper} style={{ width: '98%' }}>
               <Table aria-label="simple table">
                 <TableHead>
-                  {step === 'Player progress' ? (
-                    <TableRow>
-                      <TableCell>Photo</TableCell>
-                      <TableCell align="right">Name</TableCell>
-                      <TableCell align="right">Value</TableCell>
-                      <TableCell align="right">Scoring</TableCell>
-                      <TableCell align="right">Rebound</TableCell>
-                      <TableCell align="right">Pass</TableCell>
-                    </TableRow>
-                  ) : (
-                    <TableRow>
-                      <TableCell align="center">Photo</TableCell>
-                      <TableCell align="left">Name</TableCell>
-                      <TableCell align="left">Value</TableCell>
-                      <TableCell align="center">Age</TableCell>
-                    </TableRow>
-                  )}
+                  <TableRow>
+                    <TableCell align="center">Photo</TableCell>
+                    <TableCell align="left">Name</TableCell>
+                    <TableCell align="center">Value</TableCell>
+                    <TableCell align="center">Age</TableCell>
+
+                    {step === 'Player progress' ? (
+                      <>
+                        <TableCell align="center">Scoring</TableCell>
+                        <TableCell align="center">Rebound</TableCell>
+                        <TableCell align="center">Pass</TableCell>
+                      </>
+                    ) : step === 'Player options' ? (
+                      <>
+                        <TableCell align="center">
+                          Years contract left
+                        </TableCell>
+
+                        <TableCell align="center">
+                          Propose new contract
+                        </TableCell>
+                      </>
+                    ) : (
+                      ''
+                    )}
+                  </TableRow>
                 </TableHead>
 
-                {step === 'Player progress' ? (
-                  <TableBody>
-                    {myteamData.Players.sort(function (a, b) {
-                      return new Date(b.value) - new Date(a.value)
-                    }).map((player) => (
+                <TableBody>
+                  {myteamData.Players.sort(function (a, b) {
+                    return new Date(b.value) - new Date(a.value)
+                  })
+                    .filter((player) =>
+                      step === 'Player progress'
+                        ? player
+                        : step === 'Player options'
+                        ? player.contractLeft === 0
+                        : ''
+                    )
+                    .map((player) => (
                       <TableRow>
                         <TableCell component="th" scope="row">
                           <Avatar src={player.photo} />
@@ -142,66 +168,89 @@ function OffSeasonDialog({ goNext, canGoNext, step }) {
                             </Box>
                           </Box>
                         </TableCell>
-                        <TableCell align="right">
-                          {player.ptsMin > player.ptsBeg && player.ptsBeg ? (
-                            <>
-                              <ArrowUpwardIcon
-                                style={{
-                                  backgroundColor: 'green',
-                                  fontSize: '1rem',
-                                  borderRadius: '100%'
-                                }}
+
+                        {step === 'Player progress' ? (
+                          <>
+                            {' '}
+                            <TableCell align="right">
+                              {player.ptsMin > player.ptsBeg &&
+                              player.ptsBeg ? (
+                                <>
+                                  <ArrowUpwardIcon
+                                    style={{
+                                      backgroundColor: 'green',
+                                      fontSize: '1rem',
+                                      borderRadius: '100%'
+                                    }}
+                                  />
+                                </>
+                              ) : (
+                                ''
+                              )}{' '}
+                              {Math.round(
+                                ((player.ptsMin + player.ptsMax) / 2 / 35) * 100
+                              )}
+                            </TableCell>
+                            <TableCell align="right">
+                              {player.rebMin > player.rebBeg &&
+                              player.rebBeg ? (
+                                <>
+                                  <ArrowUpwardIcon
+                                    style={{
+                                      backgroundColor: 'green',
+                                      fontSize: '1rem',
+                                      borderRadius: '100%'
+                                    }}
+                                  />
+                                </>
+                              ) : (
+                                ''
+                              )}{' '}
+                              {Math.round(
+                                ((player.rebMin + player.rebMax) / 2 / 13) * 100
+                              )}
+                            </TableCell>
+                            <TableCell align="right">
+                              {player.pasMin > player.pasBeg &&
+                              player.pasBeg ? (
+                                <>
+                                  <ArrowUpwardIcon
+                                    style={{
+                                      backgroundColor: 'green',
+                                      fontSize: '1rem',
+                                      borderRadius: '100%'
+                                    }}
+                                  />
+                                </>
+                              ) : (
+                                ''
+                              )}{' '}
+                              {Math.round(
+                                ((player.pasMin + player.pasMax) / 2 / 11) * 100
+                              )}
+                            </TableCell>
+                          </>
+                        ) : step === 'Player options' ? (
+                          <>
+                            <TableCell align="center">{`${player.age}`}</TableCell>
+                            <TableCell align="center">
+                              {`${player.contractLeft}`}
+                            </TableCell>
+
+                            <TableCell align="center">
+                              <SignPlayer
+                                player={player}
+                                contractLeft={player.contractLeft}
+                                getMyTeamInDialog={getMyTeam}
                               />
-                            </>
-                          ) : (
-                            ''
-                          )}{' '}
-                          {Math.round(
-                            ((player.ptsMin + player.ptsMax) / 2 / 35) * 100
-                          )}
-                        </TableCell>
-                        <TableCell align="right">
-                          {player.rebMin > player.rebBeg && player.rebBeg ? (
-                            <>
-                              <ArrowUpwardIcon
-                                style={{
-                                  backgroundColor: 'green',
-                                  fontSize: '1rem',
-                                  borderRadius: '100%'
-                                }}
-                              />
-                            </>
-                          ) : (
-                            ''
-                          )}{' '}
-                          {Math.round(
-                            ((player.rebMin + player.rebMax) / 2 / 13) * 100
-                          )}
-                        </TableCell>
-                        <TableCell align="right">
-                          {player.pasMin > player.pasBeg && player.pasBeg ? (
-                            <>
-                              <ArrowUpwardIcon
-                                style={{
-                                  backgroundColor: 'green',
-                                  fontSize: '1rem',
-                                  borderRadius: '100%'
-                                }}
-                              />
-                            </>
-                          ) : (
-                            ''
-                          )}{' '}
-                          {Math.round(
-                            ((player.pasMin + player.pasMax) / 2 / 11) * 100
-                          )}
-                        </TableCell>
+                            </TableCell>
+                          </>
+                        ) : (
+                          ''
+                        )}
                       </TableRow>
                     ))}
-                  </TableBody>
-                ) : (
-                  ''
-                )}
+                </TableBody>
 
                 <TableBody>
                   {playersData
@@ -210,11 +259,13 @@ function OffSeasonDialog({ goNext, canGoNext, step }) {
                     })
                     .filter((player) =>
                       step === 'Retirements'
-                        ? player.age > 37
+                        ? player.age > 38
                         : step === 'Free agency'
-                        ? !player.TeamUuid && player.age < 37 && player.age > 20
+                        ? !player.TeamUuid &&
+                          player.age <= 38 &&
+                          player.age >= 21
                         : step === 'Draft'
-                        ? player.age < 20
+                        ? player.age < 21
                         : ''
                     )
                     .map((player) => (

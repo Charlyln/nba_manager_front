@@ -51,7 +51,7 @@ function PlayerFinder() {
 
   useEffect(() => {
     getPlayers()
-     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const getPlayers = async () => {
@@ -110,6 +110,8 @@ function PlayerFinder() {
               <TableRow>
                 <TableCell align="center">Photo</TableCell>
                 <TableCell align="left">Name</TableCell>
+                <TableCell align="left">Age</TableCell>
+                <TableCell align="left">Conctract left</TableCell>
                 <TableCell align="left">Value</TableCell>
                 <TableCell align="center">Scoring</TableCell>
                 <TableCell align="center">Rebound</TableCell>
@@ -127,6 +129,8 @@ function PlayerFinder() {
                       <Avatar style={{ margin: 'auto' }} src={player.photo} />
                     </TableCell>
                     <TableCell align="left">{`${player.firstName} ${player.lastName}`}</TableCell>
+                    <TableCell align="left">{`${player.age}`}</TableCell>
+                    <TableCell align="left">{`${player.contractLeft}`}</TableCell>
                     <TableCell align="left">
                       <Box position="relative" display="inline-flex">
                         <CircularProgress

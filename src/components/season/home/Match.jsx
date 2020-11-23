@@ -37,7 +37,7 @@ function Match({
   // const [score1, setScore1] = useState(0)
   // const [score2, setScore2] = useState(0)
   const [matchLoading, setMatchLoading] = useState(false)
-  const [UserUuid] = useState(window.localStorage.getItem('uuid'))
+  const [SeasonUuid] = useState(window.localStorage.getItem('SeasonUuid'))
 
   // useEffect(() => {
   //   getTeams()
@@ -79,9 +79,11 @@ function Match({
         >
           {`${game.team1} - ${game.team2}`}
         </Button> */}
+
         <Button
           variant="contained"
           size="small"
+          onClick={handleClickOpen}
           style={{
             whiteSpace: 'nowrap',
             backgroundColor:
@@ -99,7 +101,11 @@ function Match({
   const matchit = async (uuid) => {
     setMatchLoading(true)
     try {
-      await Axios.post(`${apiUrl}/gamePlayed/${uuid}`)
+      const res = await Axios.post(
+        `${apiUrl}/gamePlayed/${uuid}/${SeasonUuid}/${TeamUuid}`
+      )
+      console.log(res.data)
+      window.localStorage.setItem('trainingLeft', 2)
       getTeams()
       const timer = setTimeout(() => {
         setMatchLoading(false)
@@ -115,18 +121,13 @@ function Match({
       <CardActions>
         {matchLoading || (allGameLoading && game.PlayerStats.length < 1) ? (
           <Button variant="contained" size="small" disabled>
-            <CircularProgress size={23} />
+            <CircularProgress size={22} />
           </Button>
         ) : game.PlayerStats.length > 0 ? (
           <>
             <>{displayButton(game)}</>
 
-            <Button
-              variant="outlined"
-              color="primary"
-              size="small"
-              onClick={handleClickOpen}
-            >
+            <Button variant="outlined" size="small" onClick={handleClickOpen}>
               Stats
             </Button>
           </>

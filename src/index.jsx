@@ -16,17 +16,18 @@ import PlayerFinder from './components/season/playerfinder/PlayerFinder'
 import Stats from './components/season/stats/Stats'
 import MyAppBar from './components/MyAppbar'
 import Contracts from './components/season/contracts/Contracts'
-// import BestPlayers from './components/BestPlayers'
 import FreeAgent from './components/season/freeagents/FreeAgent'
 import Extensions from './components/season/extensions/Extensions'
 import Help from './components/season/help/Help'
 import Offseason from './components/offSeason/Offseason'
+import Ranking from './components/season/ranking/Ranking'
+import Start from './components/signup/Start'
 
 const darkTheme = createMuiTheme({
   palette: {
     type: 'dark',
     primary: {
-      main: '#E59923'
+      main: '#FB8B3C'
     },
     secondary: {
       main: '#021EA8'
@@ -44,7 +45,8 @@ ReactDOM.render(
       <BrowserRouter>
       <MyAppBar />
         <Switch>
-          <Route exact path="/" component={SignUp} />
+          <Route exact path="/" component={Start} />
+          <Route exact path="/signup" component={SignUp} />
           <Route exact path="/teamchoice" component={TeamChoice} />
           <Route exact path="/home" component={Home} />
           <Route exact path="/trade" component={Trade} />
@@ -57,6 +59,7 @@ ReactDOM.render(
           <Route exact path="/extension" component={Extensions} />
           <Route exact path="/help" component={Help} />
           <Route exact path="/offseason" component={Offseason} />
+          <Route exact path="/ranking" component={Ranking} />
         </Switch>
       </BrowserRouter>
     </ThemeProvider>

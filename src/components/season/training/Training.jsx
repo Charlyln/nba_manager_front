@@ -44,13 +44,22 @@ function Training() {
   const riseUpScoring = async (min, max, uuid) => {
     try {
       if (trainingLeft > 0) {
-        await Axios.put(`${apiUrl}/players/${uuid}`, {
-          ptsMin: min + 1,
-          ptsMax: max + 1
-        })
-        window.localStorage.setItem('trainingLeft', trainingLeft - 1)
-        setTrainingLeft(trainingLeft - 1)
-        await getMyTeam()
+        if (min + max < 68) {
+          await Axios.put(`${apiUrl}/players/${uuid}`, {
+            ptsMin: min + 1,
+            ptsMax: max + 1
+          })
+          window.localStorage.setItem('trainingLeft', trainingLeft - 1)
+          setTrainingLeft(trainingLeft - 1)
+          await getMyTeam()
+        } else if (min + max === 68) {
+          await Axios.put(`${apiUrl}/players/${uuid}`, {
+            ptsMin: min + 1
+          })
+          window.localStorage.setItem('trainingLeft', trainingLeft - 1)
+          setTrainingLeft(trainingLeft - 1)
+          await getMyTeam()
+        }
       }
     } catch (err) {
       console.log(err)
@@ -59,14 +68,22 @@ function Training() {
   const riseUpRebound = async (min, max, uuid) => {
     try {
       if (trainingLeft > 0) {
-        await Axios.put(`${apiUrl}/players/${uuid}`, {
-          rebMin: min + 1,
-          rebMax: max + 1
-        })
-        window.localStorage.setItem('trainingLeft', trainingLeft - 1)
-        setTrainingLeft(trainingLeft - 1)
-
-        await getMyTeam()
+        if (min + max < 25) {
+          await Axios.put(`${apiUrl}/players/${uuid}`, {
+            rebMin: min + 0.4,
+            rebMax: max + 0.3
+          })
+          window.localStorage.setItem('trainingLeft', trainingLeft - 1)
+          setTrainingLeft(trainingLeft - 1)
+          await getMyTeam()
+        } else if (min + max < 25.7) {
+          await Axios.put(`${apiUrl}/players/${uuid}`, {
+            rebMin: min + 0.2
+          })
+          window.localStorage.setItem('trainingLeft', trainingLeft - 1)
+          setTrainingLeft(trainingLeft - 1)
+          await getMyTeam()
+        }
       }
     } catch (err) {
       console.log(err)
@@ -75,13 +92,24 @@ function Training() {
   const riseUpPass = async (min, max, uuid) => {
     try {
       if (trainingLeft > 0) {
-        await Axios.put(`${apiUrl}/players/${uuid}`, {
-          pasMin: min + 1,
-          pasMax: max + 1
-        })
-        window.localStorage.setItem('trainingLeft', trainingLeft - 1)
-        setTrainingLeft(trainingLeft - 1)
-        await getMyTeam()
+        if (min + max < 21) {
+          await Axios.put(`${apiUrl}/players/${uuid}`, {
+            pasMin: min + 0.2,
+            pasMax: max + 0.2
+          })
+          window.localStorage.setItem('trainingLeft', trainingLeft - 1)
+          setTrainingLeft(trainingLeft - 1)
+
+          await getMyTeam()
+        } else if (min + max < 21.7) {
+          await Axios.put(`${apiUrl}/players/${uuid}`, {
+            pasMin: min + 0.2
+          })
+          window.localStorage.setItem('trainingLeft', trainingLeft - 1)
+          setTrainingLeft(trainingLeft - 1)
+
+          await getMyTeam()
+        }
       }
     } catch (err) {
       console.log(err)
