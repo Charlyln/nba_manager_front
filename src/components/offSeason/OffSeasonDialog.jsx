@@ -20,7 +20,7 @@ import Axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { apiUrl } from '../../apiUrl'
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward'
-import SignPlayer from '../season/freeagents/SignPlayer'
+import SignPlayer from '../mutliple/signPlayer/SignPlayer'
 
 function OffSeasonDialog({ goNext, canGoNext, step, TeamUuid }) {
   const [open, setOpen] = React.useState(false)

@@ -14,7 +14,7 @@ import {
   CircularProgress,
   Typography
 } from '@material-ui/core'
-import SignPlayer from '../freeagents/SignPlayer'
+import SignPlayer from '../../mutliple/signPlayer/SignPlayer'
 
 function Extensions() {
   const [myteamData, setMyTeamData] = useState({})

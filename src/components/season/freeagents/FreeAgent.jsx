@@ -9,7 +9,7 @@ import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
 import { Avatar, Box, CircularProgress, Typography } from '@material-ui/core'
-import SignPlayer from './SignPlayer'
+import SignPlayer from '../../mutliple/signPlayer/SignPlayer'
 
 function FreeAgent() {
   // const [playersData, setPlayersData] = useState({})
