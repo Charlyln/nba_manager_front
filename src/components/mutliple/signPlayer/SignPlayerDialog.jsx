@@ -3,8 +3,7 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
-  DialogTitle
+  DialogContentText
 } from '@material-ui/core'
 import React, { useState } from 'react'
 
@@ -23,7 +22,7 @@ function SignPlayerDialog({
 
   const handleClickOpen = () => {
     setOpen(true)
-    if (interest > 89) {
+    if (interest > 85) {
       proposeContract()
     }
   }
@@ -54,17 +53,26 @@ function SignPlayerDialog({
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">Response</DialogTitle>
         <DialogContent>
            
-          {hasSign ? (
+          {hasSign && interest >= 95 ? (
+            <DialogContentText id="alert-dialog-description">
+              {`${player.firstName} ${player.lastName} has accepted your offer with joy !`}
+            </DialogContentText>
+          ) : hasSign && interest < 95 ? (
             <DialogContentText id="alert-dialog-description">
               {`${player.firstName} ${player.lastName} has accepted your offer.`}
             </DialogContentText>
-          ) : (
+          ) : !hasSign && interest >= 40 ? (
             <DialogContentText id="alert-dialog-description">
               {`${player.firstName} ${player.lastName} has declined your offer.`}
             </DialogContentText>
+          ) : !hasSign && interest < 40 ? (
+            <DialogContentText id="alert-dialog-description">
+              {`${player.firstName} ${player.lastName} is offended by your offer !`}
+            </DialogContentText>
+          ) : (
+            ''
           )}
         </DialogContent>
         <DialogActions>
