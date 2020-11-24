@@ -12,7 +12,7 @@ import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
 
-function StatsCollapse({ player }) {
+function StatsCollapse({ player, SeasonUuid }) {
   //   const [ptsSum, setPtsSum] = useState(
   //     player.PlayerStats.reduce((result, number) =>
   //       console.log(result.pts, number.pts)
@@ -56,17 +56,19 @@ function StatsCollapse({ player }) {
               <TableBody>
                 {player.PlayerStats.sort(function (a, b) {
                   return new Date(b.Game.uuid) - new Date(a.Game.uuid)
-                }).map((stat, i) => (
-                  <TableRow>
-                    <TableCell>{`Match ${i + 1}`}</TableCell>
-                    <TableCell>
-                      {player.TeamUuid === stat.Game.Team.uuid
-                        ? stat.Game.Visitor.name
-                        : stat.Game.Team.name}
-                    </TableCell>
-                    <TableCell>{stat.pts}</TableCell>
-                  </TableRow>
-                ))}
+                })
+                  .filter((stat) => stat.Game.SeasonUuid === SeasonUuid)
+                  .map((stat, i) => (
+                    <TableRow>
+                      <TableCell>{`Match ${i + 1}`}</TableCell>
+                      <TableCell>
+                        {player.TeamUuid === stat.Game.Team.uuid
+                          ? stat.Game.Visitor.name
+                          : stat.Game.Team.name}
+                      </TableCell>
+                      <TableCell>{stat.pts}</TableCell>
+                    </TableRow>
+                  ))}
 
                 <TableRow selected>
                   <TableCell>Average</TableCell>

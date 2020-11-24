@@ -10,6 +10,7 @@ function Stats() {
   const [isLoading, setIsLoading] = useState(true)
   const [myteamData, setMyTeamData] = useState('')
   const [userUuid] = useState(window.localStorage.getItem('uuid'))
+  const [SeasonUuid] = useState(window.localStorage.getItem('SeasonUuid'))
 
   useEffect(() => {
     getMyTeamStats()
@@ -35,7 +36,7 @@ function Stats() {
           {myteamData.Players.sort(function (a, b) {
             return new Date(b.value) - new Date(a.value)
           }).map((player) => {
-            return <StatsCollapse player={player} />
+            return <StatsCollapse player={player} SeasonUuid={SeasonUuid} />
           })}
         </div>
       </Grid>
