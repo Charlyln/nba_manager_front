@@ -23,6 +23,7 @@ import Offseason from './components/offSeason/Offseason'
 import Ranking from './components/season/ranking/Ranking'
 import Start from './components/signup/Start'
 import StatsHistory from './components/season/Stats history/StatsHistory'
+import BestPlayers from './components/season/bestplayers/BestPlayers'
 
 const darkTheme = createMuiTheme({
   palette: {
@@ -62,6 +63,7 @@ ReactDOM.render(
           <Route exact path="/offseason" component={Offseason} />
           <Route exact path="/ranking" component={Ranking} />
           <Route exact path="/history" component={StatsHistory} />
+          <Route exact path="/standings" component={BestPlayers} />
         </Switch>
       </BrowserRouter>
     </ThemeProvider>
