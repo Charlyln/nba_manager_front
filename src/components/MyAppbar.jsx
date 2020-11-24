@@ -61,7 +61,7 @@ function MyAppBar() {
     },
     {
       to: '/stats',
-      name: 'Stats',
+      name: 'Season stats',
       icon: <TrendingUpIcon />
     },
     {
@@ -81,7 +81,7 @@ function MyAppBar() {
     },
     {
       to: '/history',
-      name: 'History',
+      name: 'Stats history',
       icon: <HistoryIcon />
     },
     {
