@@ -12,10 +12,7 @@ import {
   Grid,
   Avatar,
   Box,
-  Button,
   CircularProgress,
-  ListItem,
-  TextField,
   Typography
 } from '@material-ui/core'
 import ProgressBall from '../../mutliple/ProgressBall'

@@ -6,8 +6,7 @@ import {
   ListItemSecondaryAction,
   ListItemText,
   ListSubheader,
-  Paper,
-  Typography
+  Paper
 } from '@material-ui/core'
 import Axios from 'axios'
 import React, { useEffect, useState } from 'react'
