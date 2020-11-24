@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Grid, Paper, Typography } from '@material-ui/core'
 import Stepper from '@material-ui/core/Stepper'
 import Step from '@material-ui/core/Step'
@@ -22,6 +22,8 @@ function Offseason() {
 
   const [canGoNext, setCanGoNext] = useState(false)
   const [uuid] = useState(window.localStorage.getItem('uuid'))
+  const [SeasonUuid] = useState(window.localStorage.getItem('SeasonUuid'))
+  const [mySeason, setMySeason] = useState({})
   // const [offSeasonStep, setOffSeasonStep] = useState(
   //   parseFloat(window.localStorage.getItem('offseason'))
   // )
@@ -32,6 +34,20 @@ function Offseason() {
     'Free agency',
     'Player progress'
   ]
+
+  useEffect(() => {
+    getMySeason()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const getMySeason = async () => {
+    try {
+      const res = await Axios.get(`${apiUrl}/seasons/myseason/${SeasonUuid}`)
+      setMySeason(res.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const handleNext = () => {
     const offseasonStepIn = parseFloat(window.localStorage.getItem('offseason'))
@@ -53,7 +69,10 @@ function Offseason() {
     e.preventDefault()
 
     try {
-      const res = await Axios.post(`${apiUrl}/dataCreation/games2/${uuid}`)
+      const mySeasonStartYear = mySeason.startYear
+      const res = await Axios.post(`${apiUrl}/dataCreation/newSeason/${uuid}`, {
+        date: mySeasonStartYear
+      })
       console.log(res.data)
       window.localStorage.setItem('SeasonUuid', res.data.uuid)
       setRedirect(true)
