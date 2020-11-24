@@ -8,27 +8,35 @@ import TableContainer from '@material-ui/core/TableContainer'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
-import {
-  Avatar,
-  Box,
-  CircularProgress,
-  Typography
-} from '@material-ui/core'
+import { Avatar, Box, CircularProgress, Typography } from '@material-ui/core'
 
 function Contracts() {
   const [myteamData, setMyTeamData] = useState({})
   const [userUuid] = useState(window.localStorage.getItem('uuid'))
   const [isLoading, setIsLoading] = useState(true)
+  const [SeasonUuid] = useState(window.localStorage.getItem('SeasonUuid'))
+  const [mySeason, setMySeason] = useState({})
 
   useEffect(() => {
     getMyTeam()
-     // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  const getMySeason = async () => {
+    try {
+      const res = await Axios.get(`${apiUrl}/seasons/myseason/${SeasonUuid}`)
+      setMySeason(res.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const getMyTeam = async () => {
     try {
       const res = await Axios.get(`${apiUrl}/teams/myteam/${userUuid}`)
       setMyTeamData(res.data)
+      await getMySeason()
       setIsLoading(false)
     } catch (err) {
       console.log(err)
@@ -104,10 +112,16 @@ function Contracts() {
                 <TableCell>Photo</TableCell>
                 <TableCell align="right">Name</TableCell>
                 <TableCell align="right">Value</TableCell>
-                <TableCell align="right">2020 - 2021</TableCell>
-                <TableCell align="right">2021 - 2022</TableCell>
-                <TableCell align="right">2022 - 2023</TableCell>
-                <TableCell align="right">2023 - 2024</TableCell>
+                <TableCell align="right">{`${mySeason.startYear} - ${mySeason.endYear}`}</TableCell>
+                <TableCell align="right">{`${mySeason.startYear + 1} - ${
+                  mySeason.endYear + 1
+                }`}</TableCell>
+                <TableCell align="right">{`${mySeason.startYear + 2} - ${
+                  mySeason.endYear + 2
+                }`}</TableCell>
+                <TableCell align="right">{`${mySeason.startYear + 3} - ${
+                  mySeason.endYear + 3
+                }`}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
