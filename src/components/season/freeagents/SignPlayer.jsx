@@ -21,13 +21,13 @@ function SignPlayer({
   getPlayers,
   contractLeft,
   getMyTeamData,
-  getMyTeamInDialog,
+  getMyTeamInDialog
 }) {
   const [open, setOpen] = useState(false)
   const [myteamData, setMyTeamData] = useState({})
   const [userUuid] = useState(window.localStorage.getItem('uuid'))
   const [isLoading, setIsLoading] = useState(true)
-  const [salary, setSalary] = useState(10000000)
+  const [salary, setSalary] = useState(4000000)
   const [duration, setDuration] = useState(3)
 
   useEffect(() => {
@@ -75,6 +75,43 @@ function SignPlayer({
   const handleClose = () => {
     setOpen(false)
   }
+
+  const getValue = (PlayerValue) => {
+    let pourcentage
+
+    if (PlayerValue < 80) {
+      pourcentage = 0.05
+    } else if (PlayerValue >= 80 && PlayerValue < 85) {
+      pourcentage = 0.15
+    } else if (PlayerValue >= 85 && PlayerValue < 90) {
+      pourcentage = 0.2
+    } else if (PlayerValue >= 90) {
+      pourcentage = 0.3
+    }
+    const salaryExpected = 100000000 * pourcentage
+
+    const value = (salary / salaryExpected) * 100
+
+    if (value <= 0) {
+      return 0
+    } else if (value >= 100) {
+      return 100
+    } else {
+      return value
+    }
+  }
+
+  // const getDefaultValue = (PlayerValue) => {
+  //   if (PlayerValue < 80) {
+  //     return 3
+  //   } else if (PlayerValue >= 80 && PlayerValue < 85) {
+  //     return 10
+  //   } else if (PlayerValue >= 85 && PlayerValue < 90) {
+  //     return 15
+  //   } else if (PlayerValue >= 90) {
+  //     return 25
+  //   }
+  // }
 
   const marks = [
     {
@@ -168,7 +205,7 @@ function SignPlayer({
                     <LinearProgress
                       color="secondary"
                       variant="determinate"
-                      value={(player.value * (salary / 1000000)) / 10}
+                      value={getValue(player.value)}
                     />
                   </Grid>
                   <Grid
@@ -181,13 +218,14 @@ function SignPlayer({
                     </Typography>
                     <Slider
                       marks={marks}
-                      defaultValue={10}
-                      step={1}
+                      defaultValue={4}
                       valueLabelDisplay="on"
+                      step={1}
                       min={1}
                       max={30}
                       onChange={(e, value) => setSalary(value * 1000000)}
                     />
+
                     <Typography id="discrete-slider" gutterBottom>
                       Duration
                     </Typography>
