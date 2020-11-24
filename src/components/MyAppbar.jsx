@@ -24,6 +24,7 @@ import StarsIcon from '@material-ui/icons/Stars'
 import PostAddIcon from '@material-ui/icons/PostAdd'
 import HelpIcon from '@material-ui/icons/Help'
 import TocIcon from '@material-ui/icons/Toc'
+import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 
 function MyAppBar() {
   const [open, setOpen] = useState(false)
@@ -98,6 +99,11 @@ function MyAppBar() {
       to: '/extension',
       name: 'Extensions',
       icon: <PostAddIcon />
+    },
+    {
+      to: '/profil',
+      name: 'Profil',
+      icon: <AccountCircleIcon />
     },
     {
       to: '/help',

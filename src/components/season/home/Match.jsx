@@ -134,7 +134,6 @@ function Match({
         ) : (
           <Button
             variant="outlined"
-            color="primary"
             size="small"
             onClick={() => matchit(game.uuid)}
             // disabled={
