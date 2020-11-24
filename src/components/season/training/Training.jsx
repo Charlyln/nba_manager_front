@@ -17,6 +17,7 @@ import {
 } from '@material-ui/core'
 import AddBoxIcon from '@material-ui/icons/AddBox'
 import Alert from '@material-ui/lab/Alert'
+import ProgressBall from '../../mutliple/ProgressBall'
 
 function Training() {
   const [myteamData, setMyTeamData] = useState({})
@@ -119,7 +120,7 @@ function Training() {
   return (
     <>
       {isLoading ? (
-        <p style={{ marginTop: '100px' }}>loading...</p>
+       <ProgressBall />
       ) : (
         <TableContainer
           component={Paper}

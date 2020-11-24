@@ -16,6 +16,8 @@ import {
 } from '@material-ui/core'
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward'
 import FreePlayer from './FreePlayer'
+import ProgressBall from '../../mutliple/ProgressBall'
+
 
 function MyTeam() {
   const [myteamData, setMyTeamData] = useState({})
@@ -40,7 +42,7 @@ function MyTeam() {
   return (
     <>
       {isLoading ? (
-        <p style={{ marginTop: '100px' }}>loading...</p>
+       <ProgressBall />
       ) : (
         <TableContainer
           component={Paper}

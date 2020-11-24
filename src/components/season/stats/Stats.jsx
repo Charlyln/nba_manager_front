@@ -5,6 +5,7 @@ import {
   Grid
 } from '@material-ui/core'
 import StatsCollapse from './StatsCollapse'
+import ProgressBall from '../../mutliple/ProgressBall'
 
 function Stats() {
   const [isLoading, setIsLoading] = useState(true)
@@ -27,7 +28,7 @@ function Stats() {
     }
   }
   if (isLoading) {
-    return <p>loading...</p>
+    return <ProgressBall />
   }
   return (
     <>

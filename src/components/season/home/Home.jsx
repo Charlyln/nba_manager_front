@@ -1,19 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import Typography from '@material-ui/core/Typography'
-import {
-  Grid,
-  CircularProgress,
-  Button,
-  Paper,
-  Avatar,
-  GridList
-} from '@material-ui/core'
+import { Grid, Button, Paper, Avatar, GridList } from '@material-ui/core'
 import Match from './Match'
 import Axios from 'axios'
 import { apiUrl } from '../../../apiUrl'
 import Skeleton from '@material-ui/lab/Skeleton'
 import ForwardIcon from '@material-ui/icons/Forward'
 import { Link, Redirect } from 'react-router-dom'
+import ProgressBall from '../../mutliple/ProgressBall'
 
 function Home() {
   const [isLoading, setIsLoading] = useState(true)
@@ -45,10 +39,10 @@ function Home() {
       }
       await getMyTeams()
 
-      setIsLoading(false)
       const timer = setTimeout(() => {
         setLogoLoading(false)
-      }, 500)
+        setIsLoading(false)
+      }, 2000)
       return () => clearTimeout(timer)
     } catch (err) {
       console.log(err)
@@ -60,11 +54,6 @@ function Home() {
       const UserUuid = uuid
       const res = await Axios.get(`${apiUrl}/teams/myteam/${UserUuid}`)
       setMyTeamsData(res.data)
-
-      const timer = setTimeout(() => {
-        setIsLoading(false)
-      }, 500)
-      return () => clearTimeout(timer)
     } catch (err) {
       console.log(err)
     }
@@ -73,7 +62,7 @@ function Home() {
   const matchAllGames = async () => {
     setAllGameLoading(true)
     const SeasonUuid = teamsData[0].SeasonUuid
-     await Axios.post(`${apiUrl}/gamePlayed/all/${SeasonUuid}`)
+    await Axios.post(`${apiUrl}/gamePlayed/all/${SeasonUuid}`)
     window.localStorage.setItem('trainingLeft', 2)
     const timer1 = setTimeout(() => {
       getTeams()
@@ -103,12 +92,7 @@ function Home() {
   return (
     <>
       {isLoading ? (
-        <Grid
-          container
-          style={{ marginTop: '200px', justifyContent: 'center' }}
-        >
-          <CircularProgress style={{ marginTop: 'auto' }} />
-        </Grid>
+        <ProgressBall />
       ) : (
         <>
           <div

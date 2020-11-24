@@ -15,6 +15,7 @@ import {
   Typography
 } from '@material-ui/core'
 import SignPlayer from '../../mutliple/signPlayer/SignPlayer'
+import ProgressBall from '../../mutliple/ProgressBall'
 
 function Extensions() {
   const [myteamData, setMyTeamData] = useState({})
@@ -39,7 +40,7 @@ function Extensions() {
   return (
     <>
       {isLoading ? (
-        <p style={{ marginTop: '100px' }}>loading...</p>
+        <ProgressBall />
       ) : (
         <TableContainer
           component={Paper}

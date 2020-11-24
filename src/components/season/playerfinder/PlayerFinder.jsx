@@ -19,6 +19,7 @@ import {
 } from '@material-ui/core'
 import SearchIcon from '@material-ui/icons/Search'
 import RotateLeftIcon from '@material-ui/icons/RotateLeft'
+import ProgressBall from '../../mutliple/ProgressBall'
 
 function PlayerFinder() {
   const [playersData, setPlayersData] = useState({})
@@ -59,7 +60,10 @@ function PlayerFinder() {
       const res = await Axios.get(`${apiUrl}/players/${userUuid}`)
       setPlayersData(res.data)
       SetnamesFiltered(res.data)
-      setIsLoading(false)
+      const timer = setTimeout(() => {
+        setIsLoading(false)
+      }, 2000)
+      return () => clearTimeout(timer)
     } catch (err) {
       console.log(err)
     }
@@ -68,7 +72,7 @@ function PlayerFinder() {
   return (
     <>
       {isLoading ? (
-        <p style={{ marginTop: '100px' }}>loading...</p>
+        <ProgressBall />
       ) : (
         <TableContainer
           component={Paper}

@@ -2,6 +2,7 @@ import { CircularProgress, Grid } from '@material-ui/core'
 import Axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { apiUrl } from '../../../apiUrl'
+import ProgressBall from '../../mutliple/ProgressBall'
 import StatsHistoryCollapse from './StatsHistoryCollapse'
 
 function StatsHistory() {
@@ -33,7 +34,7 @@ function StatsHistory() {
     <>
       <Grid container style={{ marginTop: '100px', marginBottom: '100px' }}>
         {isLoading ? (
-          <CircularProgress style={{ margin: 'auto' }} />
+          <ProgressBall />
         ) : (
           <div style={{ width: '90%', margin: 'auto' }}>
             <Grid item xs={12}>

@@ -10,6 +10,7 @@ import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
 import { Avatar, Box, CircularProgress, Typography } from '@material-ui/core'
 import SignPlayer from '../../mutliple/signPlayer/SignPlayer'
+import ProgressBall from '../../mutliple/ProgressBall'
 
 function FreeAgent() {
   // const [playersData, setPlayersData] = useState({})
@@ -36,7 +37,7 @@ function FreeAgent() {
   return (
     <>
       {isLoading ? (
-        <p style={{ marginTop: '100px' }}>loading...</p>
+        <ProgressBall />
       ) : (
         <TableContainer
           component={Paper}

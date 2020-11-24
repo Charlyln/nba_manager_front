@@ -11,6 +11,7 @@ import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
 import { Avatar } from '@material-ui/core'
+import ProgressBall from '../../mutliple/ProgressBall'
 
 function Ranking() {
   const [isLoading, setIsLoading] = useState(true)
@@ -81,7 +82,7 @@ function Ranking() {
     <>
       <Grid container style={{ marginTop: '100px', marginBottom: '100px' }}>
         {isLoading ? (
-          <CircularProgress style={{ margin: 'auto' }} />
+          <ProgressBall />
         ) : (
           <Grid item xs={12}>
             <Grid container justify="center">

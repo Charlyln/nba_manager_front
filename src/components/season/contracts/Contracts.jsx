@@ -9,6 +9,7 @@ import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
 import { Avatar, Box, CircularProgress, Typography } from '@material-ui/core'
+import ProgressBall from '../../mutliple/ProgressBall'
 
 function Contracts() {
   const [myteamData, setMyTeamData] = useState({})
@@ -100,7 +101,7 @@ function Contracts() {
   return (
     <>
       {isLoading ? (
-        <p style={{ marginTop: '100px' }}>loading...</p>
+        <ProgressBall />
       ) : (
         <TableContainer
           component={Paper}
