@@ -8,7 +8,6 @@ import {
   Typography
 } from '@material-ui/core'
 import CreateIcon from '@material-ui/icons/Create'
-import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
@@ -30,7 +29,6 @@ function SignPlayer({
   const [isLoading, setIsLoading] = useState(true)
   const [salary, setSalary] = useState(4000000)
   const [duration, setDuration] = useState(3)
-  const [hasAccepted, setHasAccepted] = useState(false)
   const [interest, setInterest] = useState(0)
   const [hasSign, setHasSign] = useState(false)
 

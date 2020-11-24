@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Typography from '@material-ui/core/Typography'
-import { Grid, Button, Paper, Avatar, GridList } from '@material-ui/core'
+import { Button, Paper, Avatar, GridList } from '@material-ui/core'
 import Match from './Match'
 import Axios from 'axios'
 import { apiUrl } from '../../../apiUrl'

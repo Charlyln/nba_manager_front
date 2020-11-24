@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Grid from '@material-ui/core/Grid'
 import Axios from 'axios'
-import { CircularProgress } from '@material-ui/core'
 import { apiUrl } from '../../../apiUrl'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'

@@ -1,4 +1,4 @@
-import { CircularProgress, Grid } from '@material-ui/core'
+import { Grid } from '@material-ui/core'
 import Axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { apiUrl } from '../../../apiUrl'
