@@ -21,6 +21,7 @@ import React, { useEffect, useState } from 'react'
 import { apiUrl } from '../../apiUrl'
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward'
 import SignPlayer from '../mutliple/signPlayer/SignPlayer'
+import OffSeasonMessage from './OffSeasonMessage'
 
 function OffSeasonDialog({ goNext, canGoNext, step, TeamUuid }) {
   const [open, setOpen] = React.useState(false)
@@ -29,6 +30,7 @@ function OffSeasonDialog({ goNext, canGoNext, step, TeamUuid }) {
   const [isLoading, setIsLoading] = useState(true)
   const [isLoading2, setIsLoading2] = useState(true)
   const [myteamData, setMyTeamData] = useState({})
+  const [openFreeAgencyMessage, setOpenFreeAgencyMessage] = useState(false)
 
   const handleClickOpen = () => {
     setOpen(true)
@@ -37,14 +39,36 @@ function OffSeasonDialog({ goNext, canGoNext, step, TeamUuid }) {
   const handleClose = () => {
     setOpen(false)
   }
+
+  const handleClickOpenFreeAgencyMessage = () => {
+    setOpenFreeAgencyMessage(true)
+  }
+
+  const handleCloseFreeAgencyMessage = () => {
+    setOpenFreeAgencyMessage(false)
+  }
+
   const goNextStep = async () => {
     if (step === 'Retirements') {
       await Axios.post(`${apiUrl}/players/retirements/${userUuid}`)
     } else if (step === 'Player options') {
       await Axios.post(`${apiUrl}/players/playerOptions/${TeamUuid}`)
     }
-    goNext()
-    handleClose()
+
+    if (step === 'Free agency') {
+      const res = await Axios.get(`${apiUrl}/teams/myteam/${userUuid}`)
+      console.log(res.data.Players.length)
+
+      if (res.data.Players.length > 4) {
+        goNext()
+        handleClose()
+      } else if (res.data.Players.length <= 4) {
+        handleClickOpenFreeAgencyMessage()
+      }
+    } else {
+      goNext()
+      handleClose()
+    }
   }
 
   // const addPlayerDoNotExtand = (playerId) => {
@@ -79,6 +103,10 @@ function OffSeasonDialog({ goNext, canGoNext, step, TeamUuid }) {
 
   return (
     <>
+      <OffSeasonMessage
+        handleCloseFreeAgencyMessage={handleCloseFreeAgencyMessage}
+        openFreeAgencyMessage={openFreeAgencyMessage}
+      />
       <Button
         disabled={canGoNext}
         onClick={handleClickOpen}
