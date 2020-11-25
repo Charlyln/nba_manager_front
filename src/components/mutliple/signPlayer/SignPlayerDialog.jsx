@@ -16,7 +16,8 @@ function SignPlayerDialog({
   getMyTeamInDialog,
   handleCloseAll,
   interest,
-  hasSign
+  hasSign,
+  getMyTeam
 }) {
   const [open, setOpen] = useState(false)
 
@@ -29,6 +30,9 @@ function SignPlayerDialog({
 
   const handleClose = () => {
     setOpen(false)
+    if (getMyTeam) {
+      getMyTeam()
+    }
     if (contractLeft) {
       handleCloseAll()
       getMyTeamData()

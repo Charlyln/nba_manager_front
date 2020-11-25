@@ -260,6 +260,7 @@ function SignPlayer({
                   handleCloseAll={handleClose}
                   interest={interest}
                   hasSign={hasSign}
+                  getMyTeam={getMyTeam}
                 />
               </DialogActions>
             </>
