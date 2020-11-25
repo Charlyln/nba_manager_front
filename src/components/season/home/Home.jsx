@@ -8,6 +8,7 @@ import Skeleton from '@material-ui/lab/Skeleton'
 import ForwardIcon from '@material-ui/icons/Forward'
 import { Link, Redirect } from 'react-router-dom'
 import ProgressBall from '../../mutliple/ProgressBall'
+import HomeMessage from './HomeMessage'
 
 function Home() {
   const [isLoading, setIsLoading] = useState(true)
@@ -21,12 +22,21 @@ function Home() {
   const [TeamUuid] = useState(window.localStorage.getItem('TeamUuid'))
   const [redirect, setRedirect] = useState(false)
   const [isOffSeason] = useState(window.localStorage.getItem('offseason'))
+  const [openMessage, setOpenMessage] = useState(false)
 
   useEffect(() => {
     getTeams()
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  const handleClickOpenMessage = () => {
+    setOpenMessage(true)
+  }
+
+  const handleCloseMessage = () => {
+    setOpenMessage(false)
+  }
 
   const getTeams = async () => {
     try {
@@ -96,6 +106,10 @@ function Home() {
         <ProgressBall />
       ) : (
         <>
+          <HomeMessage
+            handleCloseMessage={handleCloseMessage}
+            openMessage={openMessage}
+          />
           <div
             style={{
               display: 'flex',
@@ -168,6 +182,8 @@ function Home() {
                       simulateAllGames={simulateAllGames}
                       allGameLoading={allGameLoading}
                       TeamUuid={myteamsData.uuid}
+                      myteamsData={myteamsData}
+                      handleClickOpenMessage={handleClickOpenMessage}
                     />
                   </Paper>
                 )

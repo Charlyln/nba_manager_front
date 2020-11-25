@@ -28,12 +28,15 @@ function Match({
   i,
   simulateAllGames,
   allGameLoading,
-  TeamUuid
+  TeamUuid,
+  myteamsData,
+  handleClickOpenMessage
 }) {
   // const [done, setDone] = useState(false)
   // const [result, setResult] = useState('')
   // const [win, setWin] = useState('')
   const [open, setOpen] = useState(false)
+  
   // const [score1, setScore1] = useState(0)
   // const [score2, setScore2] = useState(0)
   const [matchLoading, setMatchLoading] = useState(false)
@@ -50,6 +53,8 @@ function Match({
   const handleClose = () => {
     setOpen(false)
   }
+
+
 
   const displayButton = (game) => {
     const team1Result = game.PlayerStats.filter(
@@ -99,25 +104,30 @@ function Match({
   }
 
   const matchit = async (uuid) => {
-    setMatchLoading(true)
-    try {
-      const res = await Axios.post(
-        `${apiUrl}/gamePlayed/${uuid}/${SeasonUuid}/${TeamUuid}`
-      )
-      console.log(res.data)
-      window.localStorage.setItem('trainingLeft', 2)
-      getTeams()
-      const timer = setTimeout(() => {
-        setMatchLoading(false)
-      }, 2000)
-      return () => clearTimeout(timer)
-    } catch (err) {
-      console.log(err)
+    if (myteamsData.Players.length === 5) {
+      setMatchLoading(true)
+      try {
+        const res = await Axios.post(
+          `${apiUrl}/gamePlayed/${uuid}/${SeasonUuid}/${TeamUuid}`
+        )
+        console.log(res.data)
+        window.localStorage.setItem('trainingLeft', 2)
+        getTeams()
+        const timer = setTimeout(() => {
+          setMatchLoading(false)
+        }, 2000)
+        return () => clearTimeout(timer)
+      } catch (err) {
+        console.log(err)
+      }
+    } else {
+      handleClickOpenMessage()
     }
   }
 
   return (
     <>
+    
       <CardActions>
         {matchLoading || (allGameLoading && game.PlayerStats.length < 1) ? (
           <Button variant="contained" size="small" disabled>
