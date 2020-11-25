@@ -62,8 +62,9 @@ function FreeAgent() {
                 })
                 .filter(
                   (player) =>
-                    !player.TeamUuid && player.age > 20 && player.age < 35
+                    !player.TeamUuid && player.age < 38 && !player.isRookie
                 )
+
                 .map((player) => (
                   <TableRow hover>
                     <TableCell align="center" component="th" scope="row">

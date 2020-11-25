@@ -24,6 +24,7 @@ function Offseason() {
   const [uuid] = useState(window.localStorage.getItem('uuid'))
   const [SeasonUuid] = useState(window.localStorage.getItem('SeasonUuid'))
   const [mySeason, setMySeason] = useState({})
+  const [isOffSeason] = useState(window.localStorage.getItem('offseason'))
   // const [offSeasonStep, setOffSeasonStep] = useState(
   //   parseFloat(window.localStorage.getItem('offseason'))
   // )
@@ -85,7 +86,7 @@ function Offseason() {
     setCanGoNext(true)
   }
 
-  if (redirect) {
+  if (redirect || !isOffSeason) {
     return <Redirect to="/home" />
   }
 

@@ -298,9 +298,9 @@ function OffSeasonDialog({ goNext, canGoNext, step, TeamUuid }) {
                         : step === 'Free agency'
                         ? !player.TeamUuid &&
                           player.age <= 38 &&
-                          player.age >= 21
+                          !player.isRookie
                         : step === 'Draft'
-                        ? player.age < 21
+                        ? player.isRookie
                         : ''
                     )
                     .map((player) => (

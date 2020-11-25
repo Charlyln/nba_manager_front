@@ -127,6 +127,7 @@ function PlayerFinder() {
                 .sort(function (a, b) {
                   return new Date(b.value) - new Date(a.value)
                 })
+                .filter((player) => !player.isRookie)
                 .map((player) => (
                   <TableRow>
                     <TableCell align="center" component="th" scope="row">
