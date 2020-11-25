@@ -119,6 +119,13 @@ function OffSeasonDialog({ goNext, canGoNext, step, TeamUuid }) {
                           Propose new contract
                         </TableCell>
                       </>
+                    ) : step === 'Free agency' ? (
+                      <>
+                        <TableCell align="center">Scoring</TableCell>
+                        <TableCell align="center">Rebound</TableCell>
+                        <TableCell align="center">Pass</TableCell>
+                        <TableCell align="center">Sign</TableCell>
+                      </>
                     ) : (
                       ''
                     )}
@@ -281,7 +288,7 @@ function OffSeasonDialog({ goNext, canGoNext, step, TeamUuid }) {
                           />
                         </TableCell>
                         <TableCell align="left">{`${player.firstName} ${player.lastName}`}</TableCell>
-                        <TableCell align="left">
+                        <TableCell align="center">
                           <Box position="relative" display="inline-flex">
                             <CircularProgress
                               variant="static"
@@ -308,6 +315,34 @@ function OffSeasonDialog({ goNext, canGoNext, step, TeamUuid }) {
                           </Box>
                         </TableCell>
                         <TableCell align="center">{player.age}</TableCell>
+
+                        {step === 'Free agency' ? (
+                          <>
+                            <TableCell align="center">
+                              {Math.round(
+                                ((player.ptsMin + player.ptsMax) / 2 / 35) * 100
+                              )}
+                            </TableCell>
+                            <TableCell align="center">
+                              {Math.round(
+                                ((player.rebMin + player.rebMax) / 2 / 13) * 100
+                              )}
+                            </TableCell>
+                            <TableCell align="center">
+                              {Math.round(
+                                ((player.pasMin + player.pasMax) / 2 / 11) * 100
+                              )}
+                            </TableCell>
+                            <TableCell align="center">
+                              <SignPlayer
+                                player={player}
+                                getPlayers={getPlayers}
+                              />
+                            </TableCell>
+                          </>
+                        ) : (
+                          ''
+                        )}
                       </TableRow>
                     ))}
                 </TableBody>
