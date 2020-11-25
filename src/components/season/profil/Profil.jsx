@@ -14,7 +14,7 @@ import { apiUrl } from '../../../apiUrl'
 import ProgressBall from '../../mutliple/ProgressBall'
 import StatBox from './StatBox'
 import EditIcon from '@material-ui/icons/Edit'
-import DeleteIcon from '@material-ui/icons/Delete'
+import DeleteProfil from './DeleteProfil'
 
 function Profil() {
   const [isLoading, setIsLoading] = useState(true)
@@ -105,16 +105,7 @@ function Profil() {
               >
                 Edit profil
               </Button>
-              <Button
-                size="small"
-                variant="outlined"
-                endIcon={<DeleteIcon />}
-                style={{
-                  margin: '10px'
-                }}
-              >
-                Delete profil
-              </Button>
+              <DeleteProfil myProfilData={myProfilData} />
             </Paper>
           </Grid>
         </>
