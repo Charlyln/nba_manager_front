@@ -180,12 +180,9 @@ function SignPlayer({
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
-          {myteamData.Players.length > 4 && contractLeft !== 0 ? (
-            <DialogTitle>
-              Your team is already full ! Release a player in your team to sign
-              a other player.
-            </DialogTitle>
-          ) : (
+          {/* myteamData.Players.length > 4 && contractLeft !== 0 */}
+          {(player.contractLeft < 2 && player.TeamUuid === myteamData.uuid) ||
+          (!player.TeamUuid && myteamData.Players.length < 5) ? (
             <>
               <DialogTitle id="alert-dialog-title">{`Propose a ${
                 contractLeft ? 'extension' : 'contract'
@@ -263,6 +260,13 @@ function SignPlayer({
                   getMyTeam={getMyTeam}
                 />
               </DialogActions>
+            </>
+          ) : (
+            <>
+              <DialogTitle>
+                Your team is already full ! Release a player in your team to
+                sign a other player.
+              </DialogTitle>
             </>
           )}
         </Dialog>

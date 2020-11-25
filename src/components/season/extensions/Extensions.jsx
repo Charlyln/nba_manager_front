@@ -53,7 +53,7 @@ function Extensions() {
                 <TableCell align="right">Name</TableCell>
                 <TableCell align="right">Value</TableCell>
                 <TableCell align="center">Years contract left</TableCell>
-                <TableCell align="center">Salary expectations</TableCell>
+                {/* <TableCell align="center">Salary expectations</TableCell> */}
                 <TableCell align="center">Propose extension</TableCell>
               </TableRow>
             </TableHead>
@@ -95,9 +95,9 @@ function Extensions() {
                       </Box>
                     </TableCell>
                     <TableCell align="center">{player.contractLeft}</TableCell>
-                    <TableCell align="center">
+                    {/* <TableCell align="center">
                       {player.value * 125000}
-                    </TableCell>
+                    </TableCell> */}
                     <TableCell align="center">
                       <SignPlayer
                         player={player}
