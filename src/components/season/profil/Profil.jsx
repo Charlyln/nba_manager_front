@@ -1,20 +1,21 @@
 import {
-  Button,
+  Box,
   Grid,
   List,
   ListItem,
   ListItemSecondaryAction,
   ListItemText,
   ListSubheader,
-  Paper
+  Paper,
+  Typography
 } from '@material-ui/core'
 import Axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { apiUrl } from '../../../apiUrl'
 import ProgressBall from '../../mutliple/ProgressBall'
 import StatBox from './StatBox'
-import EditIcon from '@material-ui/icons/Edit'
 import DeleteProfil from './DeleteProfil'
+import EditProfil from './EditProfil'
 
 function Profil() {
   const [isLoading, setIsLoading] = useState(true)
@@ -53,11 +54,30 @@ function Profil() {
               justifyContent: 'center'
             }}
           >
-            <Paper style={{ width: '40%' }}>
+            <Paper style={{ width: '500px' }}>
               <List subheader={<ListSubheader>My data</ListSubheader>}>
                 <ListItem>
                   <ListItemText>Pseudo </ListItemText>
-                  <StatBox text={myProfilData.pseudo} />
+
+                  <Box
+                    top={0}
+                    left={0}
+                    bottom={0}
+                    right={0}
+                    position="absolute"
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <Typography
+                      style={{ marginLeft: 'auto', marginRight: '5px' }}
+                      variant="button"
+                      component="div"
+                      color="textSecondary"
+                    >
+                      <strong>{myProfilData.pseudo}</strong>
+                    </Typography>
+                  </Box>
                 </ListItem>
                 <ListItem>
                   <ListItemText>Number of games </ListItemText>
@@ -94,17 +114,11 @@ function Profil() {
               justifyContent: 'center'
             }}
           >
-            <Paper style={{ width: '40%', textAlign: 'center' }}>
-              <Button
-                size="small"
-                variant="outlined"
-                endIcon={<EditIcon />}
-                style={{
-                  margin: '10px'
-                }}
-              >
-                Edit profil
-              </Button>
+            <Paper style={{ width: '500px', textAlign: 'center' }}>
+              <EditProfil
+                myProfilData={myProfilData}
+                getMyProfil={getMyProfil}
+              />
               <DeleteProfil myProfilData={myProfilData} />
             </Paper>
           </Grid>
