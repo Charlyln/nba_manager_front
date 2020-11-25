@@ -81,7 +81,7 @@ function SignPlayer({
   }
 
   const handleChange = (value, playerVal) => {
-    setSalary(value  * 1000000)
+    setSalary(value * 1000000)
     let pourcentage
 
     if (playerVal < 80) {
@@ -180,7 +180,7 @@ function SignPlayer({
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
-          {myteamData.Players.length > 4 && contractLeft > 1 ? (
+          {myteamData.Players.length > 4 && contractLeft !== 0 ? (
             <DialogTitle>
               Your team is already full ! Release a player in your team to sign
               a other player.
@@ -230,9 +230,7 @@ function SignPlayer({
                       step={1}
                       min={1}
                       max={30}
-                      onChange={(e, value) =>
-                        handleChange(value, player.value)
-                      }
+                      onChange={(e, value) => handleChange(value, player.value)}
                     />
 
                     <Typography id="discrete-slider" gutterBottom>
