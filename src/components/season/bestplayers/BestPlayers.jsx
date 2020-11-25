@@ -101,10 +101,10 @@ function BestPlayers() {
                         </Box>
                       </Box>
                     </TableCell>
-                    <TableCell align="center">{`${
+                    <TableCell align="center">{`${(
                       player.PlayerStats.reduce((a, v) => (a = a + v.pts), 0) /
                       player.PlayerStats.length
-                    }`}</TableCell>
+                    ).toFixed(1)}`}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
