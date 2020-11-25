@@ -73,8 +73,8 @@ function Offseason() {
       const res = await Axios.post(`${apiUrl}/dataCreation/newSeason/${uuid}`, {
         date: mySeasonStartYear
       })
-      console.log(res.data)
       window.localStorage.setItem('SeasonUuid', res.data.uuid)
+      window.localStorage.removeItem('offseason')
       setRedirect(true)
     } catch (err) {
       console.log(err)

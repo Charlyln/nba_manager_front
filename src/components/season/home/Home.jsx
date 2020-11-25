@@ -20,6 +20,7 @@ function Home() {
   const [SeasonUuid] = useState(window.localStorage.getItem('SeasonUuid'))
   const [TeamUuid] = useState(window.localStorage.getItem('TeamUuid'))
   const [redirect, setRedirect] = useState(false)
+  const [isOffSeason] = useState(window.localStorage.getItem('offseason'))
 
   useEffect(() => {
     getTeams()
@@ -85,7 +86,7 @@ function Home() {
     setRedirect(true)
   }
 
-  if (redirect) {
+  if (redirect || isOffSeason) {
     return <Redirect to="/offseason" />
   }
 
