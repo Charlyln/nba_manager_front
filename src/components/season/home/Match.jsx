@@ -117,7 +117,7 @@ function Match({
           }, 2000)
           return () => clearTimeout(timer)
         } else {
-          const res = await Axios.post(
+          await Axios.post(
             `${apiUrl}/gamePlayed/${uuid}/${SeasonUuid}/${TeamUuid}`
           )
 

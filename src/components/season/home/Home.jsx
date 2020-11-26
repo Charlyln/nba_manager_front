@@ -67,18 +67,22 @@ function Home() {
   }
 
   const matchAllGames = async () => {
-    setAllGameLoading(true)
-    const SeasonUuid = teamsData[0].SeasonUuid
-    await Axios.post(`${apiUrl}/gamePlayed/all/${SeasonUuid}`)
-    window.localStorage.setItem('trainingLeft', 2)
-    const timer1 = setTimeout(() => {
-      getTeams()
-    }, 2500)
+    if (myteamsData.Players.length === 5) {
+      setAllGameLoading(true)
+      const SeasonUuid = teamsData[0].SeasonUuid
+      await Axios.post(`${apiUrl}/gamePlayed/all/${SeasonUuid}`)
+      window.localStorage.setItem('trainingLeft', 2)
+      const timer1 = setTimeout(() => {
+        getTeams()
+      }, 2500)
 
-    const timer2 = setTimeout(() => {
-      setAllGameLoading(false)
-    }, 5000)
-    return () => clearTimeout(timer1, timer2)
+      const timer2 = setTimeout(() => {
+        setAllGameLoading(false)
+      }, 5000)
+      return () => clearTimeout(timer1, timer2)
+    } else {
+      handleClickOpenMessage()
+    }
   }
 
   const simulateAllGames = () => {
