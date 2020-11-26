@@ -111,7 +111,7 @@ function Match({
       try {
         if (i + 1 === teamsData.length) {
           await matchAllGames()
-          console.log('last', i + 1)
+
           const timer = setTimeout(() => {
             setMatchLoading(false)
           }, 2000)
@@ -120,8 +120,7 @@ function Match({
           const res = await Axios.post(
             `${apiUrl}/gamePlayed/${uuid}/${SeasonUuid}/${TeamUuid}`
           )
-          console.log(res.data)
-          console.log(teamsData.length, i + 1)
+
           window.localStorage.setItem('trainingLeft', 2)
           getTeams()
           const timer = setTimeout(() => {

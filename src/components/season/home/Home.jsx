@@ -44,11 +44,6 @@ function Home() {
       const res = await Axios.get(`${apiUrl}/games/${SeasonUuid}/${TeamUuid}`)
       setTeamsData(res.data)
 
-      // const teamsDataFilter = res.data.filter((game) => !game.team1)
-
-      // if (teamsDataFilter.length === 1) {
-      //   // setNextSeason(true)
-      // }
       await getMyTeams()
 
       const timer = setTimeout(() => {
