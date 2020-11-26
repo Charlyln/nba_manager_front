@@ -1,4 +1,4 @@
-import { Grid } from '@material-ui/core'
+import { Grid, ListItem, ListItemText, Paper } from '@material-ui/core'
 import Axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { apiUrl } from '../../../apiUrl'
@@ -38,13 +38,25 @@ function StatsHistory() {
         ) : (
           <div style={{ width: '90%', margin: 'auto' }}>
             <Grid item xs={12}>
-              {seasonsData
-                .sort(function (a, b) {
-                  return new Date(b.startYear) - new Date(a.startYear)
-                })
-                .map((season) => {
-                  return <StatsHistoryCollapse season={season} />
-                })}
+              {seasonsData.length === 0 ? (
+                <Paper style={{ width: '400px', margin: 'auto' }}>
+                  <ListItem>
+                    <ListItemText>
+                      You must pass a season to see seasons stats history.
+                    </ListItemText>
+                  </ListItem>
+                </Paper>
+              ) : (
+                <>
+                  {seasonsData
+                    .sort(function (a, b) {
+                      return new Date(b.startYear) - new Date(a.startYear)
+                    })
+                    .map((season) => {
+                      return <StatsHistoryCollapse season={season} />
+                    })}
+                </>
+              )}
             </Grid>
           </div>
         )}
