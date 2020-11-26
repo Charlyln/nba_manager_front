@@ -80,9 +80,21 @@ function Profil() {
                   </Box>
                 </ListItem>
                 <ListItem>
-                  <ListItemText>Number of games </ListItemText>
+                  <ListItemText>Game progress</ListItemText>
+                  <ListItemSecondaryAction>
+                    <StatBox value={10} text={'10%'} />
+                  </ListItemSecondaryAction>
+                </ListItem>
+                <ListItem>
+                  <ListItemText>Number of games played</ListItemText>
                   <ListItemSecondaryAction>
                     <StatBox text={'78'} />
+                  </ListItemSecondaryAction>
+                </ListItem>
+                <ListItem>
+                  <ListItemText>Number of seasons played</ListItemText>
+                  <ListItemSecondaryAction>
+                    <StatBox text={'4'} />
                   </ListItemSecondaryAction>
                 </ListItem>
                 <ListItem>
@@ -97,6 +109,7 @@ function Profil() {
                     <StatBox value={52} text={'52%'} />
                   </ListItemSecondaryAction>
                 </ListItem>
+
                 <ListItem>
                   <ListItemText>Most points in a game </ListItemText>
                   <ListItemSecondaryAction>
