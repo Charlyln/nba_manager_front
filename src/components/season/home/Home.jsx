@@ -9,6 +9,7 @@ import ForwardIcon from '@material-ui/icons/Forward'
 import { Link, Redirect } from 'react-router-dom'
 import ProgressBall from '../../mutliple/ProgressBall'
 import HomeMessage from './HomeMessage'
+import FastForwardIcon from '@material-ui/icons/FastForward'
 
 function Home() {
   const [isLoading, setIsLoading] = useState(true)
@@ -43,11 +44,11 @@ function Home() {
       const res = await Axios.get(`${apiUrl}/games/${SeasonUuid}/${TeamUuid}`)
       setTeamsData(res.data)
 
-      const teamsDataFilter = res.data.filter((game) => !game.team1)
+      // const teamsDataFilter = res.data.filter((game) => !game.team1)
 
-      if (teamsDataFilter.length === 1) {
-        // setNextSeason(true)
-      }
+      // if (teamsDataFilter.length === 1) {
+      //   // setNextSeason(true)
+      // }
       await getMyTeams()
 
       const timer = setTimeout(() => {
@@ -184,6 +185,8 @@ function Home() {
                       TeamUuid={myteamsData.uuid}
                       myteamsData={myteamsData}
                       handleClickOpenMessage={handleClickOpenMessage}
+                      teamsData={teamsData}
+                      matchAllGames={matchAllGames}
                     />
                   </Paper>
                 )
@@ -195,37 +198,34 @@ function Home() {
                   padding: '20px',
                   width: '210px',
                   textAlign: 'center',
-                  height: '80px'
+                  height: '230px'
                 }}
               >
-                {teamsData.find(
-                  (game) => game.team1 === null
-                  // (game.TeamUuid === myteamsData.uuid &&
-                  //   game.team1 === null) ||
-                  // (game.Visitor.TeamUuid === myteamsData.uuid &&
-                  //   game.team1 === null)
-                ) ? (
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={matchAllGames}
-                  >
-                    Simulate all
-                  </Button>
-                ) : (
-                  <>
-                    <Link to="/offseason" style={{ textDecoration: 'none' }}>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        endIcon={<ForwardIcon />}
-                        onClick={goOffSeason}
-                      >
-                        off season
-                      </Button>
-                    </Link>
-                  </>
-                )}
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={matchAllGames}
+                  disabled={!teamsData.find((game) => game.team1 === null)}
+                  endIcon={<FastForwardIcon />}
+                  style={{ width: '165px', marginTop: '30px' }}
+                >
+                  Simulate all
+                </Button>
+
+                <>
+                  <Link to="/offseason" style={{ textDecoration: 'none' }}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      endIcon={<ForwardIcon />}
+                      onClick={goOffSeason}
+                      disabled={teamsData.find((game) => game.team1 === null)}
+                      style={{ width: '165px', marginTop: '40px' }}
+                    >
+                      off season
+                    </Button>
+                  </Link>
+                </>
               </Paper>
             </GridList>
           </div>

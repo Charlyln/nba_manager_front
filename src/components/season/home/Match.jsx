@@ -15,6 +15,7 @@ import {
   ListItemSecondaryAction,
   ListItemText
 } from '@material-ui/core'
+import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled'
 
 function Match({
   team2,
@@ -30,13 +31,15 @@ function Match({
   allGameLoading,
   TeamUuid,
   myteamsData,
-  handleClickOpenMessage
+  handleClickOpenMessage,
+  teamsData,
+  matchAllGames
 }) {
   // const [done, setDone] = useState(false)
   // const [result, setResult] = useState('')
   // const [win, setWin] = useState('')
   const [open, setOpen] = useState(false)
-  
+
   // const [score1, setScore1] = useState(0)
   // const [score2, setScore2] = useState(0)
   const [matchLoading, setMatchLoading] = useState(false)
@@ -53,8 +56,6 @@ function Match({
   const handleClose = () => {
     setOpen(false)
   }
-
-
 
   const displayButton = (game) => {
     const team1Result = game.PlayerStats.filter(
@@ -106,17 +107,28 @@ function Match({
   const matchit = async (uuid) => {
     if (myteamsData.Players.length === 5) {
       setMatchLoading(true)
+
       try {
-        const res = await Axios.post(
-          `${apiUrl}/gamePlayed/${uuid}/${SeasonUuid}/${TeamUuid}`
-        )
-        console.log(res.data)
-        window.localStorage.setItem('trainingLeft', 2)
-        getTeams()
-        const timer = setTimeout(() => {
-          setMatchLoading(false)
-        }, 2000)
-        return () => clearTimeout(timer)
+        if (i + 1 === teamsData.length) {
+          await matchAllGames()
+          console.log('last', i + 1)
+          const timer = setTimeout(() => {
+            setMatchLoading(false)
+          }, 2000)
+          return () => clearTimeout(timer)
+        } else {
+          const res = await Axios.post(
+            `${apiUrl}/gamePlayed/${uuid}/${SeasonUuid}/${TeamUuid}`
+          )
+          console.log(res.data)
+          console.log(teamsData.length, i + 1)
+          window.localStorage.setItem('trainingLeft', 2)
+          getTeams()
+          const timer = setTimeout(() => {
+            setMatchLoading(false)
+          }, 2000)
+          return () => clearTimeout(timer)
+        }
       } catch (err) {
         console.log(err)
       }
@@ -127,7 +139,6 @@ function Match({
 
   return (
     <>
-    
       <CardActions>
         {matchLoading || (allGameLoading && game.PlayerStats.length < 1) ? (
           <Button variant="contained" size="small" disabled>
@@ -146,13 +157,22 @@ function Match({
             variant="outlined"
             size="small"
             onClick={() => matchit(game.uuid)}
-            // disabled={
-            //   previousItem.team1
-            //     ? false
-            //     : previousItem === 'first'
-            //     ? false
-            //     : true
-            // }
+            endIcon={
+              previousItem.team1 ? (
+                <PlayCircleFilledIcon />
+              ) : previousItem === 'first' ? (
+                <PlayCircleFilledIcon />
+              ) : (
+                ''
+              )
+            }
+            disabled={
+              previousItem.team1
+                ? false
+                : previousItem === 'first'
+                ? false
+                : true
+            }
           >
             Simulate
           </Button>
