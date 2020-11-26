@@ -13,11 +13,12 @@ import {
   Box,
   CircularProgress,
   Typography,
-  IconButton
+  IconButton,
+  Fab,
 } from '@material-ui/core'
 import AddBoxIcon from '@material-ui/icons/AddBox'
-import Alert from '@material-ui/lab/Alert'
 import ProgressBall from '../../mutliple/ProgressBall'
+import HeadShake from 'react-reveal/HeadShake'
 
 function Training() {
   const [myteamData, setMyTeamData] = useState({})
@@ -26,6 +27,7 @@ function Training() {
   const [trainingLeft, setTrainingLeft] = useState(
     parseFloat(window.localStorage.getItem('trainingLeft'))
   )
+  const [counter, setCounter] = useState(0)
 
   useEffect(() => {
     getMyTeam()
@@ -61,6 +63,8 @@ function Training() {
           setTrainingLeft(trainingLeft - 1)
           await getMyTeam()
         }
+      } else {
+        setCounter((counter) => counter + 1)
       }
     } catch (err) {
       console.log(err)
@@ -120,32 +124,30 @@ function Training() {
   return (
     <>
       {isLoading ? (
-       <ProgressBall />
+        <ProgressBall />
       ) : (
         <TableContainer
           component={Paper}
-          style={{ width: '90%', margin: '100px auto ' }}
+          style={{ width: '90%', margin: '100px auto', padding: '0px 5px' }}
         >
-          <Alert
-            style={{ width: 'max-content' }}
-            icon={false}
-            variant="filled"
-            severity={
-              trainingLeft === 2
-                ? 'success'
-                : trainingLeft === 1
-                ? 'warning'
-                : 'error'
-            }
-          >
-            {`${trainingLeft} / 2`}
-          </Alert>
+          <HeadShake spy={counter}>
+            <Fab
+              size="small"
+              aria-label="add"
+              style={{
+                margin: '5px 0px 0px 2px',
+                backgroundColor:
+                  trainingLeft === 2
+                    ? 'rgb(76, 175, 80)'
+                    : trainingLeft === 1
+                    ? '#FB8B3C'
+                    : 'rgb(217, 48, 33)'
+              }}
+            >
+              {trainingLeft}
+            </Fab>
+          </HeadShake>
 
-          {/* <h4 style={{ textAlign: 'center' }}>
-            {trainingLeft > 0
-              ? 'Select the player and the skill you want to train.'
-              : 'You must simulate matchs to have other trainings.'}
-          </h4> */}
           <Table aria-label="simple table">
             <TableHead>
               <TableRow>
@@ -229,6 +231,7 @@ function Training() {
               ))}
             </TableBody>
           </Table>
+          {/* </Badge> */}
         </TableContainer>
       )}
     </>
