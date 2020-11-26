@@ -25,6 +25,8 @@ import PostAddIcon from '@material-ui/icons/PostAdd'
 import HelpIcon from '@material-ui/icons/Help'
 import TocIcon from '@material-ui/icons/Toc'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
+import PersonIcon from '@material-ui/icons/Person';
+
 
 function MyAppBar() {
   const [open, setOpen] = useState(false)
@@ -53,6 +55,11 @@ function MyAppBar() {
     {
       to: '/myteam',
       name: 'My team',
+      icon: <PersonIcon />
+    },
+    {
+      to: '/allteams',
+      name: 'All teams',
       icon: <GroupIcon />
     },
     {
