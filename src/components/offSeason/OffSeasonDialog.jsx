@@ -206,8 +206,8 @@ function OffSeasonDialog({ goNext, canGoNext, step, TeamUuid }) {
 
                         {step === 'Player progress' ? (
                           <>
-                            {' '}
-                            <TableCell align="right">
+                            <TableCell align="center">{`${player.age}`}</TableCell>
+                            <TableCell align="center">
                               {player.ptsMin > player.ptsBeg &&
                               player.ptsBeg ? (
                                 <>
@@ -226,7 +226,7 @@ function OffSeasonDialog({ goNext, canGoNext, step, TeamUuid }) {
                                 ((player.ptsMin + player.ptsMax) / 2 / 35) * 100
                               )}
                             </TableCell>
-                            <TableCell align="right">
+                            <TableCell align="center">
                               {player.rebMin > player.rebBeg &&
                               player.rebBeg ? (
                                 <>
@@ -245,7 +245,7 @@ function OffSeasonDialog({ goNext, canGoNext, step, TeamUuid }) {
                                 ((player.rebMin + player.rebMax) / 2 / 13) * 100
                               )}
                             </TableCell>
-                            <TableCell align="right">
+                            <TableCell align="center">
                               {player.pasMin > player.pasBeg &&
                               player.pasBeg ? (
                                 <>
