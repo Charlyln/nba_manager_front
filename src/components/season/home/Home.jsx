@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import Typography from '@material-ui/core/Typography'
-import { Button, Paper, Avatar, GridList } from '@material-ui/core'
+import {
+  Button,
+  Paper,
+  Avatar,
+  GridList,
+  CircularProgress
+} from '@material-ui/core'
 import Match from './Match'
 import Axios from 'axios'
 import { apiUrl } from '../../../apiUrl'
@@ -208,7 +214,10 @@ function Home() {
                   variant="contained"
                   color="primary"
                   onClick={matchAllGames}
-                  disabled={!teamsData.find((game) => game.team1 === null)}
+                  disabled={
+                    !teamsData.find((game) => game.team1 === null) ||
+                    allGameLoading
+                  }
                   endIcon={<FastForwardIcon />}
                   style={{ width: '165px', marginTop: '30px' }}
                 >
