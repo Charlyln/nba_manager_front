@@ -18,7 +18,6 @@ import GroupAddIcon from '@material-ui/icons/GroupAdd'
 import HistoryIcon from '@material-ui/icons/History'
 import StarsIcon from '@material-ui/icons/Stars'
 import PostAddIcon from '@material-ui/icons/PostAdd'
-import AccountVerify from '../../mutliple/AccountVerify'
 
 function Help() {
   const links = [
