@@ -25,8 +25,8 @@ import PostAddIcon from '@material-ui/icons/PostAdd'
 import HelpIcon from '@material-ui/icons/Help'
 import TocIcon from '@material-ui/icons/Toc'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
-import PersonIcon from '@material-ui/icons/Person';
-
+import PersonIcon from '@material-ui/icons/Person'
+import AccountVerify from './components/mutliple/AccountVerify'
 
 function MyAppBar() {
   const [open, setOpen] = useState(false)
@@ -143,6 +143,7 @@ function MyAppBar() {
 
   return (
     <>
+      <AccountVerify />
       <AppBar className="appBar">
         <Toolbar>
           {/* {page === '/offseason' && page2 === '/offseason' ? (
