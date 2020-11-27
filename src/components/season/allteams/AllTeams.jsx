@@ -19,6 +19,7 @@ import {
   Tabs
 } from '@material-ui/core'
 import './Allteams.css'
+import AccountVerify from '../../mutliple/AccountVerify'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -107,80 +108,83 @@ function AllTeams() {
       {isLoading ? (
         <ProgressBall />
       ) : (
-        <Grid
-          container
-          style={{
-            marginTop: '100px',
-            marginBottom: '50px',
-            justifyContent: 'center'
-          }}
-        >
-          <Paper className={classes.paper}>
-            <Tabs
-              value={value}
-              indicatorColor="primary"
-              textColor="primary"
-              onChange={handleChange}
-              aria-label="tabs"
-              variant="scrollable"
-              scrollButtons="on"
-            >
-              {allTeamsData.map((team) => (
-                <Tab label={team.name} {...a11yProps(value)} />
-              ))}
-            </Tabs>
+        <>
+          <AccountVerify />
+          <Grid
+            container
+            style={{
+              marginTop: '100px',
+              marginBottom: '50px',
+              justifyContent: 'center'
+            }}
+          >
+            <Paper className={classes.paper}>
+              <Tabs
+                value={value}
+                indicatorColor="primary"
+                textColor="primary"
+                onChange={handleChange}
+                aria-label="tabs"
+                variant="scrollable"
+                scrollButtons="on"
+              >
+                {allTeamsData.map((team) => (
+                  <Tab label={team.name} {...a11yProps(value)} />
+                ))}
+              </Tabs>
 
-            <List>
-              {allTeamsData[value].Players.sort(function (a, b) {
-                return new Date(b.value) - new Date(a.value)
-              }).map((player) => {
-                return (
-                  <TabPanel value={value} index={value}>
-                    <ListItem>
-                      <ListItemAvatar>
-                        <Avatar
-                          alt={player.lastName}
-                          src={player.photo}
-                          style={{ width: '50px', height: '50px' }}
-                        />
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary={player.firstName}
-                        secondary={player.lastName}
-                      />
-                      <ListItemSecondaryAction>
-                        <Box position="relative" display="inline-flex">
-                          <CircularProgress
-                            variant="static"
-                            value={player.value}
+              <List>
+                {allTeamsData[value].Players.sort(function (a, b) {
+                  return new Date(b.value) - new Date(a.value)
+                }).map((player) => {
+                  return (
+                    <TabPanel value={value} index={value}>
+                      <ListItem>
+                        <ListItemAvatar>
+                          <Avatar
+                            alt={player.lastName}
+                            src={player.photo}
+                            style={{ width: '50px', height: '50px' }}
                           />
-                          <Box
-                            top={0}
-                            left={0}
-                            bottom={0}
-                            right={0}
-                            position="absolute"
-                            display="flex"
-                            alignItems="center"
-                            justifyContent="center"
-                          >
-                            <Typography
-                              variant="button"
-                              component="div"
-                              color="textSecondary"
+                        </ListItemAvatar>
+                        <ListItemText
+                          primary={player.firstName}
+                          secondary={player.lastName}
+                        />
+                        <ListItemSecondaryAction>
+                          <Box position="relative" display="inline-flex">
+                            <CircularProgress
+                              variant="static"
+                              value={player.value}
+                            />
+                            <Box
+                              top={0}
+                              left={0}
+                              bottom={0}
+                              right={0}
+                              position="absolute"
+                              display="flex"
+                              alignItems="center"
+                              justifyContent="center"
                             >
-                              <strong>{player.value}</strong>
-                            </Typography>
+                              <Typography
+                                variant="button"
+                                component="div"
+                                color="textSecondary"
+                              >
+                                <strong>{player.value}</strong>
+                              </Typography>
+                            </Box>
                           </Box>
-                        </Box>
-                      </ListItemSecondaryAction>
-                    </ListItem>
-                  </TabPanel>
-                )
-              })}
-            </List>
-          </Paper>
-        </Grid>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                    </TabPanel>
+                  )
+                })}
+              </List>
+            </Paper>
+          </Grid>
+        </>
       )}
     </>
   )

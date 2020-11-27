@@ -20,6 +20,7 @@ import {
 import SearchIcon from '@material-ui/icons/Search'
 import RotateLeftIcon from '@material-ui/icons/RotateLeft'
 import ProgressBall from '../../mutliple/ProgressBall'
+import AccountVerify from '../../mutliple/AccountVerify'
 
 function PlayerFinder() {
   const [playersData, setPlayersData] = useState({})
@@ -74,114 +75,117 @@ function PlayerFinder() {
       {isLoading ? (
         <ProgressBall />
       ) : (
-        <TableContainer
-          component={Paper}
-          style={{ width: '90%', margin: '100px auto ' }}
-        >
-          <form onSubmit={search}>
-            <ListItem>
-              <TextField
-                style={{ margin: '20px' }}
-                id="outlined-basic"
-                label="Player name"
-                value={name}
-                variant="outlined"
-                onChange={(e) => setName(e.target.value)}
-              />
-              <Button
-                type="submit"
-                color="primary"
-                variant="outlined"
-                endIcon={<SearchIcon />}
-              >
-                Search
-              </Button>
+        <>
+          <AccountVerify />
+          <TableContainer
+            component={Paper}
+            style={{ width: '90%', margin: '100px auto ' }}
+          >
+            <form onSubmit={search}>
+              <ListItem>
+                <TextField
+                  style={{ margin: '20px' }}
+                  id="outlined-basic"
+                  label="Player name"
+                  value={name}
+                  variant="outlined"
+                  onChange={(e) => setName(e.target.value)}
+                />
+                <Button
+                  type="submit"
+                  color="primary"
+                  variant="outlined"
+                  endIcon={<SearchIcon />}
+                >
+                  Search
+                </Button>
 
-              <Button
-                type="button"
-                color="primary"
-                variant="outlined"
-                endIcon={<RotateLeftIcon />}
-                style={{ marginLeft: '8px' }}
-                onClick={reset}
-              >
-                Reset
-              </Button>
-            </ListItem>
-          </form>
-          <Table aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell align="center">Photo</TableCell>
-                <TableCell align="left">Name</TableCell>
-                <TableCell align="left">Age</TableCell>
-                <TableCell align="left">Conctract left</TableCell>
-                <TableCell align="left">Value</TableCell>
-                <TableCell align="center">Scoring</TableCell>
-                <TableCell align="center">Rebound</TableCell>
-                <TableCell align="center">Pass</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {namesFiltered
-                .sort(function (a, b) {
-                  return new Date(b.value) - new Date(a.value)
-                })
-                .filter((player) => !player.isRookie)
-                .map((player) => (
-                  <TableRow>
-                    <TableCell align="center" component="th" scope="row">
-                      <Avatar style={{ margin: 'auto' }} src={player.photo} />
-                    </TableCell>
-                    <TableCell align="left">{`${player.firstName} ${player.lastName}`}</TableCell>
-                    <TableCell align="left">{`${player.age}`}</TableCell>
-                    <TableCell align="left">{`${player.contractLeft}`}</TableCell>
-                    <TableCell align="left">
-                      <Box position="relative" display="inline-flex">
-                        <CircularProgress
-                          variant="static"
-                          value={player.value}
-                        />
-                        <Box
-                          top={0}
-                          left={0}
-                          bottom={0}
-                          right={0}
-                          position="absolute"
-                          display="flex"
-                          alignItems="center"
-                          justifyContent="center"
-                        >
-                          <Typography
-                            variant="button"
-                            component="div"
-                            color="textSecondary"
+                <Button
+                  type="button"
+                  color="primary"
+                  variant="outlined"
+                  endIcon={<RotateLeftIcon />}
+                  style={{ marginLeft: '8px' }}
+                  onClick={reset}
+                >
+                  Reset
+                </Button>
+              </ListItem>
+            </form>
+            <Table aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell align="center">Photo</TableCell>
+                  <TableCell align="left">Name</TableCell>
+                  <TableCell align="left">Age</TableCell>
+                  <TableCell align="left">Conctract left</TableCell>
+                  <TableCell align="left">Value</TableCell>
+                  <TableCell align="center">Scoring</TableCell>
+                  <TableCell align="center">Rebound</TableCell>
+                  <TableCell align="center">Pass</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {namesFiltered
+                  .sort(function (a, b) {
+                    return new Date(b.value) - new Date(a.value)
+                  })
+                  .filter((player) => !player.isRookie)
+                  .map((player) => (
+                    <TableRow>
+                      <TableCell align="center" component="th" scope="row">
+                        <Avatar style={{ margin: 'auto' }} src={player.photo} />
+                      </TableCell>
+                      <TableCell align="left">{`${player.firstName} ${player.lastName}`}</TableCell>
+                      <TableCell align="left">{`${player.age}`}</TableCell>
+                      <TableCell align="left">{`${player.contractLeft}`}</TableCell>
+                      <TableCell align="left">
+                        <Box position="relative" display="inline-flex">
+                          <CircularProgress
+                            variant="static"
+                            value={player.value}
+                          />
+                          <Box
+                            top={0}
+                            left={0}
+                            bottom={0}
+                            right={0}
+                            position="absolute"
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center"
                           >
-                            <strong>{player.value}</strong>
-                          </Typography>
+                            <Typography
+                              variant="button"
+                              component="div"
+                              color="textSecondary"
+                            >
+                              <strong>{player.value}</strong>
+                            </Typography>
+                          </Box>
                         </Box>
-                      </Box>
-                    </TableCell>
-                    <TableCell align="center">
-                      {Math.round(
-                        ((player.ptsMin + player.ptsMax) / 2 / 35) * 100
-                      )}
-                    </TableCell>
-                    <TableCell align="center">
-                      {Math.round(
-                        ((player.rebMin + player.rebMax) / 2 / 13) * 100
-                      )}
-                    </TableCell>
-                    <TableCell align="center">
-                      {Math.round(
-                        ((player.pasMin + player.pasMax) / 2 / 11) * 100
-                      )}
-                    </TableCell>
-                  </TableRow>
-                ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+                      </TableCell>
+                      <TableCell align="center">
+                        {Math.round(
+                          ((player.ptsMin + player.ptsMax) / 2 / 35) * 100
+                        )}
+                      </TableCell>
+                      <TableCell align="center">
+                        {Math.round(
+                          ((player.rebMin + player.rebMax) / 2 / 13) * 100
+                        )}
+                      </TableCell>
+                      <TableCell align="center">
+                        {Math.round(
+                          ((player.pasMin + player.pasMax) / 2 / 11) * 100
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </>
       )}
     </>
   )

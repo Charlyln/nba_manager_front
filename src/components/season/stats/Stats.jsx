@@ -1,11 +1,10 @@
 import Axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { apiUrl } from '../../../apiUrl'
-import {
-  Grid
-} from '@material-ui/core'
+import { Grid } from '@material-ui/core'
 import StatsCollapse from './StatsCollapse'
 import ProgressBall from '../../mutliple/ProgressBall'
+import AccountVerify from '../../mutliple/AccountVerify'
 
 function Stats() {
   const [isLoading, setIsLoading] = useState(true)
@@ -15,7 +14,7 @@ function Stats() {
 
   useEffect(() => {
     getMyTeamStats()
-     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const getMyTeamStats = async () => {
@@ -32,6 +31,7 @@ function Stats() {
   }
   return (
     <>
+      <AccountVerify />
       <Grid style={{ marginTop: '100px', marginBottom: '100px' }}>
         <div style={{ width: '90%', margin: 'auto' }}>
           {myteamData.Players.sort(function (a, b) {

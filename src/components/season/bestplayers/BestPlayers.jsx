@@ -19,6 +19,7 @@ import {
 } from '@material-ui/core'
 import ProgressBall from '../../mutliple/ProgressBall'
 import { apiUrl } from '../../../apiUrl'
+import AccountVerify from '../../mutliple/AccountVerify'
 
 function BestPlayers() {
   const [playersData, setPlayersData] = useState([])
@@ -52,80 +53,88 @@ function BestPlayers() {
       {isLoading ? (
         <ProgressBall />
       ) : (
-        <Grid
-          container
-          style={{
-            marginTop: '100px',
-            marginBottom: '50px',
-            justifyContent: 'center'
-          }}
-        >
-          {playersData.length === 0 ? (
-            <Paper style={{ width: '400px', margin: 'auto' }}>
-              <ListItem>
-                <ListItemText>
-                  You must play at least 1 game to see best players in the
-                  season.
-                </ListItemText>
-              </ListItem>
-            </Paper>
-          ) : (
-            <TableContainer component={Paper} style={{ width: '70%' }}>
-              <Table aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell align="center">Photo</TableCell>
-                    <TableCell align="left">Name</TableCell>
-                    <TableCell align="center">Value</TableCell>
-                    <TableCell align="center">Scoring average / game</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {playersData.map((player) => (
-                    <TableRow hover>
-                      <TableCell align="center" component="th" scope="row">
-                        <Avatar style={{ margin: 'auto' }} src={player.photo} />
-                      </TableCell>
-                      <TableCell align="left">{`${player.firstName} ${player.lastName}`}</TableCell>
+        <>
+          <AccountVerify />
+          <Grid
+            container
+            style={{
+              marginTop: '100px',
+              marginBottom: '50px',
+              justifyContent: 'center'
+            }}
+          >
+            {playersData.length === 0 ? (
+              <Paper style={{ width: '400px', margin: 'auto' }}>
+                <ListItem>
+                  <ListItemText>
+                    You must play at least 1 game to see best players in the
+                    season.
+                  </ListItemText>
+                </ListItem>
+              </Paper>
+            ) : (
+              <TableContainer component={Paper} style={{ width: '70%' }}>
+                <Table aria-label="simple table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell align="center">Photo</TableCell>
+                      <TableCell align="left">Name</TableCell>
+                      <TableCell align="center">Value</TableCell>
                       <TableCell align="center">
-                        <Box position="relative" display="inline-flex">
-                          <CircularProgress
-                            variant="static"
-                            value={player.value}
-                          />
-                          <Box
-                            top={0}
-                            left={0}
-                            bottom={0}
-                            right={0}
-                            position="absolute"
-                            display="flex"
-                            alignItems="center"
-                            justifyContent="center"
-                          >
-                            <Typography
-                              variant="button"
-                              component="div"
-                              color="textSecondary"
-                            >
-                              <strong>{player.value}</strong>
-                            </Typography>
-                          </Box>
-                        </Box>
+                        Scoring average / game
                       </TableCell>
-                      <TableCell align="center">{`${(
-                        player.PlayerStats.reduce(
-                          (a, v) => (a = a + v.pts),
-                          0
-                        ) / player.PlayerStats.length
-                      ).toFixed(1)}`}</TableCell>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          )}
-        </Grid>
+                  </TableHead>
+                  <TableBody>
+                    {playersData.map((player) => (
+                      <TableRow hover>
+                        <TableCell align="center" component="th" scope="row">
+                          <Avatar
+                            style={{ margin: 'auto' }}
+                            src={player.photo}
+                          />
+                        </TableCell>
+                        <TableCell align="left">{`${player.firstName} ${player.lastName}`}</TableCell>
+                        <TableCell align="center">
+                          <Box position="relative" display="inline-flex">
+                            <CircularProgress
+                              variant="static"
+                              value={player.value}
+                            />
+                            <Box
+                              top={0}
+                              left={0}
+                              bottom={0}
+                              right={0}
+                              position="absolute"
+                              display="flex"
+                              alignItems="center"
+                              justifyContent="center"
+                            >
+                              <Typography
+                                variant="button"
+                                component="div"
+                                color="textSecondary"
+                              >
+                                <strong>{player.value}</strong>
+                              </Typography>
+                            </Box>
+                          </Box>
+                        </TableCell>
+                        <TableCell align="center">{`${(
+                          player.PlayerStats.reduce(
+                            (a, v) => (a = a + v.pts),
+                            0
+                          ) / player.PlayerStats.length
+                        ).toFixed(1)}`}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            )}
+          </Grid>
+        </>
       )}
     </>
   )

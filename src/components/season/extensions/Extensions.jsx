@@ -8,14 +8,10 @@ import TableContainer from '@material-ui/core/TableContainer'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
-import {
-  Avatar,
-  Box,
-  CircularProgress,
-  Typography
-} from '@material-ui/core'
+import { Avatar, Box, CircularProgress, Typography } from '@material-ui/core'
 import SignPlayer from '../../mutliple/signPlayer/SignPlayer'
 import ProgressBall from '../../mutliple/ProgressBall'
+import AccountVerify from '../../mutliple/AccountVerify'
 
 function Extensions() {
   const [myteamData, setMyTeamData] = useState({})
@@ -24,7 +20,7 @@ function Extensions() {
 
   useEffect(() => {
     getMyTeam()
-     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const getMyTeam = async () => {
@@ -42,74 +38,79 @@ function Extensions() {
       {isLoading ? (
         <ProgressBall />
       ) : (
-        <TableContainer
-          component={Paper}
-          style={{ width: '90%', margin: '100px auto ' }}
-        >
-          <Table aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell>Photo</TableCell>
-                <TableCell align="right">Name</TableCell>
-                <TableCell align="right">Value</TableCell>
-                <TableCell align="center">Years contract left</TableCell>
-                {/* <TableCell align="center">Salary expectations</TableCell> */}
-                <TableCell align="center">Propose extension</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {myteamData.Players.sort(function (a, b) {
-                return new Date(b.salary) - new Date(a.salary)
-              })
-                .filter((player) => player.contractLeft < 2)
-                .map((player) => (
-                  <TableRow>
-                    <TableCell component="th" scope="row">
-                      <Avatar src={player.photo} />
-                    </TableCell>
-                    <TableCell align="right">{`${player.firstName} ${player.lastName}`}</TableCell>
-                    <TableCell align="right">
-                      <Box position="relative" display="inline-flex">
-                        <CircularProgress
-                          variant="static"
-                          value={player.value}
-                        />
-                        <Box
-                          top={0}
-                          left={0}
-                          bottom={0}
-                          right={0}
-                          position="absolute"
-                          display="flex"
-                          alignItems="center"
-                          justifyContent="center"
-                        >
-                          <Typography
-                            variant="button"
-                            component="div"
-                            color="textSecondary"
+        <>
+          <AccountVerify />
+          <TableContainer
+            component={Paper}
+            style={{ width: '90%', margin: '100px auto ' }}
+          >
+            <Table aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Photo</TableCell>
+                  <TableCell align="right">Name</TableCell>
+                  <TableCell align="right">Value</TableCell>
+                  <TableCell align="center">Years contract left</TableCell>
+                  {/* <TableCell align="center">Salary expectations</TableCell> */}
+                  <TableCell align="center">Propose extension</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {myteamData.Players.sort(function (a, b) {
+                  return new Date(b.salary) - new Date(a.salary)
+                })
+                  .filter((player) => player.contractLeft < 2)
+                  .map((player) => (
+                    <TableRow>
+                      <TableCell component="th" scope="row">
+                        <Avatar src={player.photo} />
+                      </TableCell>
+                      <TableCell align="right">{`${player.firstName} ${player.lastName}`}</TableCell>
+                      <TableCell align="right">
+                        <Box position="relative" display="inline-flex">
+                          <CircularProgress
+                            variant="static"
+                            value={player.value}
+                          />
+                          <Box
+                            top={0}
+                            left={0}
+                            bottom={0}
+                            right={0}
+                            position="absolute"
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center"
                           >
-                            <strong>{player.value}</strong>
-                          </Typography>
+                            <Typography
+                              variant="button"
+                              component="div"
+                              color="textSecondary"
+                            >
+                              <strong>{player.value}</strong>
+                            </Typography>
+                          </Box>
                         </Box>
-                      </Box>
-                    </TableCell>
-                    <TableCell align="center">{player.contractLeft}</TableCell>
-                    {/* <TableCell align="center">
+                      </TableCell>
+                      <TableCell align="center">
+                        {player.contractLeft}
+                      </TableCell>
+                      {/* <TableCell align="center">
                       {player.value * 125000}
                     </TableCell> */}
-                    <TableCell align="center">
-                      <SignPlayer
-                        player={player}
-                        getMyTeamData={getMyTeam}
-                        contractLeft={player.contractLeft}
-                      />
-                    </TableCell>
-                  </TableRow>
-                ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+                      <TableCell align="center">
+                        <SignPlayer
+                          player={player}
+                          getMyTeamData={getMyTeam}
+                          contractLeft={player.contractLeft}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </>
       )}
     </>
   )

@@ -24,6 +24,7 @@ import Axios from 'axios'
 import SportsBasketballIcon from '@material-ui/icons/SportsBasketball'
 import ProgressBall from '../../mutliple/ProgressBall'
 import SpeedDials from './SpeedDials'
+import AccountVerify from '../../mutliple/AccountVerify'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -326,6 +327,7 @@ export default function Trade() {
 
   return (
     <>
+      <AccountVerify />
       <Grid container style={{ marginTop: '100px' }}>
         <Grid item xs={12}>
           <SpeedDials

@@ -12,6 +12,7 @@ import Axios from 'axios'
 import { apiUrl } from '../../apiUrl'
 import { Redirect } from 'react-router-dom'
 // import { Redirect } from 'react-router-dom'
+import AccountVerify from '../../components/mutliple/AccountVerify'
 
 function Offseason() {
   const [activeStep, setActiveStep] = useState(
@@ -91,68 +92,73 @@ function Offseason() {
   }
 
   return (
-    <Grid style={{ marginTop: '100px' }}>
-      <Typography style={{ width: '50%', margin: ' 30px auto' }} variant="h6">
-        Off season
-      </Typography>
-      <Stepper
-        activeStep={activeStep}
-        orientation="vertical"
-        style={{ width: '50%', margin: 'auto' }}
-      >
-        {steps.map((step, index) => (
-          <Step key={step}>
-            <StepLabel>{step}</StepLabel>
-            <StepContent>
-              <div>
+    <>
+      <AccountVerify />
+      <Grid style={{ marginTop: '100px' }}>
+        <Typography style={{ width: '50%', margin: ' 30px auto' }} variant="h6">
+          Off season
+        </Typography>
+        <Stepper
+          activeStep={activeStep}
+          orientation="vertical"
+          style={{ width: '50%', margin: 'auto' }}
+        >
+          {steps.map((step, index) => (
+            <Step key={step}>
+              <StepLabel>{step}</StepLabel>
+              <StepContent>
                 <div>
-                  <OffSeasonDialog
-                    goNext={goNext}
-                    canGoNext={canGoNext}
-                    step={step}
-                    TeamUuid={TeamUuid}
-                  />
-                  <Button
-                    disabled={!canGoNext}
-                    variant="contained"
-                    color="primary"
-                    onClick={
-                      activeStep === steps.length - 1 ? NextSeason : handleNext
-                    }
-                    style={{ marginLeft: '10px' }}
-                    endIcon={
-                      activeStep === steps.length - 1 ? (
-                        <ForwardIcon />
-                      ) : (
-                        <ExpandMoreIcon />
-                      )
-                    }
-                  >
-                    {activeStep === steps.length - 1
-                      ? 'Go next season'
-                      : 'Next'}
-                  </Button>
+                  <div>
+                    <OffSeasonDialog
+                      goNext={goNext}
+                      canGoNext={canGoNext}
+                      step={step}
+                      TeamUuid={TeamUuid}
+                    />
+                    <Button
+                      disabled={!canGoNext}
+                      variant="contained"
+                      color="primary"
+                      onClick={
+                        activeStep === steps.length - 1
+                          ? NextSeason
+                          : handleNext
+                      }
+                      style={{ marginLeft: '10px' }}
+                      endIcon={
+                        activeStep === steps.length - 1 ? (
+                          <ForwardIcon />
+                        ) : (
+                          <ExpandMoreIcon />
+                        )
+                      }
+                    >
+                      {activeStep === steps.length - 1
+                        ? 'Go next season'
+                        : 'Next'}
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            </StepContent>
-          </Step>
-        ))}
-      </Stepper>
-      {activeStep === steps.length && (
-        <Paper style={{ width: '50%', margin: 'auto' }} square elevation={0}>
-          <Button
-            style={{ margin: '10px 25px' }}
-            variant="contained"
-            color="primary"
-          >
-            Finichaide !{' '}
-            <span role="img" aria-label="sheep">
-              😄
-            </span>
-          </Button>
-        </Paper>
-      )}
-    </Grid>
+              </StepContent>
+            </Step>
+          ))}
+        </Stepper>
+        {activeStep === steps.length && (
+          <Paper style={{ width: '50%', margin: 'auto' }} square elevation={0}>
+            <Button
+              style={{ margin: '10px 25px' }}
+              variant="contained"
+              color="primary"
+            >
+              Finichaide !{' '}
+              <span role="img" aria-label="sheep">
+                😄
+              </span>
+            </Button>
+          </Paper>
+        )}
+      </Grid>
+    </>
   )
 }
 

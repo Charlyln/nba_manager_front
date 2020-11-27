@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { apiUrl } from '../../../apiUrl'
 import ProgressBall from '../../mutliple/ProgressBall'
 import StatsHistoryCollapse from './StatsHistoryCollapse'
+import AccountVerify from '../../mutliple/AccountVerify'
 
 function StatsHistory() {
   const [isLoading, setIsLoading] = useState(true)
@@ -32,6 +33,7 @@ function StatsHistory() {
 
   return (
     <>
+      <AccountVerify />
       <Grid container style={{ marginTop: '100px', marginBottom: '100px' }}>
         {isLoading ? (
           <ProgressBall />

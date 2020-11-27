@@ -11,6 +11,7 @@ import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
 import { Avatar } from '@material-ui/core'
 import ProgressBall from '../../mutliple/ProgressBall'
+import AccountVerify from '../../mutliple/AccountVerify'
 
 function Ranking() {
   const [isLoading, setIsLoading] = useState(true)
@@ -83,54 +84,67 @@ function Ranking() {
         {isLoading ? (
           <ProgressBall />
         ) : (
-          <Grid item xs={12}>
-            <Grid container justify="center">
-              <TableContainer
-                component={Paper}
-                style={{ width: '60%', margin: '0 auto ' }}
-              >
-                <Table aria-label="simple table">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell align="center">Rank</TableCell>
-                      <TableCell align="center">Team</TableCell>
-                      <TableCell align="center">W</TableCell>
-                      <TableCell align="center">L</TableCell>
-                      <TableCell align="center">% WIN</TableCell>
-                      <TableCell align="center"></TableCell>
-                    </TableRow>
-                  </TableHead>
+          <>
+            <AccountVerify />
+            <Grid item xs={12}>
+              <Grid container justify="center">
+                <TableContainer
+                  component={Paper}
+                  style={{ width: '60%', margin: '0 auto ' }}
+                >
+                  <Table aria-label="simple table">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell align="center">Rank</TableCell>
+                        <TableCell align="center">Team</TableCell>
+                        <TableCell align="center">W</TableCell>
+                        <TableCell align="center">L</TableCell>
+                        <TableCell align="center">% WIN</TableCell>
+                        <TableCell align="center"></TableCell>
+                      </TableRow>
+                    </TableHead>
 
-                  <TableBody>
-                    {teamsData
-                      .sort(function (a, b) {
-                        return new Date(getWin(b)) - new Date(getWin(a))
-                      })
-                      .map((team, i) => (
-                        <TableRow hover>
-                          <TableCell align="center" component="th" scope="row">
-                            {`${i + 1}`}
-                          </TableCell>
+                    <TableBody>
+                      {teamsData
+                        .sort(function (a, b) {
+                          return new Date(getWin(b)) - new Date(getWin(a))
+                        })
+                        .map((team, i) => (
+                          <TableRow hover>
+                            <TableCell
+                              align="center"
+                              component="th"
+                              scope="row"
+                            >
+                              {`${i + 1}`}
+                            </TableCell>
 
-                          <TableCell align="center" component="th" scope="row">
-                            <Avatar
-                              style={{ margin: 'auto' }}
-                              src={team.logo}
-                            />
-                          </TableCell>
-                          <TableCell align="center">{getWin(team)}</TableCell>
-                          <TableCell align="center">{getLoose(team)}</TableCell>
-                          <TableCell align="center">
-                            {getPourcentage(team)}
-                          </TableCell>
-                          <TableCell align="center"></TableCell>
-                        </TableRow>
-                      ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
+                            <TableCell
+                              align="center"
+                              component="th"
+                              scope="row"
+                            >
+                              <Avatar
+                                style={{ margin: 'auto' }}
+                                src={team.logo}
+                              />
+                            </TableCell>
+                            <TableCell align="center">{getWin(team)}</TableCell>
+                            <TableCell align="center">
+                              {getLoose(team)}
+                            </TableCell>
+                            <TableCell align="center">
+                              {getPourcentage(team)}
+                            </TableCell>
+                            <TableCell align="center"></TableCell>
+                          </TableRow>
+                        ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Grid>
             </Grid>
-          </Grid>
+          </>
         )}
       </Grid>
     </>

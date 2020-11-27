@@ -10,6 +10,7 @@ import { Link, Redirect } from 'react-router-dom'
 import ProgressBall from '../../mutliple/ProgressBall'
 import HomeMessage from './HomeMessage'
 import FastForwardIcon from '@material-ui/icons/FastForward'
+import AccountVerify from '../../mutliple/AccountVerify'
 
 function Home() {
   const [isLoading, setIsLoading] = useState(true)
@@ -106,6 +107,7 @@ function Home() {
         <ProgressBall />
       ) : (
         <>
+          <AccountVerify />
           <HomeMessage
             handleCloseMessage={handleCloseMessage}
             openMessage={openMessage}

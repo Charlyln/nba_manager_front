@@ -19,6 +19,7 @@ import {
 import AddBoxIcon from '@material-ui/icons/AddBox'
 import ProgressBall from '../../mutliple/ProgressBall'
 import HeadShake from 'react-reveal/HeadShake'
+import AccountVerify from '../../mutliple/AccountVerify'
 
 function Training() {
   const [myteamData, setMyTeamData] = useState({})
@@ -130,73 +131,78 @@ function Training() {
       {isLoading ? (
         <ProgressBall />
       ) : (
-        <TableContainer
-          component={Paper}
-          style={{ width: '90%', margin: '100px auto', padding: '0px 5px' }}
-        >
-          <HeadShake spy={counter}>
-            <Fab
-              size="small"
-              aria-label="add"
-              style={{
-                margin: '5px 0px 0px 2px',
-                backgroundColor:
-                  trainingLeft === 2
-                    ? 'rgb(76, 175, 80)'
-                    : trainingLeft === 1
-                    ? '#FB8B3C'
-                    : 'rgb(217, 48, 33)'
-              }}
-            >
-              {trainingLeft}
-            </Fab>
-          </HeadShake>
+        <>
+          <AccountVerify />
+          <TableContainer
+            component={Paper}
+            style={{ width: '90%', margin: '100px auto', padding: '0px 5px' }}
+          >
+            <HeadShake spy={counter}>
+              <Fab
+                size="small"
+                aria-label="add"
+                style={{
+                  margin: '5px 0px 0px 2px',
+                  backgroundColor:
+                    trainingLeft === 2
+                      ? 'rgb(76, 175, 80)'
+                      : trainingLeft === 1
+                      ? '#FB8B3C'
+                      : 'rgb(217, 48, 33)'
+                }}
+              >
+                {trainingLeft}
+              </Fab>
+            </HeadShake>
 
-          <Table aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell align="center">Photo</TableCell>
-                <TableCell align="left">Name</TableCell>
-                <TableCell align="left">Value</TableCell>
-                <TableCell align="center">Scoring</TableCell>
-                <TableCell align="center">Rebound</TableCell>
-                <TableCell align="center">Pass</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {myteamData.Players.sort(function (a, b) {
-                return new Date(b.value) - new Date(a.value)
-              }).map((player) => (
+            <Table aria-label="simple table">
+              <TableHead>
                 <TableRow>
-                  <TableCell align="center" component="th" scope="row">
-                    <Avatar style={{ margin: 'auto' }} src={player.photo} />
-                  </TableCell>
-                  <TableCell align="left">{`${player.firstName} ${player.lastName}`}</TableCell>
-                  <TableCell align="left">
-                    <Box position="relative" display="inline-flex">
-                      <CircularProgress variant="static" value={player.value} />
-                      <Box
-                        top={0}
-                        left={0}
-                        bottom={0}
-                        right={0}
-                        position="absolute"
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                      >
-                        <Typography
-                          variant="button"
-                          component="div"
-                          color="textSecondary"
+                  <TableCell align="center">Photo</TableCell>
+                  <TableCell align="left">Name</TableCell>
+                  <TableCell align="left">Value</TableCell>
+                  <TableCell align="center">Scoring</TableCell>
+                  <TableCell align="center">Rebound</TableCell>
+                  <TableCell align="center">Pass</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {myteamData.Players.sort(function (a, b) {
+                  return new Date(b.value) - new Date(a.value)
+                }).map((player) => (
+                  <TableRow>
+                    <TableCell align="center" component="th" scope="row">
+                      <Avatar style={{ margin: 'auto' }} src={player.photo} />
+                    </TableCell>
+                    <TableCell align="left">{`${player.firstName} ${player.lastName}`}</TableCell>
+                    <TableCell align="left">
+                      <Box position="relative" display="inline-flex">
+                        <CircularProgress
+                          variant="static"
+                          value={player.value}
+                        />
+                        <Box
+                          top={0}
+                          left={0}
+                          bottom={0}
+                          right={0}
+                          position="absolute"
+                          display="flex"
+                          alignItems="center"
+                          justifyContent="center"
                         >
-                          <strong>{player.value}</strong>
-                        </Typography>
+                          <Typography
+                            variant="button"
+                            component="div"
+                            color="textSecondary"
+                          >
+                            <strong>{player.value}</strong>
+                          </Typography>
+                        </Box>
                       </Box>
-                    </Box>
-                  </TableCell>
-                  <TableCell align="center">
-                    {/* <Typography
+                    </TableCell>
+                    <TableCell align="center">
+                      {/* <Typography
                       variant="button"
                       component="div"
                       color="textSecondary"
@@ -208,82 +214,87 @@ function Training() {
                       </strong>
                     </Typography> */}
 
-                    <strong>
+                      <strong>
+                        {Math.round(
+                          ((player.ptsMin + player.ptsMax) / 2 / 35) * 100
+                        )}
+                      </strong>
+
                       {Math.round(
                         ((player.ptsMin + player.ptsMax) / 2 / 35) * 100
+                      ) === 99 ? (
+                        ''
+                      ) : (
+                        <IconButton
+                          onClick={() =>
+                            riseUpScoring(
+                              player.ptsMin,
+                              player.ptsMax,
+                              player.uuid
+                            )
+                          }
+                        >
+                          <AddBoxIcon fontSize="small" />
+                        </IconButton>
                       )}
-                    </strong>
+                    </TableCell>
+                    <TableCell align="center">
+                      <strong>
+                        {Math.round(
+                          ((player.rebMin + player.rebMax) / 2 / 13) * 100
+                        )}
+                      </strong>
 
-                    {Math.round(
-                      ((player.ptsMin + player.ptsMax) / 2 / 35) * 100
-                    ) === 99 ? (
-                      ''
-                    ) : (
-                      <IconButton
-                        onClick={() =>
-                          riseUpScoring(
-                            player.ptsMin,
-                            player.ptsMax,
-                            player.uuid
-                          )
-                        }
-                      >
-                        <AddBoxIcon fontSize="small" />
-                      </IconButton>
-                    )}
-                  </TableCell>
-                  <TableCell align="center">
-                    <strong>
                       {Math.round(
                         ((player.rebMin + player.rebMax) / 2 / 13) * 100
+                      ) === 99 ? (
+                        ''
+                      ) : (
+                        <IconButton
+                          onClick={() =>
+                            riseUpRebound(
+                              player.rebMin,
+                              player.rebMax,
+                              player.uuid
+                            )
+                          }
+                        >
+                          <AddBoxIcon fontSize="small" />
+                        </IconButton>
                       )}
-                    </strong>
+                    </TableCell>
+                    <TableCell align="center">
+                      <strong>
+                        {Math.round(
+                          ((player.pasMin + player.pasMax) / 2 / 11) * 100
+                        )}
+                      </strong>
 
-                    {Math.round(
-                      ((player.rebMin + player.rebMax) / 2 / 13) * 100
-                    ) === 99 ? (
-                      ''
-                    ) : (
-                      <IconButton
-                        onClick={() =>
-                          riseUpRebound(
-                            player.rebMin,
-                            player.rebMax,
-                            player.uuid
-                          )
-                        }
-                      >
-                        <AddBoxIcon fontSize="small" />
-                      </IconButton>
-                    )}
-                  </TableCell>
-                  <TableCell align="center">
-                    <strong>
                       {Math.round(
                         ((player.pasMin + player.pasMax) / 2 / 11) * 100
+                      ) === 99 ? (
+                        ''
+                      ) : (
+                        <IconButton
+                          onClick={() =>
+                            riseUpPass(
+                              player.pasMin,
+                              player.pasMax,
+                              player.uuid
+                            )
+                          }
+                        >
+                          <AddBoxIcon fontSize="small" />
+                        </IconButton>
                       )}
-                    </strong>
-
-                    {Math.round(
-                      ((player.pasMin + player.pasMax) / 2 / 11) * 100
-                    ) === 99 ? (
-                      ''
-                    ) : (
-                      <IconButton
-                        onClick={() =>
-                          riseUpPass(player.pasMin, player.pasMax, player.uuid)
-                        }
-                      >
-                        <AddBoxIcon fontSize="small" />
-                      </IconButton>
-                    )}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-          {/* </Badge> */}
-        </TableContainer>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+            {/* </Badge> */}
+          </TableContainer>
+        </>
       )}
     </>
   )
