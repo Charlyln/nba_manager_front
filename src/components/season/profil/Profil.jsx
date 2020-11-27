@@ -1,5 +1,6 @@
 import {
   Box,
+  Checkbox,
   Grid,
   List,
   ListItem,
@@ -16,6 +17,8 @@ import ProgressBall from '../../mutliple/ProgressBall'
 import StatBox from './StatBox'
 import DeleteProfil from './DeleteProfil'
 import EditProfil from './EditProfil'
+import DataUsageIcon from '@material-ui/icons/DataUsage'
+import SportsEsportsIcon from '@material-ui/icons/SportsEsports'
 
 function Profil() {
   const [isLoading, setIsLoading] = useState(true)
@@ -46,16 +49,30 @@ function Profil() {
       {isLoading ? (
         <ProgressBall />
       ) : (
-        <>
+        <Grid
+          container
+          style={{
+            marginTop: '100px',
+            justifyContent: 'center'
+          }}
+        >
           <Grid
-            container
+            item
             style={{
-              marginTop: '100px',
-              justifyContent: 'center'
+              justifyContent: 'center',
+              margin: '5px'
             }}
           >
-            <Paper style={{ width: '500px' }}>
-              <List subheader={<ListSubheader>My data</ListSubheader>}>
+            <Paper style={{ width: '400px' }}>
+              <List
+                subheader={
+                  <>
+                    <ListSubheader>
+                      My data <DataUsageIcon />
+                    </ListSubheader>
+                  </>
+                }
+              >
                 <ListItem>
                   <ListItemText>Pseudo </ListItemText>
 
@@ -119,15 +136,102 @@ function Profil() {
               </List>
             </Paper>
           </Grid>
+
           <Grid
-            container
+            item
             style={{
-              marginTop: '10px',
-              marginBottom: '50px',
-              justifyContent: 'center'
+              justifyContent: 'center',
+              margin: '5px'
             }}
           >
-            <Paper style={{ width: '500px', textAlign: 'center' }}>
+            <Paper style={{ width: '400px' }}>
+              <List
+                subheader={
+                  <>
+                    <ListSubheader>
+                      Success <SportsEsportsIcon />
+                    </ListSubheader>
+                  </>
+                }
+              >
+                <ListItem>
+                  <ListItemText>Win a game </ListItemText>
+                  <ListItemSecondaryAction>
+                    <Checkbox
+                      disabled
+                      color="primary"
+                      checked
+                      style={{ color: '#008B8B' }}
+                    />
+                  </ListItemSecondaryAction>
+                </ListItem>
+
+                <ListItem>
+                  <ListItemText>Make a trade</ListItemText>
+                  <ListItemSecondaryAction>
+                    <Checkbox disabled color="primary" checked={false} />
+                  </ListItemSecondaryAction>
+                </ListItem>
+                <ListItem>
+                  <ListItemText>Increase a player's stat</ListItemText>
+                  <ListItemSecondaryAction>
+                    <Checkbox disabled color="primary" checked={false} />
+                  </ListItemSecondaryAction>
+                </ListItem>
+
+                <ListItem>
+                  <ListItemText>fire a player</ListItemText>
+                  <ListItemSecondaryAction>
+                    <Checkbox disabled color="primary" checked={false} />
+                  </ListItemSecondaryAction>
+                </ListItem>
+                <ListItem>
+                  <ListItemText>Sign a extention</ListItemText>
+                  <ListItemSecondaryAction>
+                    <Checkbox disabled color="primary" checked={false} />
+                  </ListItemSecondaryAction>
+                </ListItem>
+                <ListItem>
+                  <ListItemText>Sign a free agent</ListItemText>
+                  <ListItemSecondaryAction>
+                    <Checkbox disabled color="primary" checked={false} />
+                  </ListItemSecondaryAction>
+                </ListItem>
+                <ListItem>
+                  <ListItemText>You have the MVP of the season</ListItemText>
+                  <ListItemSecondaryAction>
+                    <Checkbox disabled color="primary" checked={false} />
+                  </ListItemSecondaryAction>
+                </ListItem>
+                <ListItem>
+                  <ListItemText>Win all games in a season</ListItemText>
+                  <ListItemSecondaryAction>
+                    <Checkbox disabled color="primary" checked={false} />
+                  </ListItemSecondaryAction>
+                </ListItem>
+                <ListItem>
+                  <ListItemText>Win the championship</ListItemText>
+                  <ListItemSecondaryAction>
+                    <Checkbox disabled color="primary" checked={false} />
+                  </ListItemSecondaryAction>
+                </ListItem>
+                <ListItem>
+                  <ListItemText>Increase a player's stat up 99</ListItemText>
+                  <ListItemSecondaryAction>
+                    <Checkbox disabled color="primary" checked={false} />
+                  </ListItemSecondaryAction>
+                </ListItem>
+              </List>
+            </Paper>
+
+            <Paper
+              style={{
+                marginTop: '10px',
+                justifyContent: 'center',
+                width: '400px',
+                textAlign: 'center'
+              }}
+            >
               <EditProfil
                 myProfilData={myProfilData}
                 getMyProfil={getMyProfil}
@@ -135,7 +239,7 @@ function Profil() {
               <DeleteProfil myProfilData={myProfilData} />
             </Paper>
           </Grid>
-        </>
+        </Grid>
       )}
     </>
   )
