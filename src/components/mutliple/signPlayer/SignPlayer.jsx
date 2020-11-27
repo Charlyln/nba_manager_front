@@ -37,6 +37,11 @@ function SignPlayer({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  useEffect(() => {
+    console.log(salary)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [salary])
+
   const getMyTeam = async () => {
     try {
       const res = await Axios.get(`${apiUrl}/teams/myteam/${userUuid}`)
@@ -95,16 +100,31 @@ function SignPlayer({
     }
     const salaryExpected = 100000000 * pourcentage
 
-    const valueCal = (salary / salaryExpected) * 100
+    const valueCal = ((value * 1000000) / salaryExpected) * 100
     setInterest(valueCal)
   }
   const getValue = (PlayerValue) => {
-    if (interest <= 0) {
+    let pourcentage
+
+    if (PlayerValue < 80) {
+      pourcentage = 0.05
+    } else if (PlayerValue >= 80 && PlayerValue < 85) {
+      pourcentage = 0.15
+    } else if (PlayerValue >= 85 && PlayerValue < 90) {
+      pourcentage = 0.2
+    } else if (PlayerValue >= 90) {
+      pourcentage = 0.3
+    }
+    const salaryExpected = 100000000 * pourcentage // 15 millions
+
+    const valueCal = (salary / salaryExpected) * 100
+
+    if (valueCal <= 0) {
       return 0
-    } else if (interest >= 100) {
+    } else if (valueCal >= 100) {
       return 100
     } else {
-      return interest
+      return valueCal
     }
   }
 
