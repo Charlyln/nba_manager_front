@@ -342,7 +342,7 @@ export default function Trade() {
         alignItems="center"
         className={classes.root}
         container
-        style={{ marginTop: '100px' }}
+        style={{ marginTop: '50px' }}
       >
         <Grid item>
           <Paper className={classes.paper}>

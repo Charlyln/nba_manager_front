@@ -18,6 +18,7 @@ import {
   Tab,
   Tabs
 } from '@material-ui/core'
+import './Allteams.css'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
