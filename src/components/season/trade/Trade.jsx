@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     width: 400,
-    height: 323,
+    height: 365,
     overflow: 'auto'
   },
   button: {
