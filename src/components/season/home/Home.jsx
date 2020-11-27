@@ -50,7 +50,7 @@ function Home() {
       const timer = setTimeout(() => {
         setLogoLoading(false)
         setIsLoading(false)
-      }, 2000)
+      }, 1000)
       return () => clearTimeout(timer)
     } catch (err) {
       console.log(err)
