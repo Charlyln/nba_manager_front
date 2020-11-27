@@ -15,7 +15,7 @@ import {
   ListItemSecondaryAction,
   ListItemText
 } from '@material-ui/core'
-import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled'
+import PlayArrowIcon from '@material-ui/icons/PlayArrow'
 
 function Match({
   team2,
@@ -137,14 +137,21 @@ function Match({
           </>
         ) : (
           <Button
-            variant="outlined"
+            variant={
+              previousItem.team1
+                ? 'contained'
+                : previousItem === 'first'
+                ? 'contained'
+                : 'outlined'
+            }
             size="small"
+            color="primary"
             onClick={() => matchit(game.uuid)}
             endIcon={
               previousItem.team1 ? (
-                <PlayCircleFilledIcon />
+                <PlayArrowIcon />
               ) : previousItem === 'first' ? (
-                <PlayCircleFilledIcon />
+                <PlayArrowIcon />
               ) : (
                 ''
               )
