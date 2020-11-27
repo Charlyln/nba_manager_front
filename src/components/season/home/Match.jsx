@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import CardActions from '@material-ui/core/CardActions'
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
@@ -43,11 +43,15 @@ function Match({
   // const [score1, setScore1] = useState(0)
   // const [score2, setScore2] = useState(0)
   const [matchLoading, setMatchLoading] = useState(false)
+  const [isPlayed, setIsPlayed] = useState(game.team1)
+  const [dataLoading, setDataLoading] = useState(false)
   const [SeasonUuid] = useState(window.localStorage.getItem('SeasonUuid'))
 
-  // useEffect(() => {
-  //   getTeams()
-  // }, [])
+  useEffect(() => {
+    if (teamsData.find((game) => game.team1 && game.uuid === gameUuid)) {
+      setIsPlayed(true)
+    }
+  }, [teamsData])
 
   const handleClickOpen = () => {
     setOpen(true)
@@ -91,26 +95,19 @@ function Match({
   const matchit = async (uuid) => {
     if (myteamsData.Players.length === 5) {
       setMatchLoading(true)
+      setDataLoading(true)
 
       try {
         if (i + 1 === teamsData.length) {
           await matchAllGames()
-
-          const timer = setTimeout(() => {
-            setMatchLoading(false)
-          }, 2000)
-          return () => clearTimeout(timer)
+          setMatchLoading(false)
         } else {
           await Axios.post(
             `${apiUrl}/gamePlayed/${uuid}/${SeasonUuid}/${TeamUuid}`
           )
-
           window.localStorage.setItem('trainingLeft', 2)
           getTeams()
-          const timer = setTimeout(() => {
-            setMatchLoading(false)
-          }, 2000)
-          return () => clearTimeout(timer)
+          setMatchLoading(false)
         }
       } catch (err) {
         console.log(err)
@@ -123,19 +120,13 @@ function Match({
   return (
     <>
       <CardActions>
-        {matchLoading || (allGameLoading && game.PlayerStats.length < 1) ? (
+        {matchLoading ||
+        (allGameLoading && game.PlayerStats.length < 1) ||
+        (dataLoading && !isPlayed) ? (
           <Button variant="contained" size="small" disabled>
             <CircularProgress size={22} />
           </Button>
-        ) : game.PlayerStats.length > 0 ? (
-          <>
-            <>{displayButton(game)}</>
-
-            <Button variant="outlined" size="small" onClick={handleClickOpen}>
-              Stats
-            </Button>
-          </>
-        ) : (
+        ) : game.PlayerStats.length === 0 || game.team1 === 0 ? (
           <Button
             variant={
               previousItem.team1
@@ -166,6 +157,14 @@ function Match({
           >
             Simulate
           </Button>
+        ) : (
+          <>
+            <>{displayButton(game)}</>
+
+            <Button variant="outlined" size="small" onClick={handleClickOpen}>
+              Stats
+            </Button>
+          </>
         )}
       </CardActions>
 
