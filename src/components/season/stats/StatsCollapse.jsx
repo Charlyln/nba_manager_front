@@ -57,18 +57,17 @@ function StatsCollapse({ player, SeasonUuid }) {
                 {player.PlayerStats.sort(function (a, b) {
                   return new Date(b.Game.uuid) - new Date(a.Game.uuid)
                 })
-                  .filter((stat) => stat.Game.SeasonUuid === SeasonUuid)
-                  .map((stat, i) => (
-                    <TableRow>
-                      <TableCell>{`Match ${i + 1}`}</TableCell>
-                      <TableCell>
-                        {player.TeamUuid === stat.Game.Team.uuid
-                          ? stat.Game.Visitor.name
-                          : stat.Game.Team.name}
-                      </TableCell>
-                      <TableCell>{stat.pts}</TableCell>
-                    </TableRow>
-                  ))}
+                .map((stat, i) => (
+                  <TableRow>
+                    <TableCell>{`Match ${i + 1}`}</TableCell>
+                    <TableCell>
+                      {player.TeamUuid === stat.Game.Team.uuid
+                        ? stat.Game.Visitor.name
+                        : stat.Game.Team.name}
+                    </TableCell>
+                    <TableCell>{stat.pts}</TableCell>
+                  </TableRow>
+                ))}
 
                 <TableRow selected>
                   <TableCell>Average</TableCell>

@@ -19,7 +19,9 @@ function Stats() {
 
   const getMyTeamStats = async () => {
     try {
-      const res = await Axios.get(`${apiUrl}/teams/myteam/stats/${userUuid}`)
+      const res = await Axios.get(
+        `${apiUrl}/teams/myteam/stats/${userUuid}/${SeasonUuid}`
+      )
       setMyTeamData(res.data)
       setIsLoading(false)
     } catch (err) {
