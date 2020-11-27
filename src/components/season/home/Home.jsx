@@ -104,10 +104,12 @@ function Home() {
   return (
     <>
       {isLoading ? (
-        <ProgressBall />
-      ) : (
         <>
           <AccountVerify />
+          <ProgressBall />
+        </>
+      ) : (
+        <>
           <HomeMessage
             handleCloseMessage={handleCloseMessage}
             openMessage={openMessage}

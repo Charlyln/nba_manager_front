@@ -51,10 +51,12 @@ function BestPlayers() {
   return (
     <>
       {isLoading ? (
-        <ProgressBall />
-      ) : (
         <>
           <AccountVerify />
+          <ProgressBall />
+        </>
+      ) : (
+        <>
           <Grid
             container
             style={{

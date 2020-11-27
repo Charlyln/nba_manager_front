@@ -106,10 +106,12 @@ function AllTeams() {
   return (
     <>
       {isLoading ? (
-        <ProgressBall />
-      ) : (
         <>
           <AccountVerify />
+          <ProgressBall />
+        </>
+      ) : (
+        <>
           <Grid
             container
             style={{

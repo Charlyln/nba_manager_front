@@ -48,10 +48,12 @@ function Profil() {
   return (
     <>
       {isLoading ? (
-        <ProgressBall />
-      ) : (
         <>
           <AccountVerify />
+          <ProgressBall />
+        </>
+      ) : (
+        <>
           <Grid
             container
             style={{

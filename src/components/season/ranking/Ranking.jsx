@@ -82,10 +82,12 @@ function Ranking() {
     <>
       <Grid container style={{ marginTop: '100px', marginBottom: '100px' }}>
         {isLoading ? (
-          <ProgressBall />
-        ) : (
           <>
             <AccountVerify />
+            <ProgressBall />
+          </>
+        ) : (
+          <>
             <Grid item xs={12}>
               <Grid container justify="center">
                 <TableContainer

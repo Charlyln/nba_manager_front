@@ -129,10 +129,12 @@ function Training() {
   return (
     <>
       {isLoading ? (
-        <ProgressBall />
-      ) : (
         <>
           <AccountVerify />
+          <ProgressBall />
+        </>
+      ) : (
+        <>
           <TableContainer
             component={Paper}
             style={{ width: '90%', margin: '100px auto', padding: '0px 5px' }}

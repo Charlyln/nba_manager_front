@@ -27,11 +27,15 @@ function Stats() {
     }
   }
   if (isLoading) {
-    return <ProgressBall />
+    return (
+      <>
+        <AccountVerify />
+        <ProgressBall />
+      </>
+    )
   }
   return (
     <>
-      <AccountVerify />
       <Grid style={{ marginTop: '100px', marginBottom: '100px' }}>
         <div style={{ width: '90%', margin: 'auto' }}>
           {myteamData.Players.sort(function (a, b) {

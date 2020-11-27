@@ -322,12 +322,16 @@ export default function Trade() {
   }
 
   if (isLoading) {
-    return <ProgressBall />
+    return (
+      <>
+        <AccountVerify />
+        <ProgressBall />
+      </>
+    )
   }
 
   return (
     <>
-      <AccountVerify />
       <Grid container style={{ marginTop: '100px' }}>
         <Grid item xs={12}>
           <SpeedDials
