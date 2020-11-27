@@ -58,10 +58,10 @@ function Match({
   }
 
   const displayButton = (game) => {
-    const team1Result = game.PlayerStats.filter(
+    const myTeamResult = game.PlayerStats.filter(
       (stat) => stat.Player.TeamUuid === TeamUuid
     ).reduce((a, v) => (a = a + v.pts), 0)
-    // setScore1(team1Result)
+    // setScore1(myTeamResult)
 
     const team2Result = game.PlayerStats.filter(
       (stat) => stat.Player.TeamUuid !== TeamUuid
@@ -70,8 +70,10 @@ function Match({
 
     return (
       <>
-        {/* <Button
+        <Button
+          variant="contained"
           size="small"
+          onClick={handleClickOpen}
           style={{
             whiteSpace: 'nowrap',
             backgroundColor:
@@ -81,25 +83,7 @@ function Match({
                 ? 'rgb(76, 175, 80)'
                 : 'rgb(217, 48, 33)'
           }}
-          variant="contained"
-        >
-          {`${game.team1} - ${game.team2}`}
-        </Button> */}
-
-        <Button
-          variant="contained"
-          size="small"
-          onClick={handleClickOpen}
-          style={{
-            whiteSpace: 'nowrap',
-            backgroundColor:
-              team1Result > team2Result
-                ? 'rgb(76, 175, 80)'
-                : 'rgb(217, 48, 33)'
-          }}
-        >{`${game.TeamUuid === TeamUuid ? team1Result : team2Result} - ${
-          game.TeamUuid === TeamUuid ? team2Result : team1Result
-        }`}</Button>
+        >{`${game.team1} - ${game.team2}`}</Button>
       </>
     )
   }
@@ -199,9 +183,9 @@ function Match({
                       style={{ margin: '5px 20px' }}
                       primary={` ${team1.name}`}
                     />
-                    {/* <ListItemSecondaryAction>
+                    <ListItemSecondaryAction>
                       {game.team1}
-                    </ListItemSecondaryAction> */}
+                    </ListItemSecondaryAction>
                   </ListItem>
 
                   <Divider />
@@ -248,9 +232,9 @@ function Match({
                       style={{ margin: '5px 20px' }}
                       primary={` ${team2.name}`}
                     />
-                    {/* <ListItemSecondaryAction>
+                    <ListItemSecondaryAction>
                       {game.team2}
-                    </ListItemSecondaryAction> */}
+                    </ListItemSecondaryAction>
                   </ListItem>
 
                   <Divider />
