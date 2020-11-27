@@ -51,6 +51,7 @@ function Match({
     if (teamsData.find((game) => game.team1 && game.uuid === gameUuid)) {
       setIsPlayed(true)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [teamsData])
 
   const handleClickOpen = () => {
