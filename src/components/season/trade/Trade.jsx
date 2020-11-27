@@ -21,22 +21,21 @@ import {
 } from '@material-ui/core'
 import { apiUrl } from '../../../apiUrl'
 import Axios from 'axios'
-import TradeSelect from './TradeSelect'
 import SportsBasketballIcon from '@material-ui/icons/SportsBasketball'
 import ProgressBall from '../../mutliple/ProgressBall'
+import SpeedDials from './SpeedDials'
 
 const useStyles = makeStyles((theme) => ({
   root: {
     margin: 'auto'
   },
   paper: {
-    width: 200,
-    height: '100%',
-    overflow: 'auto',
-    margin: '0px 30px'
+    width: 400,
+    height: 323,
+    overflow: 'auto'
   },
   button: {
-    margin: theme.spacing(0.5, 0)
+    margin: 5
   }
 }))
 
@@ -96,12 +95,14 @@ export default function Trade() {
     }
   }
 
-  const deleteOhterTeam = () => {
-    setwantChangeTeam(true)
-    setLeft(myteamsData.Players)
-    setRight([])
-    setTeamsData([])
-  }
+  // const deleteOhterTeam = () => {
+  //   setwantChangeTeam(true)
+  //   // setLeft(myteamsData.Players)
+  //   setRight([])
+  //   setLeft([])
+  //   setTeamsData([])
+  //   // setRight([4, 5, 6, 7, 1])
+  // }
 
   const getOtherTeams = async (uuid) => {
     try {
@@ -129,6 +130,7 @@ export default function Trade() {
   const rightChecked = intersection(checked, right)
 
   const handleToggle = (value) => () => {
+    console.log(value)
     const currentIndex = checked.indexOf(value)
     const newChecked = [...checked]
 
@@ -137,6 +139,10 @@ export default function Trade() {
     } else {
       newChecked.splice(currentIndex, 1)
     }
+
+    // if (left.find(player => player.uuid === value.uuid)) {
+
+    // }
 
     setChecked(newChecked)
   }
@@ -207,6 +213,12 @@ export default function Trade() {
           `Trade rejected ! We give you too much for what we receive !`
         )
       } else {
+        setRight([])
+        setwantChangeTeam(true)
+
+        setLeft([])
+        setTeamsData([])
+
         setMessage(`Trade accepeted !`)
         const array5 = left.filter(
           (player) => player.TeamUuid === teamsData.uuid
@@ -226,6 +238,8 @@ export default function Trade() {
               TeamUuid: teamsData.uuid
             })
         )
+        getMyTeams()
+        getTeams()
       }
     }
 
@@ -313,25 +327,25 @@ export default function Trade() {
   return (
     <>
       <Grid container style={{ marginTop: '100px' }}>
-        <TradeSelect
-          allTeamsData={allTeamsData}
-          myteamsUuid={myteamsData.uuid}
-          getOtherTeams={getOtherTeams}
-          teamsData={teamsData}
-          deleteOhterTeam={deleteOhterTeam}
-          wantChangeTeam={wantChangeTeam}
-        />
+        <Grid item xs={12}>
+          <SpeedDials
+            myteamsUuid={myteamsData.uuid}
+            allTeamsData={allTeamsData}
+            getOtherTeams={getOtherTeams}
+            right={right}
+          />
+        </Grid>
       </Grid>
-
       <Grid
-        container
+        // spacing={2}
         justify="center"
         alignItems="center"
         className={classes.root}
-        style={{ marginTop: ' 50px' }}
+        container
+        style={{ marginTop: '100px' }}
       >
-        <Grid item style={{ margin: '30px' }}>
-          <Paper>
+        <Grid item>
+          <Paper className={classes.paper}>
             <List dense component="div" role="list">
               <ListItem>
                 <ListItemAvatar>
@@ -344,11 +358,12 @@ export default function Trade() {
             </List>
           </Paper>
         </Grid>
-        <Grid item>
+        <Grid item xs={12} sm={12} md={2}>
           <Grid container direction="column" alignItems="center">
             <Button
-              variant="outlined"
+              variant="contained"
               size="small"
+              color="primary"
               className={classes.button}
               onClick={handleCheckedRight}
               disabled={leftChecked.length === 0}
@@ -357,8 +372,9 @@ export default function Trade() {
               &gt;
             </Button>
             <Button
-              variant="outlined"
+              variant="contained"
               size="small"
+              color="primary"
               className={classes.button}
               onClick={handleCheckedLeft}
               disabled={rightChecked.length === 0}
@@ -366,24 +382,30 @@ export default function Trade() {
             >
               &lt;
             </Button>
+
+            <Button
+              className={classes.button}
+              variant="contained"
+              size="small"
+              color="primary"
+              style={{ marginTop: '10px' }}
+              onClick={tradeIt}
+              disabled={
+                left.length !== 5 ||
+                right.length !== 5 ||
+                !right.find((player) => player.TeamUuid === myteamsData.uuid)
+              }
+            >
+              Trade
+            </Button>
           </Grid>
-          <Button
-            variant="contained"
-            size="small"
-            color="primary"
-            style={{ marginTop: '10px' }}
-            onClick={tradeIt}
-            disabled={wantChangeTeam}
-          >
-            Trade
-          </Button>
         </Grid>
-        <Grid item style={{ margin: '30px' }}>
+        <Grid item className={classes.paper}>
           <Paper>
             <List dense component="div" role="list">
               <ListItem>
                 <ListItemAvatar>
-                  {teamsData.logo ? (
+                  {right.length > 0 ? (
                     <Avatar src={teamsData.logo} />
                   ) : (
                     <Avatar>
@@ -398,7 +420,6 @@ export default function Trade() {
             </List>
           </Paper>
         </Grid>
-
         <Dialog
           open={open}
           onClose={handleClose}
