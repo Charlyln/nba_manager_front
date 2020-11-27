@@ -14,7 +14,7 @@ import {
   CircularProgress,
   Typography,
   IconButton,
-  Fab,
+  Fab
 } from '@material-ui/core'
 import AddBoxIcon from '@material-ui/icons/AddBox'
 import ProgressBall from '../../mutliple/ProgressBall'
@@ -89,6 +89,8 @@ function Training() {
           setTrainingLeft(trainingLeft - 1)
           await getMyTeam()
         }
+      } else {
+        setCounter((counter) => counter + 1)
       }
     } catch (err) {
       console.log(err)
@@ -115,6 +117,8 @@ function Training() {
 
           await getMyTeam()
         }
+      } else {
+        setCounter((counter) => counter + 1)
       }
     } catch (err) {
       console.log(err)
@@ -192,40 +196,87 @@ function Training() {
                     </Box>
                   </TableCell>
                   <TableCell align="center">
+                    {/* <Typography
+                      variant="button"
+                      component="div"
+                      color="textSecondary"
+                    >
+                      <strong>
+                        {Math.round(
+                          ((player.ptsMin + player.ptsMax) / 2 / 35) * 100
+                        )}
+                      </strong>
+                    </Typography> */}
+
+                    <strong>
+                      {Math.round(
+                        ((player.ptsMin + player.ptsMax) / 2 / 35) * 100
+                      )}
+                    </strong>
+
                     {Math.round(
                       ((player.ptsMin + player.ptsMax) / 2 / 35) * 100
+                    ) === 99 ? (
+                      ''
+                    ) : (
+                      <IconButton
+                        onClick={() =>
+                          riseUpScoring(
+                            player.ptsMin,
+                            player.ptsMax,
+                            player.uuid
+                          )
+                        }
+                      >
+                        <AddBoxIcon fontSize="small" />
+                      </IconButton>
                     )}
-                    <IconButton
-                      onClick={() =>
-                        riseUpScoring(player.ptsMin, player.ptsMax, player.uuid)
-                      }
-                    >
-                      <AddBoxIcon fontSize="small" />
-                    </IconButton>
                   </TableCell>
                   <TableCell align="center">
+                    <strong>
+                      {Math.round(
+                        ((player.rebMin + player.rebMax) / 2 / 13) * 100
+                      )}
+                    </strong>
+
                     {Math.round(
                       ((player.rebMin + player.rebMax) / 2 / 13) * 100
+                    ) === 99 ? (
+                      ''
+                    ) : (
+                      <IconButton
+                        onClick={() =>
+                          riseUpRebound(
+                            player.rebMin,
+                            player.rebMax,
+                            player.uuid
+                          )
+                        }
+                      >
+                        <AddBoxIcon fontSize="small" />
+                      </IconButton>
                     )}
-                    <IconButton
-                      onClick={() =>
-                        riseUpRebound(player.rebMin, player.rebMax, player.uuid)
-                      }
-                    >
-                      <AddBoxIcon fontSize="small" />
-                    </IconButton>
                   </TableCell>
                   <TableCell align="center">
+                    <strong>
+                      {Math.round(
+                        ((player.pasMin + player.pasMax) / 2 / 11) * 100
+                      )}
+                    </strong>
+
                     {Math.round(
                       ((player.pasMin + player.pasMax) / 2 / 11) * 100
+                    ) === 99 ? (
+                      ''
+                    ) : (
+                      <IconButton
+                        onClick={() =>
+                          riseUpPass(player.pasMin, player.pasMax, player.uuid)
+                        }
+                      >
+                        <AddBoxIcon fontSize="small" />
+                      </IconButton>
                     )}
-                    <IconButton
-                      onClick={() =>
-                        riseUpPass(player.pasMin, player.pasMax, player.uuid)
-                      }
-                    >
-                      <AddBoxIcon fontSize="small" />
-                    </IconButton>
                   </TableCell>
                 </TableRow>
               ))}

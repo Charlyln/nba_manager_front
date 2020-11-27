@@ -58,15 +58,15 @@ function Match({
   }
 
   const displayButton = (game) => {
-    const myTeamResult = game.PlayerStats.filter(
-      (stat) => stat.Player.TeamUuid === TeamUuid
-    ).reduce((a, v) => (a = a + v.pts), 0)
-    // setScore1(myTeamResult)
+    // const myTeamResult = game.PlayerStats.filter(
+    //   (stat) => stat.Player.TeamUuid === TeamUuid
+    // ).reduce((a, v) => (a = a + v.pts), 0)
+    // // setScore1(myTeamResult)
 
-    const team2Result = game.PlayerStats.filter(
-      (stat) => stat.Player.TeamUuid !== TeamUuid
-    ).reduce((a, v) => (a = a + v.pts), 0)
-    // setScore2(team2Result)
+    // const team2Result = game.PlayerStats.filter(
+    //   (stat) => stat.Player.TeamUuid !== TeamUuid
+    // ).reduce((a, v) => (a = a + v.pts), 0)
+    // // setScore2(team2Result)
 
     return (
       <>
