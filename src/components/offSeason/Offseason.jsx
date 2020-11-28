@@ -13,6 +13,7 @@ import { apiUrl } from '../../apiUrl'
 import { Redirect } from 'react-router-dom'
 // import { Redirect } from 'react-router-dom'
 import AccountVerify from '../../components/mutliple/AccountVerify'
+import ProgressBall from '../mutliple/ProgressBall'
 
 function Offseason() {
   const [activeStep, setActiveStep] = useState(
@@ -22,16 +23,21 @@ function Offseason() {
   const [TeamUuid] = useState(window.localStorage.getItem('TeamUuid'))
 
   const [canGoNext, setCanGoNext] = useState(false)
-  const [uuid] = useState(window.localStorage.getItem('uuid'))
+  const [UserUuid] = useState(window.localStorage.getItem('uuid'))
   const [SeasonUuid] = useState(window.localStorage.getItem('SeasonUuid'))
   const [mySeason, setMySeason] = useState({})
   const [isOffSeason] = useState(window.localStorage.getItem('offseason'))
+  const [playersData, setPlayersData] = useState({})
+  const [myteamData, setMyTeamData] = useState({})
+
+  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading2, setIsLoading2] = useState(true)
+  const [isLoading3, setIsLoading3] = useState(true)
   // const [offSeasonStep, setOffSeasonStep] = useState(
   //   parseFloat(window.localStorage.getItem('offseason'))
   // )
   const steps = [
     'Retirements',
-    'Draft',
     'Player options',
     'Free agency',
     'Player progress'
@@ -39,13 +45,36 @@ function Offseason() {
 
   useEffect(() => {
     getMySeason()
+    getPlayers()
+    getMyTeam()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  const getMyTeam = async () => {
+    try {
+      const res = await Axios.get(`${apiUrl}/teams/myteam/${UserUuid}`)
+      setMyTeamData(res.data)
+      setIsLoading2(false)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  const getPlayers = async () => {
+    try {
+      const res = await Axios.get(`${apiUrl}/players/${UserUuid}`)
+      setPlayersData(res.data)
+      setIsLoading(false)
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
   const getMySeason = async () => {
     try {
       const res = await Axios.get(`${apiUrl}/seasons/myseason/${SeasonUuid}`)
       setMySeason(res.data)
+      setIsLoading3(false)
     } catch (error) {
       console.log(error)
     }
@@ -72,9 +101,12 @@ function Offseason() {
 
     try {
       const mySeasonStartYear = mySeason.startYear
-      const res = await Axios.post(`${apiUrl}/dataCreation/newSeason/${uuid}`, {
-        date: mySeasonStartYear
-      })
+      const res = await Axios.post(
+        `${apiUrl}/dataCreation/newSeason/${UserUuid}`,
+        {
+          date: mySeasonStartYear
+        }
+      )
       window.localStorage.setItem('SeasonUuid', res.data.uuid)
       window.localStorage.removeItem('offseason')
       setRedirect(true)
@@ -93,71 +125,88 @@ function Offseason() {
 
   return (
     <>
-      <AccountVerify />
-      <Grid style={{ marginTop: '100px' }}>
-        <Typography style={{ width: '50%', margin: ' 30px auto' }} variant="h6">
-          Off season
-        </Typography>
-        <Stepper
-          activeStep={activeStep}
-          orientation="vertical"
-          style={{ width: '50%', margin: 'auto' }}
-        >
-          {steps.map((step, index) => (
-            <Step key={step}>
-              <StepLabel>{step}</StepLabel>
-              <StepContent>
-                <div>
+      {isLoading || isLoading2 || isLoading3 ? (
+        <>
+          <AccountVerify />
+          <ProgressBall />
+        </>
+      ) : (
+        <Grid style={{ marginTop: '100px' }}>
+          <Typography
+            style={{ width: '50%', margin: ' 30px auto' }}
+            variant="h6"
+          >
+            Off season
+          </Typography>
+          <Stepper
+            activeStep={activeStep}
+            orientation="vertical"
+            style={{ width: '50%', margin: 'auto' }}
+          >
+            {steps.map((step, index) => (
+              <Step key={step}>
+                <StepLabel>{step}</StepLabel>
+                <StepContent>
                   <div>
-                    <OffSeasonDialog
-                      goNext={goNext}
-                      canGoNext={canGoNext}
-                      step={step}
-                      TeamUuid={TeamUuid}
-                    />
-                    <Button
-                      disabled={!canGoNext}
-                      variant="contained"
-                      color="primary"
-                      onClick={
-                        activeStep === steps.length - 1
-                          ? NextSeason
-                          : handleNext
-                      }
-                      style={{ marginLeft: '10px' }}
-                      endIcon={
-                        activeStep === steps.length - 1 ? (
-                          <ForwardIcon />
-                        ) : (
-                          <ExpandMoreIcon />
-                        )
-                      }
-                    >
-                      {activeStep === steps.length - 1
-                        ? 'Go next season'
-                        : 'Next'}
-                    </Button>
+                    <div>
+                      <OffSeasonDialog
+                        myteamData={myteamData}
+                        playersData={playersData}
+                        getPlayers={getPlayers}
+                        getMyTeam={getMyTeam}
+                        goNext={goNext}
+                        canGoNext={canGoNext}
+                        step={step}
+                        TeamUuid={TeamUuid}
+                      />
+                      <Button
+                        disabled={!canGoNext}
+                        variant="contained"
+                        color="primary"
+                        onClick={
+                          activeStep === steps.length - 1
+                            ? NextSeason
+                            : handleNext
+                        }
+                        style={{ marginLeft: '10px' }}
+                        endIcon={
+                          activeStep === steps.length - 1 ? (
+                            <ForwardIcon />
+                          ) : (
+                            <ExpandMoreIcon />
+                          )
+                        }
+                      >
+                        {activeStep === steps.length - 1
+                          ? 'Go next season'
+                          : 'Next'}
+                      </Button>
+                    </div>
                   </div>
-                </div>
-              </StepContent>
-            </Step>
-          ))}
-        </Stepper>
-        {activeStep === steps.length && (
-          <Paper style={{ width: '50%', margin: 'auto' }} square elevation={0}>
-            <Button
-              style={{ margin: '10px 25px' }}
-              variant="contained"
-              color="primary"
+                </StepContent>
+              </Step>
+            ))}
+          </Stepper>
+          {activeStep === steps.length && (
+            <Paper
+              style={{ width: '50%', margin: 'auto' }}
+              square
+              elevation={0}
             >
-              Finichaide !{' '}
-              <span role="img" aria-label="sheep">
-                😄
-              </span>
-            </Button>
-          </Paper>
-        )}
-      </Grid>
+              <Button
+                style={{ margin: '10px 25px' }}
+                variant="contained"
+                color="primary"
+              >
+                Finichaide !{' '}
+                <span role="img" aria-label="sheep">
+                  😄
+                </span>
+              </Button>
+            </Paper>
+          )}
+        </Grid>
+      )}
     </>
   )
 }
