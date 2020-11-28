@@ -77,6 +77,16 @@ function Match({
     // ).reduce((a, v) => (a = a + v.pts), 0)
     // // setScore2(team2Result)
 
+    let difference = 0
+
+    if (game.team1 > game.team2) {
+      difference = game.team1 - game.team2
+    } else if (game.team1 < game.team2) {
+      difference = game.team2 - game.team1
+    }
+
+    console.log(difference)
+
     return (
       <>
         <Button
@@ -86,7 +96,7 @@ function Match({
           style={{
             whiteSpace: 'nowrap',
             backgroundColor:
-              countUp && !canDisplayColor
+              countUp && !canDisplayColor && difference < 10
                 ? '#e0e0e0'
                 : game.team1 > game.team2 && game.Team.choice
                 ? 'rgb(76, 175, 80)'
@@ -95,9 +105,8 @@ function Match({
                 : 'rgb(217, 48, 33)'
           }}
         >
-          {countUp && !teamsData[i + 1].team1 ? (
+          {countUp && !teamsData[i + 1].team1 && difference < 10 ? (
             <>
-              {' '}
               <CountUp
                 onEnd={() => setCanDisplayColor(true)}
                 end={game.team1}
