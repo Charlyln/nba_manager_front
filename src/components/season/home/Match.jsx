@@ -16,6 +16,7 @@ import {
   ListItemText
 } from '@material-ui/core'
 import PlayArrowIcon from '@material-ui/icons/PlayArrow'
+import CountUp from 'react-countup'
 
 function Match({
   team2,
@@ -33,7 +34,8 @@ function Match({
   myteamsData,
   handleClickOpenMessage,
   teamsData,
-  matchAllGames
+  matchAllGames,
+  nextItem
 }) {
   // const [done, setDone] = useState(false)
   // const [result, setResult] = useState('')
@@ -46,6 +48,8 @@ function Match({
   const [isPlayed, setIsPlayed] = useState(game.team1)
   const [dataLoading, setDataLoading] = useState(false)
   const [SeasonUuid] = useState(window.localStorage.getItem('SeasonUuid'))
+  const [countUp, setCountUp] = useState(false)
+  const [canDisplayColor, setCanDisplayColor] = useState(false)
 
   useEffect(() => {
     if (teamsData.find((game) => game.team1 && game.uuid === gameUuid)) {
@@ -82,13 +86,32 @@ function Match({
           style={{
             whiteSpace: 'nowrap',
             backgroundColor:
-              game.team1 > game.team2 && game.Team.choice
+              countUp && !canDisplayColor
+                ? '#e0e0e0'
+                : game.team1 > game.team2 && game.Team.choice
                 ? 'rgb(76, 175, 80)'
                 : game.team2 > game.team1 && game.Visitor.Team.choice
                 ? 'rgb(76, 175, 80)'
                 : 'rgb(217, 48, 33)'
           }}
-        >{`${game.team1} - ${game.team2}`}</Button>
+        >
+          {countUp && !teamsData[i + 1].team1 ? (
+            <>
+              {' '}
+              <CountUp
+                onEnd={() => setCanDisplayColor(true)}
+                end={game.team1}
+                duration={5}
+              />
+              {`-`}
+              <CountUp end={game.team2} duration={5} />
+            </>
+          ) : (
+            <>{`${game.team1}-${game.team2}`}</>
+          )}
+
+          {/* {`${()} - ${game.team2}`} */}
+        </Button>
       </>
     )
   }
@@ -108,6 +131,7 @@ function Match({
           )
           window.localStorage.setItem('trainingLeft', 2)
           getTeams()
+          setCountUp(true)
           setMatchLoading(false)
         }
       } catch (err) {
