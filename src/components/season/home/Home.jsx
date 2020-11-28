@@ -100,7 +100,10 @@ function Home() {
     window.localStorage.setItem('offseason', 1)
     await Axios.post(`${apiUrl}/players/changeContract/${uuid}`)
     await Axios.post(`${apiUrl}/players/changeAge/${uuid}`)
-    setRedirect(true)
+    const timer = setTimeout(() => {
+      setRedirect(true)
+    }, 300)
+    return () => clearTimeout(timer)
   }
 
   if (redirect || isOffSeason) {
@@ -225,18 +228,16 @@ function Home() {
                 </Button>
 
                 <>
-                  <Link to="/offseason" style={{ textDecoration: 'none' }}>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      endIcon={<ForwardIcon />}
-                      onClick={goOffSeason}
-                      disabled={teamsData.find((game) => game.team1 === null)}
-                      style={{ width: '165px', marginTop: '40px' }}
-                    >
-                      off season
-                    </Button>
-                  </Link>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    endIcon={<ForwardIcon />}
+                    onClick={goOffSeason}
+                    disabled={teamsData.find((game) => game.team1 === null)}
+                    style={{ width: '165px', marginTop: '40px' }}
+                  >
+                    off season
+                  </Button>
                 </>
               </Paper>
             </GridList>
