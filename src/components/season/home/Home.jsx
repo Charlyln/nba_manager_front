@@ -1,18 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import Typography from '@material-ui/core/Typography'
-import {
-  Button,
-  Paper,
-  Avatar,
-  GridList,
-  CircularProgress
-} from '@material-ui/core'
+import { Button, Paper, Avatar, GridList } from '@material-ui/core'
 import Match from './Match'
 import Axios from 'axios'
 import { apiUrl } from '../../../apiUrl'
 import Skeleton from '@material-ui/lab/Skeleton'
 import ForwardIcon from '@material-ui/icons/Forward'
-import { Link, Redirect } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 import ProgressBall from '../../mutliple/ProgressBall'
 import HomeMessage from './HomeMessage'
 import FastForwardIcon from '@material-ui/icons/FastForward'

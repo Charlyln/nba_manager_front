@@ -85,8 +85,6 @@ function Match({
       difference = game.team2 - game.team1
     }
 
-    console.log(difference)
-
     return (
       <>
         <Button
