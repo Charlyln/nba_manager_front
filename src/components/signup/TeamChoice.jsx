@@ -59,6 +59,8 @@ function TeamChoice() {
     try {
       const res = await Axios.post(`${apiUrl}/dataCreation/games2/${uuid}`)
       console.log(res.data)
+      const res2 = await Axios.post(`${apiUrl}/dataCreation/trophies/${uuid}`)
+      console.log(res2.data)
       window.localStorage.setItem('SeasonUuid', res.data.uuid)
       window.localStorage.setItem('canPlay', '1')
       window.localStorage.setItem('trainingLeft', 2)
