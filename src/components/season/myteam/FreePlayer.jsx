@@ -1,17 +1,22 @@
-import React, {  useState } from 'react'
-import {  IconButton,  } from '@material-ui/core'
+import React, { useState } from 'react'
+import { IconButton } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import { apiUrl } from '../../../apiUrl'
 import Axios from 'axios'
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 
-function SignPlayer({ player, getMyTeam }) {
+function SignPlayer({
+  player,
+  getMyTeam,
+  iOpenTrophySnackbar,
+  TrophyData,
+  trophyName,
+  UserUuid
+}) {
   const [open, setOpen] = useState(false)
-  // const [userUuid] = useState(window.localStorage.getItem('uuid'))
-  // const [isLoading, setIsLoading] = useState(true)
 
   const handleClickOpen = () => {
     setOpen(true)
@@ -22,11 +27,22 @@ function SignPlayer({ player, getMyTeam }) {
   }
 
   const removePlayer = async () => {
-    await Axios.put(`${apiUrl}/players/${player.uuid}`, {
-      TeamUuid: null
-    })
-    handleClose()
-    getMyTeam()
+    try {
+      await Axios.put(`${apiUrl}/players/${player.uuid}`, {
+        TeamUuid: null
+      })
+      if (!TrophyData.earned) {
+        await Axios.post(`${apiUrl}/trophies/earned/${UserUuid}`, {
+          name: trophyName
+        })
+        iOpenTrophySnackbar()
+      }
+
+      handleClose()
+      getMyTeam()
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
@@ -42,7 +58,7 @@ function SignPlayer({ player, getMyTeam }) {
         aria-describedby="alert-dialog-description"
       >
         <>
-          <DialogTitle id="alert-dialog-title">{`Do you want to remove ${player.firstName} ${player.lastName} from your team ? `}</DialogTitle>
+          <DialogTitle id="alert-dialog-title">{`Do you want to fire ${player.firstName} ${player.lastName} ? `}</DialogTitle>
           <DialogActions>
             <Button color="primary" autoFocus onClick={handleClose}>
               Back

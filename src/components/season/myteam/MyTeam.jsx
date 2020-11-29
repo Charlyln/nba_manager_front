@@ -13,11 +13,38 @@ import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward'
 import FreePlayer from './FreePlayer'
 import ProgressBall from '../../mutliple/ProgressBall'
 import AccountVerify from '../../mutliple/AccountVerify'
+import TrophySnackbar from '../../mutliple/TrophySnackbar'
 
 function MyTeam() {
   const [myteamData, setMyTeamData] = useState({})
-  const [userUuid] = useState(window.localStorage.getItem('uuid'))
+  const [UserUuid] = useState(window.localStorage.getItem('uuid'))
   const [isLoading, setIsLoading] = useState(true)
+  const [openTrophySnackbar, setOpenTrophySnackbar] = useState(false)
+  const [TrophyData, setTrophyData] = useState([])
+  const [trophyName] = useState('Fire a player')
+
+  const iOpenTrophySnackbar = () => {
+    setOpenTrophySnackbar(true)
+  }
+
+  const closeTrophySnackbar = (event, reason) => {
+    if (reason === 'clickaway') {
+      return
+    }
+
+    setOpenTrophySnackbar(false)
+  }
+
+  const getTrophy = async () => {
+    try {
+      const res = await Axios.get(
+        `${apiUrl}/trophies/${trophyName}/${UserUuid}`
+      )
+      setTrophyData(res.data)
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
   useEffect(() => {
     getMyTeam()
@@ -26,8 +53,10 @@ function MyTeam() {
 
   const getMyTeam = async () => {
     try {
-      const res = await Axios.get(`${apiUrl}/teams/myteam/${userUuid}`)
+      const res = await Axios.get(`${apiUrl}/teams/myteam/${UserUuid}`)
       setMyTeamData(res.data)
+
+      getTrophy()
       setIsLoading(false)
     } catch (err) {
       console.log(err)
@@ -43,6 +72,11 @@ function MyTeam() {
         </>
       ) : (
         <>
+          <TrophySnackbar
+            openTrophySnackbar={openTrophySnackbar}
+            closeTrophySnackbar={closeTrophySnackbar}
+            trophyName={trophyName}
+          />
           <TableContainer
             component={Paper}
             style={{ width: '90%', margin: '100px auto ' }}
@@ -56,7 +90,7 @@ function MyTeam() {
                   <TableCell align="right">Scoring</TableCell>
                   <TableCell align="right">Rebound</TableCell>
                   <TableCell align="right">Pass</TableCell>
-                  <TableCell align="center">Free player</TableCell>
+                  <TableCell align="center">Fire player</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -149,7 +183,14 @@ function MyTeam() {
                       )}
                     </TableCell>
                     <TableCell align="center">
-                      <FreePlayer player={player} getMyTeam={getMyTeam} />
+                      <FreePlayer
+                        player={player}
+                        getMyTeam={getMyTeam}
+                        iOpenTrophySnackbar={iOpenTrophySnackbar}
+                        TrophyData={TrophyData}
+                        trophyName={trophyName}
+                        UserUuid={UserUuid}
+                      />
                     </TableCell>
                   </TableRow>
                 ))}
