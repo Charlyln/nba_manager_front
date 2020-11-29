@@ -48,7 +48,9 @@ function Profil() {
   const getTrophyProgress = () => {
     const trophyEarned = myProfilData.Trophies.filter((trophy) => trophy.earned)
 
-    return (trophyEarned.length / myProfilData.Trophies.length) * 100
+    return Math.round(
+      (trophyEarned.length / myProfilData.Trophies.length) * 100
+    )
   }
 
   const getTrophyNumber = () => {
