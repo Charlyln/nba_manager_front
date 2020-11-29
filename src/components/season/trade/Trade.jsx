@@ -25,6 +25,7 @@ import SportsBasketballIcon from '@material-ui/icons/SportsBasketball'
 import ProgressBall from '../../mutliple/ProgressBall'
 import SpeedDials from './SpeedDials'
 import AccountVerify from '../../mutliple/AccountVerify'
+import TrophySnackbar from '../../mutliple/TrophySnackbar'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -61,16 +62,36 @@ export default function Trade() {
   const [message, setMessage] = useState('')
   const [wantChangeTeam, setwantChangeTeam] = useState(true)
   const [allTeamsData, setAllTeamsData] = useState([])
+  const [openTrophySnackbar, setOpenTrophySnackbar] = useState(false)
+  const [TrophyData, setTrophyData] = useState([])
+  const [trophyName] = useState('Make a trade')
+
+  const iOpenTrophySnackbar = () => {
+    setOpenTrophySnackbar(true)
+  }
+
+  const closeTrophySnackbar = (event, reason) => {
+    if (reason === 'clickaway') {
+      return
+    }
+
+    setOpenTrophySnackbar(false)
+  }
+
+  const getTrophy = async () => {
+    try {
+      const res = await Axios.get(`${apiUrl}/trophies/${trophyName}/${uuid}`)
+      setTrophyData(res.data)
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
   const getTeams = async () => {
     try {
       const UserUuid = uuid
       const res = await Axios.get(`${apiUrl}/teams/myleague/${UserUuid}`)
       setAllTeamsData(res.data)
-      const timer = setTimeout(() => {
-        setIsLoading(false)
-      }, 500)
-      return () => clearTimeout(timer)
     } catch (err) {
       console.log(err)
     }
@@ -96,15 +117,6 @@ export default function Trade() {
     }
   }
 
-  // const deleteOhterTeam = () => {
-  //   setwantChangeTeam(true)
-  //   // setLeft(myteamsData.Players)
-  //   setRight([])
-  //   setLeft([])
-  //   setTeamsData([])
-  //   // setRight([4, 5, 6, 7, 1])
-  // }
-
   const getOtherTeams = async (uuid) => {
     try {
       const res = await Axios.get(`${apiUrl}/teams/${uuid}`)
@@ -121,11 +133,24 @@ export default function Trade() {
     }
   }
   useEffect(() => {
-    getMyTeams()
-    getTeams()
+    getAllData()
     // getOtherTeams()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  const getAllData = async () => {
+    try {
+      await getMyTeams()
+      await getTeams()
+      await getTrophy()
+      const timer = setTimeout(() => {
+        setIsLoading(false)
+      }, 500)
+      return () => clearTimeout(timer)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const leftChecked = intersection(checked, left)
   const rightChecked = intersection(checked, right)
@@ -141,17 +166,8 @@ export default function Trade() {
       newChecked.splice(currentIndex, 1)
     }
 
-    // if (left.find(player => player.uuid === value.uuid)) {
-
-    // }
-
     setChecked(newChecked)
   }
-
-  // const handleAllRight = () => {
-  //   setRight(right.concat(left))
-  //   setLeft([])
-  // }
 
   const handleCheckedRight = () => {
     setRight(right.concat(leftChecked))
@@ -165,17 +181,12 @@ export default function Trade() {
     setChecked(not(checked, rightChecked))
   }
 
-  // const handleAllLeft = () => {
-  //   setLeft(left.concat(right))
-  //   setRight([])
-  // }
-
   const goBack = () => {
     handleClose()
     getTeams()
   }
 
-  const tradeIt = () => {
+  const tradeIt = async () => {
     const rightFiltered = right.find(
       (player) => player.TeamUuid === myteamsData.uuid
     )
@@ -219,14 +230,21 @@ export default function Trade() {
 
         setLeft([])
         setTeamsData([])
-
         setMessage(`Trade accepeted !`)
+
+        if (!TrophyData.earned) {
+          await Axios.post(`${apiUrl}/trophies/earned/${uuid}`, {
+            name: trophyName
+          })
+          iOpenTrophySnackbar()
+        }
         const array5 = left.filter(
           (player) => player.TeamUuid === teamsData.uuid
         )
         const array6 = right.filter(
           (player) => player.TeamUuid === myteamsData.uuid
         )
+
         array5.map(
           async (player) =>
             await Axios.put(`${apiUrl}/players/${player.uuid}`, {
@@ -239,8 +257,8 @@ export default function Trade() {
               TeamUuid: teamsData.uuid
             })
         )
-        getMyTeams()
-        getTeams()
+        await getTeams()
+        await getMyTeams()
       }
     }
 
@@ -332,6 +350,11 @@ export default function Trade() {
 
   return (
     <>
+      <TrophySnackbar
+        openTrophySnackbar={openTrophySnackbar}
+        closeTrophySnackbar={closeTrophySnackbar}
+        trophyName={trophyName}
+      />
       <Grid container style={{ marginTop: '100px' }}>
         <Grid item xs={12}>
           <SpeedDials
