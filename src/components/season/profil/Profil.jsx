@@ -45,6 +45,24 @@ function Profil() {
     }
   }
 
+  const getTrophyProgress = () => {
+    const trophyEarned = myProfilData.Trophies.filter((trophy) => trophy.earned)
+
+    return (trophyEarned.length / myProfilData.Trophies.length) * 100
+  }
+
+  const getTrophyNumber = () => {
+    const trophyEarned = myProfilData.Trophies.filter((trophy) => trophy.earned)
+
+    return trophyEarned.length
+  }
+
+  const getTrophyLeft = () => {
+    const trophyLeft = myProfilData.Trophies.filter((trophy) => !trophy.earned)
+
+    return trophyLeft.length
+  }
+
   const displayItem = (thisTrophy) => {
     const date = new Date(thisTrophy.updatedAt)
 
@@ -99,7 +117,7 @@ function Profil() {
                   }
                 >
                   <ListItem>
-                    <ListItemText>Pseudo </ListItemText>
+                    <ListItemText>Pseudo</ListItemText>
 
                     <Box
                       top={0}
@@ -122,9 +140,34 @@ function Profil() {
                     </Box>
                   </ListItem>
                   <ListItem>
-                    <ListItemText>Game progress</ListItemText>
+                    <ListItemText>Account creation date </ListItemText>
                     <ListItemSecondaryAction>
-                      <StatBox value={10} text={'10%'} />
+                      <ListItemText
+                        secondary={`${new Date(myProfilData.createdAt)
+                          .toString()
+                          .slice(4, 15)}`}
+                      />
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText>Earned trophies progress</ListItemText>
+                    <ListItemSecondaryAction>
+                      <StatBox
+                        value={getTrophyProgress()}
+                        text={`${getTrophyProgress()}%`}
+                      />
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText>Earned trophies number</ListItemText>
+                    <ListItemSecondaryAction>
+                      <StatBox text={`${getTrophyNumber()}`} />
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText>Trophies left</ListItemText>
+                    <ListItemSecondaryAction>
+                      <StatBox text={`${getTrophyLeft()}`} />
                     </ListItemSecondaryAction>
                   </ListItem>
                   <ListItem>
