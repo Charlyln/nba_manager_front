@@ -18,8 +18,8 @@ import StatBox from './StatBox'
 import DeleteProfil from './DeleteProfil'
 import EditProfil from './EditProfil'
 import DataUsageIcon from '@material-ui/icons/DataUsage'
-import SportsEsportsIcon from '@material-ui/icons/SportsEsports'
 import AccountVerify from '../../mutliple/AccountVerify'
+import trophy from '../../../trophyWhite.png'
 
 function Profil() {
   const [isLoading, setIsLoading] = useState(true)
@@ -43,6 +43,25 @@ function Profil() {
     } catch (err) {
       console.log(err)
     }
+  }
+
+  const displayItem = (thisTrophy) => {
+    const date = new Date(thisTrophy.updatedAt)
+
+    return (
+      <>
+        <ListItemText
+          primary={thisTrophy.name}
+          secondary={
+            thisTrophy.earned
+              ? `${date.toString().slice(4, 15)} - ${date
+                  .toString()
+                  .slice(15, 21)}`
+              : ''
+          }
+        />
+      </>
+    )
   }
 
   return (
@@ -154,78 +173,38 @@ function Profil() {
                   subheader={
                     <>
                       <ListSubheader>
-                        Success <SportsEsportsIcon />
+                        Trophies
+                        <img
+                          style={{
+                            width: '20px',
+                            height: '20px',
+                            margin: '0px 0px 3px 0px'
+                          }}
+                          src={trophy}
+                          alt="trophy"
+                        />
                       </ListSubheader>
                     </>
                   }
                 >
-                  <ListItem>
-                    <ListItemText>Win a game </ListItemText>
-                    <ListItemSecondaryAction>
-                      <Checkbox
-                        disabled
-                        color="primary"
-                        checked
-                        style={{ color: '#008B8B' }}
-                      />
-                    </ListItemSecondaryAction>
-                  </ListItem>
+                  {myProfilData.Trophies.sort(function (a, b) {
+                    return new Date(a.difficulty) - new Date(b.difficulty)
+                  }).map((trophy) => (
+                    <>
+                      <ListItem>
+                        {displayItem(trophy)}
 
-                  <ListItem>
-                    <ListItemText>Make a trade</ListItemText>
-                    <ListItemSecondaryAction>
-                      <Checkbox disabled color="primary" checked={false} />
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                  <ListItem>
-                    <ListItemText>Increase a player's stat</ListItemText>
-                    <ListItemSecondaryAction>
-                      <Checkbox disabled color="primary" checked={false} />
-                    </ListItemSecondaryAction>
-                  </ListItem>
-
-                  <ListItem>
-                    <ListItemText>fire a player</ListItemText>
-                    <ListItemSecondaryAction>
-                      <Checkbox disabled color="primary" checked={false} />
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                  <ListItem>
-                    <ListItemText>Sign a extention</ListItemText>
-                    <ListItemSecondaryAction>
-                      <Checkbox disabled color="primary" checked={false} />
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                  <ListItem>
-                    <ListItemText>Sign a free agent</ListItemText>
-                    <ListItemSecondaryAction>
-                      <Checkbox disabled color="primary" checked={false} />
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                  <ListItem>
-                    <ListItemText>You have the MVP of the season</ListItemText>
-                    <ListItemSecondaryAction>
-                      <Checkbox disabled color="primary" checked={false} />
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                  <ListItem>
-                    <ListItemText>Win all games in a season</ListItemText>
-                    <ListItemSecondaryAction>
-                      <Checkbox disabled color="primary" checked={false} />
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                  <ListItem>
-                    <ListItemText>Win the championship</ListItemText>
-                    <ListItemSecondaryAction>
-                      <Checkbox disabled color="primary" checked={false} />
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                  <ListItem>
-                    <ListItemText>Increase a player's stat up 99</ListItemText>
-                    <ListItemSecondaryAction>
-                      <Checkbox disabled color="primary" checked={false} />
-                    </ListItemSecondaryAction>
-                  </ListItem>
+                        <ListItemSecondaryAction>
+                          <Checkbox
+                            disabled
+                            color="primary"
+                            checked={trophy.earned}
+                            style={{ color: trophy.earned ? '#008B8B' : '' }}
+                          />
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                    </>
+                  ))}
                 </List>
               </Paper>
 
