@@ -136,15 +136,15 @@ function Match({
           await matchAllGames()
           setMatchLoading(false)
         } else {
+          await Axios.post(
+            `${apiUrl}/gamePlayed/${uuid}/${SeasonUuid}/${TeamUuid}`
+          )
           if (i === 0 && mySeason.startYear === 2020) {
             await Axios.post(`${apiUrl}/trophies/earned/${UserUuid}`, {
               name: 'Play a game'
             })
             iOpenTrophySnackbar()
           }
-          await Axios.post(
-            `${apiUrl}/gamePlayed/${uuid}/${SeasonUuid}/${TeamUuid}`
-          )
           window.localStorage.setItem('trainingLeft', 2)
           getTeams()
           setCountUp(true)
