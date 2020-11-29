@@ -1,4 +1,5 @@
 import {
+  Badge,
   Box,
   Checkbox,
   Grid,
@@ -66,22 +67,38 @@ function Profil() {
   }
 
   const displayItem = (thisTrophy) => {
-    const date = new Date(thisTrophy.updatedAt)
+    const rightDateFormat = new Date(thisTrophy.updatedAt)
+    const date = rightDateFormat.toString().slice(4, 15)
+    const hour = rightDateFormat.toString().slice(15, 21).replace(':', 'h')
+    const newDate = new Date()
+    const timeDifference = Math.round((newDate - rightDateFormat) / 60000)
 
     return (
-      <>
-        <ListItemText
-          primary={thisTrophy.name}
-          secondary={
-            thisTrophy.earned
-              ? `${date.toString().slice(4, 15)} - ${date
-                  .toString()
-                  .slice(15, 21)
-                  .replace(':', 'h')}`
-              : ''
-          }
-        />
-      </>
+      <ListItemText
+        primary={thisTrophy.name}
+        secondary={
+          <Badge
+            color="error"
+            variant="dot"
+            invisible={
+              !thisTrophy.earned || (thisTrophy.earned && timeDifference > 1)
+            }
+          >
+            <Typography
+              style={{
+                fontSize: '0.7rem',
+                color: 'rgba(255, 255, 255, 0.7)'
+              }}
+            >
+              {thisTrophy.earned && timeDifference < 3
+                ? 'Just now'
+                : thisTrophy.earned
+                ? `${date} - ${hour}`
+                : ''}
+            </Typography>
+          </Badge>
+        }
+      />
     )
   }
 
