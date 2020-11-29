@@ -2,6 +2,7 @@ import {
   Badge,
   Box,
   Checkbox,
+  FormControlLabel,
   Grid,
   List,
   ListItem,
@@ -20,7 +21,11 @@ import DeleteProfil from './DeleteProfil'
 import EditProfil from './EditProfil'
 import DataUsageIcon from '@material-ui/icons/DataUsage'
 import AccountVerify from '../../mutliple/AccountVerify'
-import trophy from '../../../trophyWhite.png'
+import trophyIcon from '../../../trophyWhite.png'
+import bronzeTrophy from '../../../bronzeTrophy.png'
+import silverTrophy from '../../../silverTrophy.png'
+import goldTrophy from '../../../goldTrophy.png'
+import SportsEsportsIcon from '@material-ui/icons/SportsEsports'
 
 function Profil() {
   const [isLoading, setIsLoading] = useState(true)
@@ -130,7 +135,7 @@ function Profil() {
                   subheader={
                     <>
                       <ListSubheader>
-                        My data <DataUsageIcon />
+                        My data <DataUsageIcon fontSize="small" />
                       </ListSubheader>
                     </>
                   }
@@ -222,6 +227,21 @@ function Profil() {
                   </ListItem>
                 </List>
               </Paper>
+              <Paper
+                style={{
+                  marginTop: '10px',
+                  justifyContent: 'center',
+                  width: '400px',
+                  textAlign: 'center',
+                  padding: '15px 0px'
+                }}
+              >
+                <EditProfil
+                  myProfilData={myProfilData}
+                  getMyProfil={getMyProfil}
+                />
+                <DeleteProfil myProfilData={myProfilData} />
+              </Paper>
             </Grid>
 
             <Grid
@@ -237,15 +257,7 @@ function Profil() {
                     <>
                       <ListSubheader>
                         Trophies
-                        <img
-                          style={{
-                            width: '20px',
-                            height: '20px',
-                            margin: '0px 0px 3px 0px'
-                          }}
-                          src={trophy}
-                          alt="trophy"
-                        />
+                        <SportsEsportsIcon fontSize="small" />
                       </ListSubheader>
                     </>
                   }
@@ -258,32 +270,58 @@ function Profil() {
                         {displayItem(trophy)}
 
                         <ListItemSecondaryAction>
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                icon={
+                                  <img
+                                    style={{
+                                      width: '30px',
+                                      height: '30px',
+                                      opacity: 0.1
+                                    }}
+                                    src={trophyIcon}
+                                    alt="trophy"
+                                  />
+                                }
+                                checkedIcon={
+                                  <img
+                                    style={{
+                                      width: '30px',
+                                      height: '30px'
+                                    }}
+                                    src={
+                                      trophy.difficulty === 2
+                                        ? silverTrophy
+                                        : trophy.difficulty > 2
+                                        ? goldTrophy
+                                        : bronzeTrophy
+                                    }
+                                    alt="trophy"
+                                  />
+                                }
+                                name="checkedH"
+                                disabled
+                                color="primary"
+                                checked={trophy.earned}
+                                style={{
+                                  color: trophy.earned ? '#008B8B' : ''
+                                }}
+                              />
+                            }
+                          />
+                          {/* 
                           <Checkbox
                             disabled
                             color="primary"
                             checked={trophy.earned}
                             style={{ color: trophy.earned ? '#008B8B' : '' }}
-                          />
+                          /> */}
                         </ListItemSecondaryAction>
                       </ListItem>
                     </>
                   ))}
                 </List>
-              </Paper>
-
-              <Paper
-                style={{
-                  marginTop: '10px',
-                  justifyContent: 'center',
-                  width: '400px',
-                  textAlign: 'center'
-                }}
-              >
-                <EditProfil
-                  myProfilData={myProfilData}
-                  getMyProfil={getMyProfil}
-                />
-                <DeleteProfil myProfilData={myProfilData} />
               </Paper>
             </Grid>
           </Grid>
