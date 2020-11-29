@@ -35,7 +35,10 @@ function Match({
   handleClickOpenMessage,
   teamsData,
   matchAllGames,
-  nextItem
+  nextItem,
+  mySeason,
+  iOpenTrophySnackbar,
+  UserUuid
 }) {
   // const [done, setDone] = useState(false)
   // const [result, setResult] = useState('')
@@ -133,6 +136,12 @@ function Match({
           await matchAllGames()
           setMatchLoading(false)
         } else {
+          if (i === 0 && mySeason.startYear === 2020) {
+            await Axios.post(`${apiUrl}/trophies/earned/${UserUuid}`, {
+              name: 'Play a game'
+            })
+            iOpenTrophySnackbar()
+          }
           await Axios.post(
             `${apiUrl}/gamePlayed/${uuid}/${SeasonUuid}/${TeamUuid}`
           )
