@@ -56,7 +56,8 @@ function Profil() {
             thisTrophy.earned
               ? `${date.toString().slice(4, 15)} - ${date
                   .toString()
-                  .slice(15, 21)}`
+                  .slice(15, 21)
+                  .replace(':', 'h')}`
               : ''
           }
         />
