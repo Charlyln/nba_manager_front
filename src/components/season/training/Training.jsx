@@ -20,31 +20,74 @@ import AddBoxIcon from '@material-ui/icons/AddBox'
 import ProgressBall from '../../mutliple/ProgressBall'
 import HeadShake from 'react-reveal/HeadShake'
 import AccountVerify from '../../mutliple/AccountVerify'
+import TrophySnackbar from '../../mutliple/TrophySnackbar'
 
 function Training() {
   const [myteamData, setMyTeamData] = useState({})
-  const [userUuid] = useState(window.localStorage.getItem('uuid'))
+  const [UserUuid] = useState(window.localStorage.getItem('uuid'))
   const [isLoading, setIsLoading] = useState(true)
   const [trainingLeft, setTrainingLeft] = useState(
     parseFloat(window.localStorage.getItem('trainingLeft'))
   )
   const [counter, setCounter] = useState(0)
+  const [myProfilData, setMyProfilData] = useState([])
+  const [openTrophySnackbar, setOpenTrophySnackbar] = useState(false)
+
+  const iOpenTrophySnackbar = () => {
+    setOpenTrophySnackbar(true)
+  }
+
+  const closeTrophySnackbar = (event, reason) => {
+    if (reason === 'clickaway') {
+      return
+    }
+    setOpenTrophySnackbar(false)
+  }
 
   useEffect(() => {
     getMyTeam()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const getMyProfil = async () => {
+    try {
+      const res = await Axios.get(`${apiUrl}/users/${UserUuid}`)
+      setMyProfilData(res.data)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   const getMyTeam = async () => {
     try {
-      const res = await Axios.get(`${apiUrl}/teams/myteam/${userUuid}`)
+      const res = await Axios.get(`${apiUrl}/teams/myteam/${UserUuid}`)
       setMyTeamData(res.data)
+      await getMyProfil()
       setIsLoading(false)
     } catch (err) {
       console.log(err)
     }
   }
 
+  const checkTrophy = async () => {
+    try {
+      if (
+        myProfilData.Trophies.find(
+          (trophy) => trophy.name === 'Increase a player stat' && trophy.earned
+        )
+      ) {
+        console.log('already earned')
+      } else {
+        await Axios.post(`${apiUrl}/trophies/earned/${UserUuid}`, {
+          name: 'Increase a player stat'
+        })
+        console.log('no earned')
+        iOpenTrophySnackbar()
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
   const riseUpScoring = async (min, max, uuid) => {
     try {
       if (trainingLeft > 0) {
@@ -53,6 +96,7 @@ function Training() {
             ptsMin: min + 1,
             ptsMax: max + 1
           })
+          checkTrophy()
           window.localStorage.setItem('trainingLeft', trainingLeft - 1)
           setTrainingLeft(trainingLeft - 1)
           await getMyTeam()
@@ -79,6 +123,7 @@ function Training() {
             rebMin: min + 0.4,
             rebMax: max + 0.3
           })
+          checkTrophy()
           window.localStorage.setItem('trainingLeft', trainingLeft - 1)
           setTrainingLeft(trainingLeft - 1)
           await getMyTeam()
@@ -105,6 +150,7 @@ function Training() {
             pasMin: min + 0.2,
             pasMax: max + 0.2
           })
+          checkTrophy()
           window.localStorage.setItem('trainingLeft', trainingLeft - 1)
           setTrainingLeft(trainingLeft - 1)
 
@@ -135,6 +181,11 @@ function Training() {
         </>
       ) : (
         <>
+          <TrophySnackbar
+            openTrophySnackbar={openTrophySnackbar}
+            closeTrophySnackbar={closeTrophySnackbar}
+            trophyName={'Increase a player stat'}
+          />
           <TableContainer
             component={Paper}
             style={{ width: '90%', margin: '100px auto', padding: '0px 5px' }}
