@@ -91,22 +91,23 @@ function Training() {
   const riseUpScoring = async (min, max, uuid) => {
     try {
       if (trainingLeft > 0) {
+        checkTrophy()
         if (min + max < 68) {
           await Axios.put(`${apiUrl}/players/${uuid}`, {
             ptsMin: min + 1,
             ptsMax: max + 1
           })
-          checkTrophy()
+
           window.localStorage.setItem('trainingLeft', trainingLeft - 1)
           setTrainingLeft(trainingLeft - 1)
-          await getMyTeam()
+          getMyTeam()
         } else if (min + max === 68) {
           await Axios.put(`${apiUrl}/players/${uuid}`, {
             ptsMin: min + 1
           })
           window.localStorage.setItem('trainingLeft', trainingLeft - 1)
           setTrainingLeft(trainingLeft - 1)
-          await getMyTeam()
+          getMyTeam()
         }
       } else {
         setCounter((counter) => counter + 1)
@@ -118,22 +119,23 @@ function Training() {
   const riseUpRebound = async (min, max, uuid) => {
     try {
       if (trainingLeft > 0) {
+        checkTrophy()
         if (min + max < 25) {
           await Axios.put(`${apiUrl}/players/${uuid}`, {
             rebMin: min + 0.4,
             rebMax: max + 0.3
           })
-          checkTrophy()
+
           window.localStorage.setItem('trainingLeft', trainingLeft - 1)
           setTrainingLeft(trainingLeft - 1)
-          await getMyTeam()
+          getMyTeam()
         } else if (min + max < 25.7) {
           await Axios.put(`${apiUrl}/players/${uuid}`, {
             rebMin: min + 0.2
           })
           window.localStorage.setItem('trainingLeft', trainingLeft - 1)
           setTrainingLeft(trainingLeft - 1)
-          await getMyTeam()
+          getMyTeam()
         }
       } else {
         setCounter((counter) => counter + 1)
@@ -145,16 +147,17 @@ function Training() {
   const riseUpPass = async (min, max, uuid) => {
     try {
       if (trainingLeft > 0) {
+        checkTrophy()
         if (min + max < 21) {
           await Axios.put(`${apiUrl}/players/${uuid}`, {
             pasMin: min + 0.2,
             pasMax: max + 0.2
           })
-          checkTrophy()
+
           window.localStorage.setItem('trainingLeft', trainingLeft - 1)
           setTrainingLeft(trainingLeft - 1)
 
-          await getMyTeam()
+          getMyTeam()
         } else if (min + max < 21.7) {
           await Axios.put(`${apiUrl}/players/${uuid}`, {
             pasMin: min + 0.2
@@ -162,7 +165,7 @@ function Training() {
           window.localStorage.setItem('trainingLeft', trainingLeft - 1)
           setTrainingLeft(trainingLeft - 1)
 
-          await getMyTeam()
+          getMyTeam()
         }
       } else {
         setCounter((counter) => counter + 1)
