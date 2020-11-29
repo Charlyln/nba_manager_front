@@ -11,6 +11,7 @@ import ProgressBall from '../../mutliple/ProgressBall'
 import HomeMessage from './HomeMessage'
 import FastForwardIcon from '@material-ui/icons/FastForward'
 import AccountVerify from '../../mutliple/AccountVerify'
+import TrophySnackbar from '../../mutliple/TrophySnackbar'
 
 function Home() {
   const [isLoading, setIsLoading] = useState(true)
@@ -25,6 +26,20 @@ function Home() {
   const [redirect, setRedirect] = useState(false)
   const [isOffSeason] = useState(window.localStorage.getItem('offseason'))
   const [openMessage, setOpenMessage] = useState(false)
+  const [mySeason, setMySeason] = useState({})
+  const [openTrophySnackbar, setOpenTrophySnackbar] = useState(false)
+
+  const iOpenTrophySnackbar = () => {
+    setOpenTrophySnackbar(true)
+  }
+
+  const closeTrophySnackbar = (event, reason) => {
+    if (reason === 'clickaway') {
+      return
+    }
+
+    setOpenTrophySnackbar(false)
+  }
 
   useEffect(() => {
     getTeams()
@@ -46,6 +61,7 @@ function Home() {
       setTeamsData(res.data)
 
       await getMyTeams()
+      await getMySeason()
 
       const timer = setTimeout(() => {
         setLogoLoading(false)
@@ -54,6 +70,15 @@ function Home() {
       return () => clearTimeout(timer)
     } catch (err) {
       console.log(err)
+    }
+  }
+
+  const getMySeason = async () => {
+    try {
+      const res = await Axios.get(`${apiUrl}/seasons/myseason/${SeasonUuid}`)
+      setMySeason(res.data)
+    } catch (error) {
+      console.log(error)
     }
   }
 
@@ -116,6 +141,11 @@ function Home() {
           <HomeMessage
             handleCloseMessage={handleCloseMessage}
             openMessage={openMessage}
+          />
+          <TrophySnackbar
+            openTrophySnackbar={openTrophySnackbar}
+            closeTrophySnackbar={closeTrophySnackbar}
+            trophyName={"Play a game"}
           />
           <div
             style={{
@@ -193,6 +223,9 @@ function Home() {
                       handleClickOpenMessage={handleClickOpenMessage}
                       teamsData={teamsData}
                       matchAllGames={matchAllGames}
+                      mySeason={mySeason}
+                      iOpenTrophySnackbar={iOpenTrophySnackbar}
+                      UserUuid={uuid}
                     />
                   </Paper>
                 )
