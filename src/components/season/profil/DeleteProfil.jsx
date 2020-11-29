@@ -47,7 +47,7 @@ function DeleteProfil({ myProfilData }) {
   return (
     <>
       <Button
-        size="small"
+        // size="small"
         variant="outlined"
         endIcon={<DeleteIcon />}
         onClick={handleClickOpen}
