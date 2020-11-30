@@ -65,9 +65,9 @@ function MyTeam() {
 
   return (
     <>
+      <AccountVerify />
       {isLoading ? (
         <>
-          <AccountVerify />
           <ProgressBall />
         </>
       ) : (

@@ -28,25 +28,23 @@ function Stats() {
       console.log(err)
     }
   }
-  if (isLoading) {
-    return (
-      <>
-        <AccountVerify />
-        <ProgressBall />
-      </>
-    )
-  }
+
   return (
     <>
-      <Grid style={{ marginTop: '100px', marginBottom: '100px' }}>
-        <div style={{ width: '90%', margin: 'auto' }}>
-          {myteamData.Players.sort(function (a, b) {
-            return new Date(b.value) - new Date(a.value)
-          }).map((player) => {
-            return <StatsCollapse player={player} SeasonUuid={SeasonUuid} />
-          })}
-        </div>
-      </Grid>
+      <AccountVerify />
+      {isLoading ? (
+        <ProgressBall />
+      ) : (
+        <Grid style={{ marginTop: '100px', marginBottom: '100px' }}>
+          <div style={{ width: '90%', margin: 'auto' }}>
+            {myteamData.Players.sort(function (a, b) {
+              return new Date(b.value) - new Date(a.value)
+            }).map((player) => {
+              return <StatsCollapse player={player} SeasonUuid={SeasonUuid} />
+            })}
+          </div>
+        </Grid>
+      )}
     </>
   )
 }

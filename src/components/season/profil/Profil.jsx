@@ -143,9 +143,9 @@ function Profil() {
 
   return (
     <>
+      <AccountVerify />
       {isLoading ? (
         <>
-          <AccountVerify />
           <ProgressBall />
         </>
       ) : (

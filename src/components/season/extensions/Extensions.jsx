@@ -75,9 +75,9 @@ function Extensions() {
 
   return (
     <>
+      <AccountVerify />
       {isLoading ? (
         <>
-          <AccountVerify />
           <ProgressBall />
         </>
       ) : (

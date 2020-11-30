@@ -339,130 +339,131 @@ export default function Trade() {
     )
   }
 
-  if (isLoading) {
-    return (
-      <>
-        <AccountVerify />
-        <ProgressBall />
-      </>
-    )
-  }
-
   return (
     <>
-      <TrophySnackbar
-        openTrophySnackbar={openTrophySnackbar}
-        closeTrophySnackbar={closeTrophySnackbar}
-        trophyName={trophyName}
-      />
-      <Grid container style={{ marginTop: '100px' }}>
-        <Grid item xs={12}>
-          <SpeedDials
-            myteamsUuid={myteamsData.uuid}
-            allTeamsData={allTeamsData}
-            getOtherTeams={getOtherTeams}
-            right={right}
+      <AccountVerify />
+      {isLoading ? (
+        <ProgressBall />
+      ) : (
+        <>
+          {' '}
+          <TrophySnackbar
+            openTrophySnackbar={openTrophySnackbar}
+            closeTrophySnackbar={closeTrophySnackbar}
+            trophyName={trophyName}
           />
-        </Grid>
-      </Grid>
-      <Grid
-        // spacing={2}
-        justify="center"
-        alignItems="center"
-        className={classes.root}
-        container
-        style={{ marginTop: '50px' }}
-      >
-        <Grid item>
-          <Paper className={classes.paper}>
-            <List dense component="div" role="list">
-              <ListItem>
-                <ListItemAvatar>
-                  <Avatar src={myteamsData.logo} />
-                </ListItemAvatar>
-                <ListItemText primary={`${myteamsData.name}`} />
-              </ListItem>
-              <Divider />
-              {customList(left)}
-            </List>
-          </Paper>
-        </Grid>
-        <Grid item xs={12} sm={12} md={2}>
-          <Grid container direction="column" alignItems="center">
-            <Button
-              variant="contained"
-              size="small"
-              color="primary"
-              className={classes.button}
-              onClick={handleCheckedRight}
-              disabled={leftChecked.length === 0}
-              aria-label="move selected right"
-            >
-              &gt;
-            </Button>
-            <Button
-              variant="contained"
-              size="small"
-              color="primary"
-              className={classes.button}
-              onClick={handleCheckedLeft}
-              disabled={rightChecked.length === 0}
-              aria-label="move selected left"
-            >
-              &lt;
-            </Button>
-
-            <Button
-              className={classes.button}
-              variant="contained"
-              size="small"
-              color="primary"
-              style={{ marginTop: '10px' }}
-              onClick={tradeIt}
-              disabled={
-                left.length !== 5 ||
-                right.length !== 5 ||
-                !right.find((player) => player.TeamUuid === myteamsData.uuid)
-              }
-            >
-              Trade
-            </Button>
+          <Grid container style={{ marginTop: '100px' }}>
+            <Grid item xs={12}>
+              <SpeedDials
+                myteamsUuid={myteamsData.uuid}
+                allTeamsData={allTeamsData}
+                getOtherTeams={getOtherTeams}
+                right={right}
+              />
+            </Grid>
           </Grid>
-        </Grid>
-        <Grid item className={classes.paper}>
-          <Paper>
-            <List dense component="div" role="list">
-              <ListItem>
-                <ListItemAvatar>
-                  {right.length > 0 ? (
-                    <Avatar src={teamsData.logo} />
-                  ) : (
-                    <Avatar>
-                      <SportsBasketballIcon />
-                    </Avatar>
-                  )}
-                </ListItemAvatar>
-                <ListItemText primary={`${teamsData.name || ''}`} />
-              </ListItem>
-              <Divider />
-              {customList(right)}
-            </List>
-          </Paper>
-        </Grid>
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <DialogTitle id="alert-dialog-title">{message}</DialogTitle>
-          <DialogActions>
-            <Button onClick={goBack} color="primary">
-              Back
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </Grid>
+          <Grid
+            // spacing={2}
+            justify="center"
+            alignItems="center"
+            className={classes.root}
+            container
+            style={{ marginTop: '50px' }}
+          >
+            <Grid item>
+              <Paper className={classes.paper}>
+                <List dense component="div" role="list">
+                  <ListItem>
+                    <ListItemAvatar>
+                      <Avatar src={myteamsData.logo} />
+                    </ListItemAvatar>
+                    <ListItemText primary={`${myteamsData.name}`} />
+                  </ListItem>
+                  <Divider />
+                  {customList(left)}
+                </List>
+              </Paper>
+            </Grid>
+            <Grid item xs={12} sm={12} md={2}>
+              <Grid container direction="column" alignItems="center">
+                <Button
+                  variant="contained"
+                  size="small"
+                  color="primary"
+                  className={classes.button}
+                  onClick={handleCheckedRight}
+                  disabled={leftChecked.length === 0}
+                  aria-label="move selected right"
+                >
+                  &gt;
+                </Button>
+                <Button
+                  variant="contained"
+                  size="small"
+                  color="primary"
+                  className={classes.button}
+                  onClick={handleCheckedLeft}
+                  disabled={rightChecked.length === 0}
+                  aria-label="move selected left"
+                >
+                  &lt;
+                </Button>
+
+                <Button
+                  className={classes.button}
+                  variant="contained"
+                  size="small"
+                  color="primary"
+                  style={{ marginTop: '10px' }}
+                  onClick={tradeIt}
+                  disabled={
+                    left.length !== 5 ||
+                    right.length !== 5 ||
+                    !right.find(
+                      (player) => player.TeamUuid === myteamsData.uuid
+                    )
+                  }
+                >
+                  Trade
+                </Button>
+              </Grid>
+            </Grid>
+            <Grid item className={classes.paper}>
+              <Paper>
+                <List dense component="div" role="list">
+                  <ListItem>
+                    <ListItemAvatar>
+                      {right.length > 0 ? (
+                        <Avatar src={teamsData.logo} />
+                      ) : (
+                        <Avatar>
+                          <SportsBasketballIcon />
+                        </Avatar>
+                      )}
+                    </ListItemAvatar>
+                    <ListItemText primary={`${teamsData.name || ''}`} />
+                  </ListItem>
+                  <Divider />
+                  {customList(right)}
+                </List>
+              </Paper>
+            </Grid>
+            <Dialog
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">{message}</DialogTitle>
+              <DialogActions>
+                <Button onClick={goBack} color="primary">
+                  Back
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </Grid>
+        </>
+      )}
     </>
   )
 }

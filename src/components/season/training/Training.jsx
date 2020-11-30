@@ -177,9 +177,9 @@ function Training() {
 
   return (
     <>
+      <AccountVerify />
       {isLoading ? (
         <>
-          <AccountVerify />
           <ProgressBall />
         </>
       ) : (

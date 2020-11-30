@@ -101,9 +101,9 @@ function Contracts() {
 
   return (
     <>
+      <AccountVerify />
       {isLoading ? (
         <>
-          <AccountVerify />
           <ProgressBall />
         </>
       ) : (

@@ -80,10 +80,10 @@ function Ranking() {
 
   return (
     <>
+      <AccountVerify />
       <Grid container style={{ marginTop: '100px', marginBottom: '100px' }}>
         {isLoading ? (
           <>
-            <AccountVerify />
             <ProgressBall />
           </>
         ) : (

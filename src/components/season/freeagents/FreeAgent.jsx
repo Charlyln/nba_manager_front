@@ -77,9 +77,9 @@ function FreeAgent() {
 
   return (
     <>
+      <AccountVerify />
       {isLoading ? (
         <>
-          <AccountVerify />
           <ProgressBall />
         </>
       ) : (
@@ -110,10 +110,7 @@ function FreeAgent() {
                   .sort(function (a, b) {
                     return new Date(b.value) - new Date(a.value)
                   })
-                  .filter(
-                    (player) =>
-                      !player.TeamUuid && player.age < 38 && !player.isRookie
-                  )
+                  .filter((player) => !player.TeamUuid && !player.isRookie)
 
                   .map((player) => (
                     <TableRow hover>
