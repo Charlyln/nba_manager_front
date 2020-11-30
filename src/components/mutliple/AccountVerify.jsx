@@ -1,21 +1,22 @@
 import Axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { Redirect, useHistory } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 import { apiUrl } from '../../apiUrl'
 
 function AccountVerify() {
-  const history = useHistory()
+  // const history = useHistory()
   const [UserUuid] = useState(window.localStorage.getItem('uuid'))
   const [SeasonUuid] = useState(window.localStorage.getItem('SeasonUuid'))
   const [TeamUuid] = useState(window.localStorage.getItem('TeamUuid'))
   const [canPlay] = useState(window.localStorage.getItem('canPlay'))
+  const [redirect, setRedirect] = useState(false)
 
   useEffect(() => {
     AccountVerifyRequest()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  if (!UserUuid || !SeasonUuid || !TeamUuid || !canPlay) {
+  if (!UserUuid || !SeasonUuid || !TeamUuid || !canPlay || redirect) {
     return <Redirect to="/" />
   }
   const AccountVerifyRequest = async () => {
@@ -24,7 +25,7 @@ function AccountVerify() {
       if (!res.data) {
         window.localStorage.removeItem('uuid')
         console.log('not found')
-        history.push('/')
+        setRedirect(true)
       } else {
         console.log('found')
       }
