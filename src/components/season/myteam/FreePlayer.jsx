@@ -29,7 +29,9 @@ function SignPlayer({
   const removePlayer = async () => {
     try {
       await Axios.put(`${apiUrl}/players/${player.uuid}`, {
-        TeamUuid: null
+        TeamUuid: null,
+        contractLeft: 0,
+        salary: 0
       })
       if (!TrophyData.earned) {
         await Axios.post(`${apiUrl}/trophies/earned/${UserUuid}`, {
