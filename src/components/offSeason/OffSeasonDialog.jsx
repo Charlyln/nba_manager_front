@@ -31,7 +31,11 @@ function OffSeasonDialog({
   myteamData,
   playersData,
   getPlayers,
-  getMyTeam
+  getMyTeam,
+  TrophyData,
+  iOpenTrophySnackbar,
+  trophyName,
+  getTrophy
 }) {
   const [open, setOpen] = React.useState(false)
   const [userUuid] = useState(window.localStorage.getItem('uuid'))
@@ -45,6 +49,7 @@ function OffSeasonDialog({
 
   const handleClickOpen = () => {
     setOpen(true)
+    getTrophy(step)
   }
 
   const handleClose = () => {
@@ -254,6 +259,12 @@ function OffSeasonDialog({
                               player={player}
                               contractLeft={player.contractLeft}
                               getMyTeamInDialog={getMyTeam}
+                              TrophyData={TrophyData}
+                              iOpenTrophySnackbar={iOpenTrophySnackbar}
+                              trophyName={trophyName}
+                              TeamUuid={TeamUuid}
+                              getTrophy={getTrophy}
+                              step={step}
                             />
                           </TableCell>
                         </>
@@ -340,6 +351,12 @@ function OffSeasonDialog({
                             <SignPlayer
                               player={player}
                               getPlayers={getPlayers}
+                              TrophyData={TrophyData}
+                              iOpenTrophySnackbar={iOpenTrophySnackbar}
+                              trophyName={trophyName}
+                              TeamUuid={TeamUuid}
+                              getTrophy={getTrophy}
+                              step={step}
                             />
                           </TableCell>
                         </>
