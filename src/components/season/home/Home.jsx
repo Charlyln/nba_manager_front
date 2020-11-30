@@ -28,6 +28,8 @@ function Home() {
   const [openMessage, setOpenMessage] = useState(false)
   const [mySeason, setMySeason] = useState({})
   const [openTrophySnackbar, setOpenTrophySnackbar] = useState(false)
+  const [TrophyData, setTrophyData] = useState([])
+  const [trophyName] = useState('Play a game')
 
   const iOpenTrophySnackbar = () => {
     setOpenTrophySnackbar(true)
@@ -41,11 +43,33 @@ function Home() {
     setOpenTrophySnackbar(false)
   }
 
+  const getTrophy = async () => {
+    try {
+      const res = await Axios.get(`${apiUrl}/trophies/${trophyName}/${uuid}`)
+      setTrophyData(res.data)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   useEffect(() => {
-    getTeams()
+    getAllData()
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  const getAllData = async () => {
+    try {
+      await getGames()
+      await getTrophy()
+      const timer = setTimeout(() => {
+        setIsLoading(false)
+      }, 500)
+      return () => clearTimeout(timer)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const handleClickOpenMessage = () => {
     setOpenMessage(true)
@@ -55,7 +79,7 @@ function Home() {
     setOpenMessage(false)
   }
 
-  const getTeams = async () => {
+  const getGames = async () => {
     try {
       const res = await Axios.get(`${apiUrl}/games/${SeasonUuid}/${TeamUuid}`)
       setTeamsData(res.data)
@@ -65,7 +89,6 @@ function Home() {
 
       const timer = setTimeout(() => {
         setLogoLoading(false)
-        setIsLoading(false)
       }, 1000)
       return () => clearTimeout(timer)
     } catch (err) {
@@ -98,8 +121,14 @@ function Home() {
       const SeasonUuid = teamsData[0].SeasonUuid
       await Axios.post(`${apiUrl}/gamePlayed/all/${SeasonUuid}`)
       window.localStorage.setItem('trainingLeft', 2)
+      if (!TrophyData.earned) {
+        await Axios.post(`${apiUrl}/trophies/earned/${uuid}`, {
+          name: trophyName
+        })
+        iOpenTrophySnackbar()
+      }
       const timer1 = setTimeout(() => {
-        getTeams()
+        getAllData()
       }, 2500)
 
       const timer2 = setTimeout(() => {
@@ -145,7 +174,7 @@ function Home() {
           <TrophySnackbar
             openTrophySnackbar={openTrophySnackbar}
             closeTrophySnackbar={closeTrophySnackbar}
-            trophyName={"Play a game"}
+            trophyName={trophyName}
           />
           <div
             style={{
@@ -211,7 +240,7 @@ function Home() {
                       team2={team.Visitor.Team}
                       gameUuid={team.uuid}
                       playerStats={team.PlayerStats}
-                      getTeams={getTeams}
+                      getGames={getGames}
                       game={team}
                       previousItem={previousItem || 'first'}
                       allGames={allGames}
@@ -226,6 +255,9 @@ function Home() {
                       mySeason={mySeason}
                       iOpenTrophySnackbar={iOpenTrophySnackbar}
                       UserUuid={uuid}
+                      TrophyData={TrophyData}
+                      trophyName={trophyName}
+                      getAllData={getAllData}
                     />
                   </Paper>
                 )

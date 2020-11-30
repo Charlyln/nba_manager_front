@@ -23,30 +23,23 @@ function Match({
   team1,
   gameUuid,
   playerStats,
-  getTeams,
+  getAllData,
   game,
   previousItem,
-  allGames,
   i,
-  simulateAllGames,
   allGameLoading,
   TeamUuid,
   myteamsData,
   handleClickOpenMessage,
   teamsData,
   matchAllGames,
-  nextItem,
-  mySeason,
   iOpenTrophySnackbar,
-  UserUuid
+  UserUuid,
+  TrophyData,
+  trophyName
 }) {
-  // const [done, setDone] = useState(false)
-  // const [result, setResult] = useState('')
-  // const [win, setWin] = useState('')
-  const [open, setOpen] = useState(false)
 
-  // const [score1, setScore1] = useState(0)
-  // const [score2, setScore2] = useState(0)
+  const [open, setOpen] = useState(false)
   const [matchLoading, setMatchLoading] = useState(false)
   const [isPlayed, setIsPlayed] = useState(game.team1)
   const [dataLoading, setDataLoading] = useState(false)
@@ -139,14 +132,14 @@ function Match({
           await Axios.post(
             `${apiUrl}/gamePlayed/${uuid}/${SeasonUuid}/${TeamUuid}`
           )
-          if (i === 0 && mySeason.startYear === 2020) {
+          if (!TrophyData.earned) {
             await Axios.post(`${apiUrl}/trophies/earned/${UserUuid}`, {
-              name: 'Play a game'
+              name: trophyName
             })
             iOpenTrophySnackbar()
           }
           window.localStorage.setItem('trainingLeft', 2)
-          getTeams()
+          getAllData()
           setCountUp(true)
           setMatchLoading(false)
         }
