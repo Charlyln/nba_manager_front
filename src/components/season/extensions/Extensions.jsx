@@ -12,22 +12,62 @@ import { Avatar, Box, CircularProgress, Typography } from '@material-ui/core'
 import SignPlayer from '../../mutliple/signPlayer/SignPlayer'
 import ProgressBall from '../../mutliple/ProgressBall'
 import AccountVerify from '../../mutliple/AccountVerify'
+import TrophySnackbar from '../../mutliple/TrophySnackbar'
 
 function Extensions() {
   const [myteamData, setMyTeamData] = useState({})
-  const [userUuid] = useState(window.localStorage.getItem('uuid'))
+  const [UserUuid] = useState(window.localStorage.getItem('uuid'))
   const [isLoading, setIsLoading] = useState(true)
+  const [openTrophySnackbar, setOpenTrophySnackbar] = useState(false)
+  const [TrophyData, setTrophyData] = useState([])
+  const [trophyName] = useState('Sign a extention')
+  const [TeamUuid] = useState(window.localStorage.getItem('TeamUuid'))
+
+  const iOpenTrophySnackbar = () => {
+    setOpenTrophySnackbar(true)
+  }
+
+  const closeTrophySnackbar = (event, reason) => {
+    if (reason === 'clickaway') {
+      return
+    }
+
+    setOpenTrophySnackbar(false)
+  }
+
+  const getTrophy = async () => {
+    try {
+      const res = await Axios.get(
+        `${apiUrl}/trophies/${trophyName}/${UserUuid}`
+      )
+      setTrophyData(res.data)
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
   useEffect(() => {
-    getMyTeam()
+    getAllData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const getAllData = async () => {
+    try {
+      await getMyTeam()
+      await getTrophy()
+      const timer = setTimeout(() => {
+        setIsLoading(false)
+      }, 500)
+      return () => clearTimeout(timer)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   const getMyTeam = async () => {
     try {
-      const res = await Axios.get(`${apiUrl}/teams/myteam/${userUuid}`)
+      const res = await Axios.get(`${apiUrl}/teams/myteam/${UserUuid}`)
       setMyTeamData(res.data)
-      setIsLoading(false)
     } catch (err) {
       console.log(err)
     }
@@ -42,6 +82,11 @@ function Extensions() {
         </>
       ) : (
         <>
+          <TrophySnackbar
+            openTrophySnackbar={openTrophySnackbar}
+            closeTrophySnackbar={closeTrophySnackbar}
+            trophyName={trophyName}
+          />
           <TableContainer
             component={Paper}
             style={{ width: '90%', margin: '100px auto ' }}
@@ -105,6 +150,11 @@ function Extensions() {
                           player={player}
                           getMyTeamData={getMyTeam}
                           contractLeft={player.contractLeft}
+                          TrophyData={TrophyData}
+                          iOpenTrophySnackbar={iOpenTrophySnackbar}
+                          trophyName={trophyName}
+                          TeamUuid={TeamUuid}
+                          getTrophy={getTrophy}
                         />
                       </TableCell>
                     </TableRow>
