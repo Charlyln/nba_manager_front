@@ -16,9 +16,6 @@ function AccountVerify() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  if (!UserUuid || !SeasonUuid || !TeamUuid || !canPlay || redirect) {
-    return <Redirect to="/" />
-  }
   const AccountVerifyRequest = async () => {
     try {
       const res = await Axios.get(`${apiUrl}/users/account/${UserUuid}`)
@@ -34,6 +31,9 @@ function AccountVerify() {
     }
   }
 
+  if (!UserUuid || !SeasonUuid || !TeamUuid || !canPlay || redirect) {
+    return <Redirect to="/" />
+  }
   return <></>
 }
 export default AccountVerify
