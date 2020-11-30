@@ -17,13 +17,15 @@ function SignPlayerDialog({
   handleCloseAll,
   interest,
   hasSign,
-  getMyTeam
+  getMyTeam,
+  myteamData,
+  salary
 }) {
   const [open, setOpen] = useState(false)
 
   const handleClickOpen = () => {
     setOpen(true)
-    if (interest > 85) {
+    if (myteamData.salaryCapLeft > salary && interest > 85) {
       proposeContract()
     }
   }
@@ -58,8 +60,11 @@ function SignPlayerDialog({
         aria-describedby="alert-dialog-description"
       >
         <DialogContent>
-           
-          {hasSign && interest >= 95 ? (
+          {myteamData.salaryCapLeft < salary ? (
+            <DialogContentText id="alert-dialog-description">
+              {`You don't have enough money.`}
+            </DialogContentText>
+          ) : hasSign && interest >= 95 ? (
             <DialogContentText id="alert-dialog-description">
               {`${player.firstName} ${player.lastName} has accepted your offer with joy !`}
             </DialogContentText>

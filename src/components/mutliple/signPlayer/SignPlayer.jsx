@@ -317,6 +317,8 @@ function SignPlayer({
                   interest={interest}
                   hasSign={hasSign}
                   getMyTeam={getMyTeam}
+                  myteamData={myteamData}
+                  salary={salary}
                 />
               </DialogActions>
             </>
