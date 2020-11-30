@@ -21,7 +21,13 @@ function SignPlayer({
   getPlayers,
   contractLeft,
   getMyTeamData,
-  getMyTeamInDialog
+  getMyTeamInDialog,
+  TrophyData,
+  iOpenTrophySnackbar,
+  trophyName,
+  TeamUuid,
+  getTrophy,
+  step
 }) {
   const [open, setOpen] = useState(false)
   const [myteamData, setMyTeamData] = useState({})
@@ -59,6 +65,17 @@ function SignPlayer({
         contractLeft: duration
       })
       setHasSign(true)
+      if (
+        contractLeft === 1 &&
+        player.TeamUuid === TeamUuid &&
+        !TrophyData.earned
+      ) {
+        await Axios.post(`${apiUrl}/trophies/earned/${userUuid}`, {
+          name: trophyName
+        })
+        iOpenTrophySnackbar()
+        getTrophy()
+      }
       // handleClose()
       // getMyTeamData()
     } else {
@@ -68,6 +85,28 @@ function SignPlayer({
         contractLeft: duration
       })
       setHasSign(true)
+
+      if (trophyName && player.TeamUuid === null && !TrophyData.earned) {
+        await Axios.post(`${apiUrl}/trophies/earned/${userUuid}`, {
+          name: trophyName
+        })
+        iOpenTrophySnackbar()
+        if (step) {
+          getTrophy(step)
+        } else {
+          getTrophy()
+        }
+      } else if (
+        contractLeft === 0 &&
+        player.TeamUuid === TeamUuid &&
+        !TrophyData.earned
+      ) {
+        await Axios.post(`${apiUrl}/trophies/earned/${userUuid}`, {
+          name: trophyName
+        })
+        iOpenTrophySnackbar()
+        getTrophy(step)
+      }
       // handleClose()
       // if (getPlayers) {
       //   getPlayers()
