@@ -24,10 +24,12 @@ function TeamChoice() {
   const [TeamUuid] = useState(window.localStorage.getItem('TeamUuid'))
   const [SeasonUuid] = useState(window.localStorage.getItem('SeasonUuid'))
   const [canPlay] = useState(window.localStorage.getItem('canPlay'))
+  const [TeamUuidToPost, setTeamUuidToPost] = useState('')
 
   const putTeamChoice = (uuid) => {
     setTeamChoice(uuid)
     window.localStorage.setItem('TeamUuid', uuid)
+    setTeamUuidToPost(uuid)
   }
 
   const SignupPost1 = async (e) => {
@@ -58,9 +60,9 @@ function TeamChoice() {
     setPostLoading(true)
     try {
       const res = await Axios.post(`${apiUrl}/dataCreation/games2/${uuid}`)
-      console.log(res.data)
-      const res2 = await Axios.post(`${apiUrl}/dataCreation/trophies/${uuid}`)
-      console.log(res2.data)
+      await Axios.post(`${apiUrl}/dataCreation/trophies/${uuid}`)
+      await Axios.post(`${apiUrl}/teams/salaryCap/${uuid}/${TeamUuidToPost}`)
+
       window.localStorage.setItem('SeasonUuid', res.data.uuid)
       window.localStorage.setItem('canPlay', '1')
       window.localStorage.setItem('trainingLeft', 2)
