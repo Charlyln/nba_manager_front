@@ -31,23 +31,47 @@ function Profil() {
   const [isLoading, setIsLoading] = useState(true)
   const [myProfilData, setMyProfilData] = useState([])
   const [UserUuid] = useState(window.localStorage.getItem('uuid'))
+  const [TeamUuid] = useState(window.localStorage.getItem('TeamUuid'))
+  const [SeasonUuid] = useState(window.localStorage.getItem('SeasonUuid'))
+  const [multipleData, setMultipleData] = useState({})
 
   useEffect(() => {
-    getMyProfil()
+    getAllData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  const getAllData = async () => {
+    try {
+      await getMyProfil()
+      await getMultipleData()
+      const timer = setTimeout(() => {
+        setIsLoading(false)
+      }, 500)
+      return () => clearTimeout(timer)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const getMyProfil = async () => {
     try {
       const res = await Axios.get(`${apiUrl}/users/${UserUuid}`)
       setMyProfilData(res.data)
-
-      const timer = setTimeout(() => {
-        setIsLoading(false)
-      }, 1000)
-      return () => clearTimeout(timer)
     } catch (err) {
       console.log(err)
+    }
+  }
+
+  const getMultipleData = async () => {
+    try {
+      const res = await Axios.post(`${apiUrl}/users/mulitpledata/${UserUuid}`, {
+        TeamUuid,
+        SeasonUuid
+      })
+      console.log(res.data)
+      setMultipleData(res.data)
+    } catch (error) {
+      console.log(error)
     }
   }
 
@@ -175,7 +199,7 @@ function Profil() {
                     </Box>
                   </ListItem>
                   <ListItem>
-                    <ListItemText>Account creation date </ListItemText>
+                    <ListItemText>Account creation </ListItemText>
                     <ListItemSecondaryAction>
                       <ListItemText
                         secondary={`${new Date(myProfilData.createdAt)
@@ -185,7 +209,7 @@ function Profil() {
                     </ListItemSecondaryAction>
                   </ListItem>
                   <ListItem>
-                    <ListItemText>Earned trophies progress</ListItemText>
+                    <ListItemText>Trophies progress</ListItemText>
                     <ListItemSecondaryAction>
                       <StatBox
                         value={getTrophyProgress()}
@@ -194,7 +218,7 @@ function Profil() {
                     </ListItemSecondaryAction>
                   </ListItem>
                   <ListItem>
-                    <ListItemText>Earned trophies number</ListItemText>
+                    <ListItemText>Earned Trophies</ListItemText>
                     <ListItemSecondaryAction>
                       <StatBox text={`${getTrophyNumber()}`} />
                     </ListItemSecondaryAction>
@@ -206,34 +230,36 @@ function Profil() {
                     </ListItemSecondaryAction>
                   </ListItem>
                   <ListItem>
-                    <ListItemText>Number of games played</ListItemText>
+                    <ListItemText>Seasons completed</ListItemText>
                     <ListItemSecondaryAction>
-                      <StatBox text={'78'} />
+                      <StatBox text={`${multipleData.nbrSeasonsCompleted}`} />
                     </ListItemSecondaryAction>
                   </ListItem>
                   <ListItem>
-                    <ListItemText>Number of seasons played</ListItemText>
+                    <ListItemText>Games played</ListItemText>
                     <ListItemSecondaryAction>
-                      <StatBox text={'4'} />
+                      <StatBox text={`${multipleData.nbrGamePlayed}`} />
                     </ListItemSecondaryAction>
                   </ListItem>
                   <ListItem>
-                    <ListItemText>Number of wins </ListItemText>
+                    <ListItemText>Wins</ListItemText>
                     <ListItemSecondaryAction>
-                      <StatBox text={'56'} />
+                      <StatBox text={`${multipleData.nbrGameWined}`} />
                     </ListItemSecondaryAction>
                   </ListItem>
                   <ListItem>
-                    <ListItemText>Percentage of win </ListItemText>
+                    <ListItemText>Defeats</ListItemText>
                     <ListItemSecondaryAction>
-                      <StatBox value={52} text={'52%'} />
+                      <StatBox text={`${multipleData.nbrGameLoosed}`} />
                     </ListItemSecondaryAction>
                   </ListItem>
-
                   <ListItem>
-                    <ListItemText>Most points in a game </ListItemText>
+                    <ListItemText>Win percentage</ListItemText>
                     <ListItemSecondaryAction>
-                      <StatBox x text={'149'} />
+                      <StatBox
+                        value={multipleData.percentageWining}
+                        text={`${Math.round(multipleData.percentageWining)}%`}
+                      />
                     </ListItemSecondaryAction>
                   </ListItem>
                 </List>
