@@ -71,6 +71,24 @@ function Profil() {
     return trophyLeft.length
   }
 
+  const checkTrophyView = () => {
+    const filteredTrophies = myProfilData.Trophies.filter(
+      (trophy) => trophy.earned && !trophy.isViewed
+    )
+    if (filteredTrophies.length > 0) {
+      postViewedTrophy()
+    }
+  }
+
+  const postViewedTrophy = async () => {
+    try {
+      const res = await Axios.post(`${apiUrl}/trophies/viewed/${UserUuid}`)
+      console.log(res.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   const displayItem = (thisTrophy) => {
     const rightDateFormat = new Date(thisTrophy.updatedAt)
     const date = rightDateFormat.toString().slice(4, 15)
@@ -82,26 +100,18 @@ function Profil() {
       <ListItemText
         primary={thisTrophy.name}
         secondary={
-          <Badge
-            color="error"
-            variant="dot"
-            invisible={
-              !thisTrophy.earned || (thisTrophy.earned && timeDifference > 1)
-            }
+          <Typography
+            style={{
+              fontSize: '0.7rem',
+              color: 'rgba(255, 255, 255, 0.7)'
+            }}
           >
-            <Typography
-              style={{
-                fontSize: '0.7rem',
-                color: 'rgba(255, 255, 255, 0.7)'
-              }}
-            >
-              {thisTrophy.earned && timeDifference < 3
-                ? 'Just now'
-                : thisTrophy.earned
-                ? `${date} - ${hour}`
-                : ''}
-            </Typography>
-          </Badge>
+            {thisTrophy.earned && timeDifference < 2
+              ? 'Just now'
+              : thisTrophy.earned
+              ? `${date} - ${hour}`
+              : ''}
+          </Typography>
         }
       />
     )
@@ -116,6 +126,7 @@ function Profil() {
         </>
       ) : (
         <>
+          {checkTrophyView()}
           <Grid
             container
             style={{
@@ -272,51 +283,54 @@ function Profil() {
                         <ListItemSecondaryAction>
                           <FormControlLabel
                             control={
-                              <Checkbox
-                                icon={
-                                  <img
-                                    style={{
-                                      width: '30px',
-                                      height: '30px',
-                                      opacity: 0.1
-                                    }}
-                                    src={trophyIcon}
-                                    alt="trophy"
-                                  />
-                                }
-                                checkedIcon={
-                                  <img
-                                    style={{
-                                      width: '30px',
-                                      height: '30px'
-                                    }}
-                                    src={
-                                      trophy.difficulty === 2
-                                        ? silverTrophy
-                                        : trophy.difficulty > 2
-                                        ? goldTrophy
-                                        : bronzeTrophy
-                                    }
-                                    alt="trophy"
-                                  />
-                                }
-                                name="checkedH"
+                              <Badge
                                 disabled
-                                color="primary"
-                                checked={trophy.earned}
-                                style={{
-                                  color: trophy.earned ? '#008B8B' : ''
-                                }}
-                              />
+                                color="error"
+                                variant="dot"
+                                invisible={
+                                  !trophy.earned ||
+                                  (trophy.isViewed && trophy.earned)
+                                }
+                              >
+                                <Checkbox
+                                  icon={
+                                    <img
+                                      style={{
+                                        width: '30px',
+                                        height: '30px',
+                                        opacity: 0.1
+                                      }}
+                                      src={trophyIcon}
+                                      alt="trophy"
+                                    />
+                                  }
+                                  checkedIcon={
+                                    <img
+                                      style={{
+                                        width: '30px',
+                                        height: '30px'
+                                      }}
+                                      src={
+                                        trophy.color === 'silver'
+                                          ? silverTrophy
+                                          : trophy.color === 'gold'
+                                          ? goldTrophy
+                                          : bronzeTrophy
+                                      }
+                                      alt="trophy"
+                                    />
+                                  }
+                                  name="checkedH"
+                                  disabled
+                                  color="primary"
+                                  checked={trophy.earned}
+                                  style={{
+                                    color: trophy.earned ? '#008B8B' : ''
+                                  }}
+                                />
+                              </Badge>
                             }
                           />
-                          {/* 
-                          <Checkbox
-                            disabled
-                            color="primary"
-                            checked={trophy.earned}
-                            style={{ color: trophy.earned ? '#008B8B' : '' }}
-                          /> */}
                         </ListItemSecondaryAction>
                       </ListItem>
                     </>
