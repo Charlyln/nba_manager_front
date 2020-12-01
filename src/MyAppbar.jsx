@@ -7,7 +7,7 @@ import {
   Paper,
   Typography
 } from '@material-ui/core'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import TodayIcon from '@material-ui/icons/Today'
 import SwapHorizIcon from '@material-ui/icons/SwapHoriz'
 import GroupIcon from '@material-ui/icons/Group'
@@ -26,20 +26,10 @@ import HelpIcon from '@material-ui/icons/Help'
 import TocIcon from '@material-ui/icons/Toc'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 import PersonIcon from '@material-ui/icons/Person'
-import AccountVerify from './components/mutliple/AccountVerify'
 
 function MyAppBar() {
   const [open, setOpen] = useState(false)
-  const [pageName, setPageName] = useState('')
-  // const [TeamUuid] = useState(window.localStorage.getItem('TeamUuid'))
-  // const [SeasonUuid] = useState(window.localStorage.getItem('SeasonUuid'))
-  // const [canPlay] = useState(window.localStorage.getItem('canPlay'))
-  // const [UserUuid] = useState(window.localStorage.getItem('uuid'))
-  // const [page] = useState(useLocation().pathname)
-  // const [page2, setPage2] = useState('ok')
-  // const [offSeasonStep] = useState(
-  //   parseFloat(window.localStorage.getItem('offseason'))
-  // )
+  let location = useLocation()
 
   const links = [
     {
@@ -49,7 +39,7 @@ function MyAppBar() {
     },
     {
       to: '/trade',
-      name: 'Make a trade',
+      name: 'Trade',
       icon: <SwapHorizIcon />
     },
     {
@@ -127,41 +117,22 @@ function MyAppBar() {
     setOpen(false)
   }
 
-  const changePage = (linkName) => {
-    setPageName(linkName)
-    handleClose()
+  const getPageName = () => {
+    const page = links.find((link) => link.to === location.pathname)
+    return page.name
   }
-
-  // const reload = () => {
-  //   window.localStorage.removeItem('offseason')
-  //   window.localStorage.removeItem('TeamUuid')
-  //   window.localStorage.removeItem('uuid')
-  //   window.localStorage.removeItem('SeasonUuid')
-  //   window.localStorage.removeItem('trainingLeft')
-  //   window.localStorage.removeItem('canPlay')
-  // }
 
   return (
     <>
-      <AccountVerify />
       <AppBar className="appBar">
         <Toolbar>
-          {/* {page === '/offseason' && page2 === '/offseason' ? (
-            ''
-          ) : ( */}
           <IconButton aria-label="menu" edge="start" onClick={handleClickOpen}>
             <MenuIcon style={{ color: '#2F2E2C' }} />
           </IconButton>
-          {/* // )} */}
 
           <Typography style={{ color: '#2F2E2C' }} variant="h6">
-            {pageName}
+            {getPageName()}
           </Typography>
-
-          {/* <IconButton onClick={reload}></IconButton>
-          <Link to="/">
-            <IconButton></IconButton>
-          </Link> */}
         </Toolbar>
       </AppBar>
       <Dialog fullScreen open={open} onClose={handleClose}>
@@ -194,7 +165,7 @@ function MyAppBar() {
                 <Button
                   startIcon={link.icon}
                   style={{ width: '200px', height: '100px' }}
-                  onClick={() => changePage(link.name)}
+                  onClick={handleClose}
                 >
                   {link.name}
                 </Button>
