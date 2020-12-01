@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
 import Jump from 'react-reveal/Jump'
 import Zoom from 'react-reveal/Zoom'
-import logo from '../../logo.png'
+import logo from '../../images/logo.png'
 import { useState } from 'react'
 import styles from './start.module.css'
 

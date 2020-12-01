@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styles from './progressBall.module.css'
-import logo from '../../logo.png'
+import logo from '../../images/logo.png'
 import Jump from 'react-reveal/Jump'
 import { Grid } from '@material-ui/core'
 

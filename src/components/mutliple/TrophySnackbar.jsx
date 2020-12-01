@@ -1,6 +1,6 @@
 import { Fab, Grid, Snackbar, Typography } from '@material-ui/core'
 import React from 'react'
-import trophy from '../../trophy.png'
+import trophy from '../../images/trophy.png'
 import { Link } from 'react-router-dom'
 
 function TrophySnackbar({
