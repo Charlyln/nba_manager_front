@@ -48,6 +48,7 @@ ReactDOM.render(
       <CssBaseline />
       <BrowserRouter>
         <MyAppBar />
+        {console.log(process.env)}
         <Switch>
           <Route exact path="/" component={Start} />
           <Route exact path="/signup" component={SignUp} />
