@@ -33,7 +33,8 @@ import HelpIcon from '@material-ui/icons/Help'
 import TocIcon from '@material-ui/icons/Toc'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 import PersonIcon from '@material-ui/icons/Person'
-import trophyIcon from './images/trophyWhite.png'
+import trophyIcon from './images/trophyIconDark.png'
+import trophyIconLight from './images/trophyIconLight.png'
 
 const useStyles = makeStyles({
   list: {
@@ -47,6 +48,7 @@ const useStyles = makeStyles({
 function MyAppBar() {
   const classes = useStyles()
   const [open, setOpen] = useState(false)
+  const [trophyIsSelected, setTrophyIsSelected] = useState(false)
   let location = useLocation()
 
   const links = [
@@ -124,7 +126,7 @@ function MyAppBar() {
             width: '25px',
             height: '25px'
           }}
-          src={trophyIcon}
+          src={trophyIsSelected ? trophyIconLight : trophyIcon}
           alt="trophy"
         />
       )
@@ -155,6 +157,9 @@ function MyAppBar() {
       return page.name
     }
   }
+  const putRightTrophyIcon = () => {
+    setTrophyIsSelected((trophyIsSelected) => !trophyIsSelected)
+  }
 
   const list = () => (
     <div role="presentation" className={classes.list}>
@@ -164,6 +169,8 @@ function MyAppBar() {
             <Link
               to={link.to}
               style={{ textDecoration: 'none', color: 'white' }}
+              onMouseEnter={link.name === 'Trophies' ? putRightTrophyIcon : ''}
+              onMouseLeave={link.name === 'Trophies' ? putRightTrophyIcon : ''}
             >
               <ListItem button key={link.name} onClick={handleClose}>
                 <ListItemIcon>{link.icon}</ListItemIcon>
@@ -171,8 +178,9 @@ function MyAppBar() {
               </ListItem>
             </Link>
             {link.to === '/extension' ||
+            link.to === '/home' ||
             link.to === '/allteams' ||
-            link.to === '/allteams' ? (
+            link.to === '/history' ? (
               <Divider />
             ) : (
               ''
