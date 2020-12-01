@@ -3,10 +3,8 @@ import {
   AppBar,
   IconButton,
   Toolbar,
-  Button,
-  Paper,
   Typography,
-  Drawer,
+  SwipeableDrawer,
   List,
   ListItem,
   ListItemIcon,
@@ -18,8 +16,6 @@ import { Link, useLocation } from 'react-router-dom'
 import TodayIcon from '@material-ui/icons/Today'
 import SwapHorizIcon from '@material-ui/icons/SwapHoriz'
 import GroupIcon from '@material-ui/icons/Group'
-import Dialog from '@material-ui/core/Dialog'
-import CloseIcon from '@material-ui/icons/Close'
 import MenuIcon from '@material-ui/icons/Menu'
 import DirectionsRunIcon from '@material-ui/icons/DirectionsRun'
 import TrendingUpIcon from '@material-ui/icons/TrendingUp'
@@ -205,10 +201,10 @@ function MyAppBar() {
         </Toolbar>
       </AppBar>
 
-      {/* <Button onClick={toggleDrawer(anchor, true)}>{anchor}</Button> */}
-      <Drawer anchor="left" open={open} onClose={handleClose}>
+      {/* <Button onClick={toggleSwipeableDrawer(anchor, true)}>{anchor}</Button> */}
+      <SwipeableDrawer anchor="left" open={open} onClose={handleClose}>
         {list()}
-      </Drawer>
+      </SwipeableDrawer>
 
       {/* <Dialog fullScreen open={open} onClose={handleClose}>
         <AppBar>
