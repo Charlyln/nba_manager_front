@@ -5,7 +5,14 @@ import {
   Toolbar,
   Button,
   Paper,
-  Typography
+  Typography,
+  Drawer,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  makeStyles,
+  Divider
 } from '@material-ui/core'
 import { Link, useLocation } from 'react-router-dom'
 import TodayIcon from '@material-ui/icons/Today'
@@ -26,8 +33,19 @@ import HelpIcon from '@material-ui/icons/Help'
 import TocIcon from '@material-ui/icons/Toc'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 import PersonIcon from '@material-ui/icons/Person'
+import trophyIcon from './images/trophyWhite.png'
+
+const useStyles = makeStyles({
+  list: {
+    width: 250
+  },
+  fullList: {
+    width: 'auto'
+  }
+})
 
 function MyAppBar() {
+  const classes = useStyles()
   const [open, setOpen] = useState(false)
   let location = useLocation()
 
@@ -38,19 +56,9 @@ function MyAppBar() {
       icon: <TodayIcon />
     },
     {
-      to: '/trade',
-      name: 'Trade',
-      icon: <SwapHorizIcon />
-    },
-    {
       to: '/myteam',
       name: 'My team',
       icon: <PersonIcon />
-    },
-    {
-      to: '/allteams',
-      name: 'All teams',
-      icon: <GroupIcon />
     },
     {
       to: '/training',
@@ -68,6 +76,11 @@ function MyAppBar() {
       icon: <DescriptionIcon />
     },
     {
+      to: '/extension',
+      name: 'Extensions',
+      icon: <PostAddIcon />
+    },
+    {
       to: '/playerfinder',
       name: 'Player finder',
       icon: <SearchIcon />
@@ -78,9 +91,14 @@ function MyAppBar() {
       icon: <GroupAddIcon />
     },
     {
-      to: '/history',
-      name: 'Stats history',
-      icon: <HistoryIcon />
+      to: '/trade',
+      name: 'Trade',
+      icon: <SwapHorizIcon />
+    },
+    {
+      to: '/allteams',
+      name: 'All teams',
+      icon: <GroupIcon />
     },
     {
       to: '/ranking',
@@ -93,9 +111,23 @@ function MyAppBar() {
       icon: <StarsIcon />
     },
     {
-      to: '/extension',
-      name: 'Extensions',
-      icon: <PostAddIcon />
+      to: '/history',
+      name: 'Stats history',
+      icon: <HistoryIcon />
+    },
+    {
+      to: '/profil',
+      name: 'Trophies',
+      icon: (
+        <img
+          style={{
+            width: '30px',
+            height: '30px'
+          }}
+          src={trophyIcon}
+          alt="trophy"
+        />
+      )
     },
     {
       to: '/profil',
@@ -122,6 +154,27 @@ function MyAppBar() {
     return page.name
   }
 
+  const list = () => (
+    <div role="presentation" className={classes.list}>
+      <List>
+        {links.map((link) => (
+          <>
+            <Link
+              to={link.to}
+              style={{ textDecoration: 'none', color: 'white' }}
+            >
+              <ListItem button key={link.name} onClick={handleClose}>
+                <ListItemIcon>{link.icon}</ListItemIcon>
+                <ListItemText primary={link.name} />
+              </ListItem>
+            </Link>
+            {link.to === '/trade' ? <Divider /> : ''}
+          </>
+        ))}
+      </List>
+    </div>
+  )
+
   return (
     <>
       <AppBar className="appBar">
@@ -135,7 +188,13 @@ function MyAppBar() {
           </Typography>
         </Toolbar>
       </AppBar>
-      <Dialog fullScreen open={open} onClose={handleClose}>
+
+      {/* <Button onClick={toggleDrawer(anchor, true)}>{anchor}</Button> */}
+      <Drawer anchor="left" open={open} onClose={handleClose}>
+        {list()}
+      </Drawer>
+
+      {/* <Dialog fullScreen open={open} onClose={handleClose}>
         <AppBar>
           <Toolbar>
             <IconButton
@@ -173,7 +232,7 @@ function MyAppBar() {
             </Paper>
           ))}
         </div>
-      </Dialog>
+      </Dialog> */}
     </>
   )
 }
