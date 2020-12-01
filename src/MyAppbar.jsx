@@ -66,11 +66,6 @@ function MyAppBar() {
       icon: <DirectionsRunIcon />
     },
     {
-      to: '/stats',
-      name: 'Season stats',
-      icon: <TrendingUpIcon />
-    },
-    {
       to: '/contracts',
       name: 'Contracts',
       icon: <DescriptionIcon />
@@ -106,6 +101,11 @@ function MyAppBar() {
       icon: <TocIcon />
     },
     {
+      to: '/stats',
+      name: 'Season stats',
+      icon: <TrendingUpIcon />
+    },
+    {
       to: '/standings',
       name: 'Best players',
       icon: <StarsIcon />
@@ -121,8 +121,8 @@ function MyAppBar() {
       icon: (
         <img
           style={{
-            width: '30px',
-            height: '30px'
+            width: '25px',
+            height: '25px'
           }}
           src={trophyIcon}
           alt="trophy"
@@ -151,7 +151,9 @@ function MyAppBar() {
 
   const getPageName = () => {
     const page = links.find((link) => link.to === location.pathname)
-    return page.name
+    if (page) {
+      return page.name
+    }
   }
 
   const list = () => (
@@ -168,7 +170,13 @@ function MyAppBar() {
                 <ListItemText primary={link.name} />
               </ListItem>
             </Link>
-            {link.to === '/trade' ? <Divider /> : ''}
+            {link.to === '/extension' ||
+            link.to === '/allteams' ||
+            link.to === '/allteams' ? (
+              <Divider />
+            ) : (
+              ''
+            )}
           </>
         ))}
       </List>
