@@ -168,7 +168,12 @@ function MyAppBar() {
               onMouseEnter={link.name === 'Trophies' ? putRightTrophyIcon : ''}
               onMouseLeave={link.name === 'Trophies' ? putRightTrophyIcon : ''}
             >
-              <ListItem button key={link.name} onClick={handleClose}>
+              <ListItem
+                button
+                key={link.name}
+                onClick={handleClose}
+                style={{ padding: '3px 16px 3px 16px' }}
+              >
                 <ListItemIcon>{link.icon}</ListItemIcon>
                 <ListItemText primary={link.name} />
               </ListItem>
@@ -201,7 +206,6 @@ function MyAppBar() {
         </Toolbar>
       </AppBar>
 
-      {/* <Button onClick={toggleSwipeableDrawer(anchor, true)}>{anchor}</Button> */}
       <SwipeableDrawer anchor="left" open={open} onClose={handleClose}>
         {list()}
       </SwipeableDrawer>
