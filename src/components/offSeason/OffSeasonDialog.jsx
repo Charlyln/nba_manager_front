@@ -265,6 +265,8 @@ function OffSeasonDialog({
                               TeamUuid={TeamUuid}
                               getTrophy={getTrophy}
                               step={step}
+                              myteamData={myteamData}
+                              getMyTeam={getMyTeam}
                             />
                           </TableCell>
                         </>
@@ -357,6 +359,8 @@ function OffSeasonDialog({
                               TeamUuid={TeamUuid}
                               getTrophy={getTrophy}
                               step={step}
+                              myteamData={myteamData}
+                              getMyTeam={getMyTeam}
                             />
                           </TableCell>
                         </>

@@ -148,13 +148,14 @@ function Extensions() {
                       <TableCell align="center">
                         <SignPlayer
                           player={player}
-                          getMyTeamData={getMyTeam}
+                          getMyTeam={getMyTeam}
                           contractLeft={player.contractLeft}
                           TrophyData={TrophyData}
                           iOpenTrophySnackbar={iOpenTrophySnackbar}
                           trophyName={trophyName}
                           TeamUuid={TeamUuid}
                           getTrophy={getTrophy}
+                          myteamData={myteamData}
                         />
                       </TableCell>
                     </TableRow>

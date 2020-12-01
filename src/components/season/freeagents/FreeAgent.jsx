@@ -15,7 +15,7 @@ import AccountVerify from '../../mutliple/AccountVerify'
 import TrophySnackbar from '../../mutliple/TrophySnackbar'
 
 function FreeAgent() {
-  // const [playersData, setPlayersData] = useState({})
+  const [myteamData, setMyTeamData] = useState({})
   const [UserUuid] = useState(window.localStorage.getItem('uuid'))
   const [isLoading, setIsLoading] = useState(true)
   const [namesFiltered, SetnamesFiltered] = useState([])
@@ -47,6 +47,15 @@ function FreeAgent() {
     }
   }
 
+  const getMyTeam = async () => {
+    try {
+      const res = await Axios.get(`${apiUrl}/teams/myteam/${UserUuid}`)
+      setMyTeamData(res.data)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   useEffect(() => {
     getAllData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -56,6 +65,7 @@ function FreeAgent() {
     try {
       await getPlayers()
       await getTrophy()
+      await getMyTeam()
       const timer = setTimeout(() => {
         setIsLoading(false)
       }, 500)
@@ -68,7 +78,6 @@ function FreeAgent() {
   const getPlayers = async () => {
     try {
       const res = await Axios.get(`${apiUrl}/players/${UserUuid}`)
-      // setPlayersData(res.data)
       SetnamesFiltered(res.data)
     } catch (err) {
       console.log(err)
@@ -168,6 +177,8 @@ function FreeAgent() {
                           trophyName={trophyName}
                           TeamUuid={TeamUuid}
                           getTrophy={getTrophy}
+                          myteamData={myteamData}
+                          getMyTeam={getMyTeam}
                         />
                       </TableCell>
                     </TableRow>

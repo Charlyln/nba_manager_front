@@ -77,7 +77,6 @@ function Offseason() {
 
   useEffect(() => {
     getAllData()
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -86,10 +85,7 @@ function Offseason() {
       await getMySeason()
       await getPlayers()
       await getMyTeam()
-      const timer = setTimeout(() => {
-        setIsLoading(false)
-      }, 500)
-      return () => clearTimeout(timer)
+      setIsLoading(false)
     } catch (error) {
       console.log(error)
     }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import {
   Avatar,
   Grid,
@@ -20,43 +20,21 @@ function SignPlayer({
   player,
   getPlayers,
   contractLeft,
-  getMyTeamData,
-  getMyTeamInDialog,
+  getMyTeam,
   TrophyData,
   iOpenTrophySnackbar,
   trophyName,
   TeamUuid,
   getTrophy,
-  step
+  step,
+  myteamData
 }) {
   const [open, setOpen] = useState(false)
-  const [myteamData, setMyTeamData] = useState({})
   const [userUuid] = useState(window.localStorage.getItem('uuid'))
-  const [isLoading, setIsLoading] = useState(true)
   const [salary, setSalary] = useState(4000000)
   const [duration, setDuration] = useState(3)
   const [interest, setInterest] = useState(0)
   const [hasSign, setHasSign] = useState(false)
-
-  useEffect(() => {
-    getMyTeam()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  useEffect(() => {
-    console.log(salary)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [salary])
-
-  const getMyTeam = async () => {
-    try {
-      const res = await Axios.get(`${apiUrl}/teams/myteam/${userUuid}`)
-      setMyTeamData(res.data)
-      setIsLoading(false)
-    } catch (err) {
-      console.log(err)
-    }
-  }
 
   const proposeContract = async () => {
     if (contractLeft) {
@@ -76,8 +54,6 @@ function SignPlayer({
         iOpenTrophySnackbar()
         getTrophy()
       }
-      // handleClose()
-      // getMyTeamData()
     } else {
       await Axios.put(`${apiUrl}/players/${player.uuid}`, {
         TeamUuid: myteamData.uuid,
@@ -167,18 +143,6 @@ function SignPlayer({
     }
   }
 
-  // const getDefaultValue = (PlayerValue) => {
-  //   if (PlayerValue < 80) {
-  //     return 3
-  //   } else if (PlayerValue >= 80 && PlayerValue < 85) {
-  //     return 10
-  //   } else if (PlayerValue >= 85 && PlayerValue < 90) {
-  //     return 15
-  //   } else if (PlayerValue >= 90) {
-  //     return 25
-  //   }
-  // }
-
   const marks = [
     {
       value: 1,
@@ -228,110 +192,105 @@ function SignPlayer({
         <CreateIcon color="primary" />
       </IconButton>
 
-      {isLoading ? (
-        ''
-      ) : (
-        <Dialog
-          maxWidth="md"
-          fullWidth
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          {/* myteamData.Players.length > 4 && contractLeft !== 0 */}
-          {(player.contractLeft < 2 && player.TeamUuid === myteamData.uuid) ||
-          (!player.TeamUuid && myteamData.Players.length < 5) ? (
-            <>
-              <DialogTitle id="alert-dialog-title">{`Propose a ${
-                contractLeft ? 'extension' : 'contract'
-              } to ${player.firstName} ${player.lastName}`}</DialogTitle>
-              <DialogContent>
-                <Grid container>
-                  <Grid
-                    item
-                    xs={6}
-                    style={{ alignSelf: 'center', padding: '40px 50px' }}
-                  >
-                    <Avatar
-                      style={{
-                        margin: 'auto',
-                        width: '150px',
-                        height: '150px'
-                      }}
-                      src={player.photo}
-                    />
-                    <Typography id="discrete-slider" gutterBottom>
-                      Player interest
-                    </Typography>
+      <Dialog
+        maxWidth="md"
+        fullWidth
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        {(player.contractLeft < 2 && player.TeamUuid === myteamData.uuid) ||
+        (!player.TeamUuid && myteamData.Players.length < 5) ? (
+          <>
+            <DialogTitle id="alert-dialog-title">{`Propose a ${
+              contractLeft ? 'extension' : 'contract'
+            } to ${player.firstName} ${player.lastName}`}</DialogTitle>
+            <DialogContent>
+              <Grid container>
+                <Grid
+                  item
+                  xs={6}
+                  style={{ alignSelf: 'center', padding: '40px 50px' }}
+                >
+                  <Avatar
+                    style={{
+                      margin: 'auto',
+                      width: '150px',
+                      height: '150px'
+                    }}
+                    src={player.photo}
+                  />
+                  <Typography id="discrete-slider" gutterBottom>
+                    Player interest
+                  </Typography>
 
-                    <LinearProgress
-                      color="secondary"
-                      variant="determinate"
-                      value={getValue(player.value)}
-                    />
-                  </Grid>
-                  <Grid
-                    item
-                    xs={6}
-                    style={{ alignSelf: 'center', padding: '40px 30px' }}
-                  >
-                    <Typography id="discrete-slider" gutterBottom>
-                      Salary
-                    </Typography>
-                    <Slider
-                      marks={marks}
-                      defaultValue={4}
-                      valueLabelDisplay="on"
-                      step={1}
-                      min={1}
-                      max={30}
-                      onChange={(e, value) => handleChange(value, player.value)}
-                    />
-
-                    <Typography id="discrete-slider" gutterBottom>
-                      Duration
-                    </Typography>
-                    <Slider
-                      defaultValue={3}
-                      aria-labelledby="discrete-slider"
-                      valueLabelDisplay="on"
-                      step={1}
-                      marks={marks2}
-                      min={1}
-                      max={4}
-                      onChange={(e, value) => setDuration(value)}
-                    />
-                  </Grid>
+                  <LinearProgress
+                    color="secondary"
+                    variant="determinate"
+                    value={getValue(player.value)}
+                  />
                 </Grid>
-              </DialogContent>
-              <DialogActions>
-                <SignPlayerDialog
-                  proposeContract={proposeContract}
-                  player={player}
-                  getPlayers={getPlayers}
-                  contractLeft={contractLeft}
-                  getMyTeamData={getMyTeamData}
-                  getMyTeamInDialog={getMyTeamInDialog}
-                  handleCloseAll={handleClose}
-                  interest={interest}
-                  hasSign={hasSign}
-                  getMyTeam={getMyTeam}
-                  myteamData={myteamData}
-                  salary={salary}
-                />
-              </DialogActions>
-            </>
-          ) : (
-            <>
-              <DialogTitle>
-                Your team is already full ! Release a player in your team to
-                sign a other player.
-              </DialogTitle>
-            </>
-          )}
-        </Dialog>
-      )}
+                <Grid
+                  item
+                  xs={6}
+                  style={{ alignSelf: 'center', padding: '40px 30px' }}
+                >
+                  <Typography id="discrete-slider" gutterBottom>
+                    Salary
+                  </Typography>
+                  <Slider
+                    marks={marks}
+                    defaultValue={4}
+                    valueLabelDisplay="on"
+                    step={1}
+                    min={1}
+                    max={30}
+                    onChange={(e, value) => handleChange(value, player.value)}
+                  />
+
+                  <Typography id="discrete-slider" gutterBottom>
+                    Duration
+                  </Typography>
+                  <Slider
+                    defaultValue={3}
+                    aria-labelledby="discrete-slider"
+                    valueLabelDisplay="on"
+                    step={1}
+                    marks={marks2}
+                    min={1}
+                    max={4}
+                    onChange={(e, value) => setDuration(value)}
+                  />
+                </Grid>
+              </Grid>
+            </DialogContent>
+            <DialogActions>
+              <SignPlayerDialog
+                proposeContract={proposeContract}
+                player={player}
+                getPlayers={getPlayers}
+                contractLeft={contractLeft}
+                getMyTeam={getMyTeam}
+                handleCloseAll={handleClose}
+                interest={interest}
+                hasSign={hasSign}
+                myteamData={myteamData}
+                salary={salary}
+              />
+            </DialogActions>
+          </>
+        ) : myteamData.Players.length >= 5 ? (
+          <>
+            <DialogTitle>
+              Your team is already full ! Release a player in your team to sign
+              a other player.
+            </DialogTitle>
+          </>
+        ) : (
+          ''
+        )}
+      </Dialog>
     </>
   )
 }

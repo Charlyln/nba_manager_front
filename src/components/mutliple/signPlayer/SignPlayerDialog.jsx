@@ -11,9 +11,6 @@ function SignPlayerDialog({
   proposeContract,
   player,
   getPlayers,
-  contractLeft,
-  getMyTeamData,
-  getMyTeamInDialog,
   handleCloseAll,
   interest,
   hasSign,
@@ -35,17 +32,10 @@ function SignPlayerDialog({
     if (getMyTeam) {
       getMyTeam()
     }
-    if (contractLeft) {
-      handleCloseAll()
-      getMyTeamData()
-    } else {
-      handleCloseAll()
-      if (getPlayers) {
-        getPlayers()
-      } else if (getMyTeamInDialog) {
-        getMyTeamInDialog()
-      }
+    if (getPlayers) {
+      getPlayers()
     }
+    handleCloseAll()
   }
 
   return (
