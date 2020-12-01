@@ -5,7 +5,14 @@ import {
   Toolbar,
   Button,
   Paper,
-  Typography
+  Typography,
+  Drawer,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  makeStyles,
+  Divider
 } from '@material-ui/core'
 import { Link, useLocation } from 'react-router-dom'
 import TodayIcon from '@material-ui/icons/Today'
@@ -26,9 +33,22 @@ import HelpIcon from '@material-ui/icons/Help'
 import TocIcon from '@material-ui/icons/Toc'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 import PersonIcon from '@material-ui/icons/Person'
+import trophyIcon from './images/trophyIconDark.png'
+import trophyIconLight from './images/trophyIconLight.png'
+
+const useStyles = makeStyles({
+  list: {
+    width: 250
+  },
+  fullList: {
+    width: 'auto'
+  }
+})
 
 function MyAppBar() {
+  const classes = useStyles()
   const [open, setOpen] = useState(false)
+  const [trophyIsSelected, setTrophyIsSelected] = useState(false)
   let location = useLocation()
 
   const links = [
@@ -38,19 +58,9 @@ function MyAppBar() {
       icon: <TodayIcon />
     },
     {
-      to: '/trade',
-      name: 'Trade',
-      icon: <SwapHorizIcon />
-    },
-    {
       to: '/myteam',
       name: 'My team',
       icon: <PersonIcon />
-    },
-    {
-      to: '/allteams',
-      name: 'All teams',
-      icon: <GroupIcon />
     },
     {
       to: '/training',
@@ -58,14 +68,14 @@ function MyAppBar() {
       icon: <DirectionsRunIcon />
     },
     {
-      to: '/stats',
-      name: 'Season stats',
-      icon: <TrendingUpIcon />
-    },
-    {
       to: '/contracts',
       name: 'Contracts',
       icon: <DescriptionIcon />
+    },
+    {
+      to: '/extension',
+      name: 'Extensions',
+      icon: <PostAddIcon />
     },
     {
       to: '/playerfinder',
@@ -78,9 +88,14 @@ function MyAppBar() {
       icon: <GroupAddIcon />
     },
     {
-      to: '/history',
-      name: 'Stats history',
-      icon: <HistoryIcon />
+      to: '/trade',
+      name: 'Trade',
+      icon: <SwapHorizIcon />
+    },
+    {
+      to: '/allteams',
+      name: 'All teams',
+      icon: <GroupIcon />
     },
     {
       to: '/ranking',
@@ -88,14 +103,33 @@ function MyAppBar() {
       icon: <TocIcon />
     },
     {
+      to: '/stats',
+      name: 'Season stats',
+      icon: <TrendingUpIcon />
+    },
+    {
       to: '/standings',
       name: 'Best players',
       icon: <StarsIcon />
     },
     {
-      to: '/extension',
-      name: 'Extensions',
-      icon: <PostAddIcon />
+      to: '/history',
+      name: 'Stats history',
+      icon: <HistoryIcon />
+    },
+    {
+      to: '/profil',
+      name: 'Trophies',
+      icon: (
+        <img
+          style={{
+            width: '25px',
+            height: '25px'
+          }}
+          src={trophyIsSelected ? trophyIconLight : trophyIcon}
+          alt="trophy"
+        />
+      )
     },
     {
       to: '/profil',
@@ -119,11 +153,43 @@ function MyAppBar() {
 
   const getPageName = () => {
     const page = links.find((link) => link.to === location.pathname)
-
     if (page) {
       return page.name
     }
   }
+  const putRightTrophyIcon = () => {
+    setTrophyIsSelected((trophyIsSelected) => !trophyIsSelected)
+  }
+
+  const list = () => (
+    <div role="presentation" className={classes.list}>
+      <List>
+        {links.map((link) => (
+          <>
+            <Link
+              to={link.to}
+              style={{ textDecoration: 'none', color: 'white' }}
+              onMouseEnter={link.name === 'Trophies' ? putRightTrophyIcon : ''}
+              onMouseLeave={link.name === 'Trophies' ? putRightTrophyIcon : ''}
+            >
+              <ListItem button key={link.name} onClick={handleClose}>
+                <ListItemIcon>{link.icon}</ListItemIcon>
+                <ListItemText primary={link.name} />
+              </ListItem>
+            </Link>
+            {link.to === '/extension' ||
+            link.to === '/home' ||
+            link.to === '/allteams' ||
+            link.to === '/history' ? (
+              <Divider />
+            ) : (
+              ''
+            )}
+          </>
+        ))}
+      </List>
+    </div>
+  )
 
   return (
     <>
@@ -138,7 +204,13 @@ function MyAppBar() {
           </Typography>
         </Toolbar>
       </AppBar>
-      <Dialog fullScreen open={open} onClose={handleClose}>
+
+      {/* <Button onClick={toggleDrawer(anchor, true)}>{anchor}</Button> */}
+      <Drawer anchor="left" open={open} onClose={handleClose}>
+        {list()}
+      </Drawer>
+
+      {/* <Dialog fullScreen open={open} onClose={handleClose}>
         <AppBar>
           <Toolbar>
             <IconButton
@@ -176,7 +248,7 @@ function MyAppBar() {
             </Paper>
           ))}
         </div>
-      </Dialog>
+      </Dialog> */}
     </>
   )
 }
