@@ -119,7 +119,10 @@ function MyAppBar() {
 
   const getPageName = () => {
     const page = links.find((link) => link.to === location.pathname)
-    return page.name
+
+    if (page) {
+      return page.name
+    }
   }
 
   return (
