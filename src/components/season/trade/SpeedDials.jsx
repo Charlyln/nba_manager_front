@@ -54,7 +54,7 @@ export default function SpeedDials({
             marginBottom: '15px'
           }}
         >
-          <strong>Select the team</strong>
+          <strong>Select a team</strong>
         </Typography>
         <SpeedDial
           ariaLabel="SpeedDial example"
