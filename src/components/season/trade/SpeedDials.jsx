@@ -2,10 +2,8 @@ import React, { useEffect, useState } from 'react'
 import SpeedDial from '@material-ui/lab/SpeedDial'
 import SpeedDialAction from '@material-ui/lab/SpeedDialAction'
 import SpeedDialIcon from '@material-ui/lab/SpeedDialIcon'
-import { Avatar } from '@material-ui/core'
+import { Avatar, Typography } from '@material-ui/core'
 import './speedial.css'
-
-// const actions = [{ icon: <FavoriteIcon />, name: 'Play Game' }]
 
 export default function SpeedDials({
   allTeamsData,
@@ -14,7 +12,6 @@ export default function SpeedDials({
   right
 }) {
   const [open, setOpen] = React.useState(false)
-  // const [teamSelect, setTeamSelect] = useState('')
   const [logo, setLogo] = useState('')
 
   const handleClose = () => {
@@ -40,7 +37,6 @@ export default function SpeedDials({
   }, [])
 
   const selectTeam = (team) => {
-    // setTeamSelect(team.uuid)
     setLogo(team.logo)
     getOtherTeams(team.uuid)
     handleClose()
@@ -48,11 +44,23 @@ export default function SpeedDials({
 
   return (
     <div>
-      <div>
+      <div style={{ marginLeft: '20px' }}>
+        <Typography
+          variant="button"
+          component="div"
+          color="textSecondary"
+          style={{
+            color: '#616060',
+            marginBottom: '15px'
+          }}
+        >
+          <strong>Select the team</strong>
+        </Typography>
         <SpeedDial
           ariaLabel="SpeedDial example"
           onClose={handleClose}
           onOpen={handleOpen}
+          variant="extended"
           icon={
             right.length === 0 ? (
               <SpeedDialIcon />
@@ -66,7 +74,6 @@ export default function SpeedDials({
           }
           open={open}
           direction="right"
-          style={{ marginLeft: '20px' }}
         >
           {allTeamsData
             .filter((team) => team.uuid !== myteamsUuid)
@@ -81,32 +88,6 @@ export default function SpeedDials({
             ))}
         </SpeedDial>
       </div>
-      {/* {teamSelect ? (
-        <Button
-          variant="outlined"
-          color="primary"
-          onClick={() => getOtherTeams(teamSelect)}
-          disabled={!wantChangeTeam}
-        >
-          Start negociation
-        </Button>
-      ) : (
-        ''
-      )}
-      <>
-        {teamsData.uuid ? (
-          <Button
-            variant="outlined"
-            color="primary"
-            onClick={deleteOhterTeam}
-            disabled={wantChangeTeam}
-          >
-            Change team
-          </Button>
-        ) : (
-          ''
-        )}
-      </> */}
     </div>
   )
 }
