@@ -40,10 +40,17 @@ function SignPlayer({
 
   const proposeContract = async () => {
     if (contractLeft) {
-      await Axios.put(`${apiUrl}/players/${player.uuid}`, {
+      // const payload = { salary, contractLeft: duration }
+
+      const payload = {
+        contractYear2: duration >= 1 ? salary : 0,
+        contractYear3: duration >= 2 ? salary : 0,
+        contractYear4: duration >= 3 ? salary : 0,
         salary,
-        contractLeft: duration
-      })
+        contractLeft: player.contractLeft + duration
+      }
+
+      await Axios.put(`${apiUrl}/players/${player.uuid}`, payload)
       setHasSign(true)
       if (
         contractLeft === 1 &&
@@ -57,11 +64,17 @@ function SignPlayer({
         getTrophy()
       }
     } else {
-      await Axios.put(`${apiUrl}/players/${player.uuid}`, {
+      const payload = {
         TeamUuid: myteamData.uuid,
+        contractYear1: duration >= 1 ? salary : 0,
+        contractYear2: duration >= 2 ? salary : 0,
+        contractYear3: duration >= 3 ? salary : 0,
+        contractYear4: duration >= 4 ? salary : 0,
         salary,
         contractLeft: duration
-      })
+      }
+
+      await Axios.put(`${apiUrl}/players/${player.uuid}`, payload)
       setHasSign(true)
 
       if (trophyName && player.TeamUuid === null && !TrophyData.earned) {
