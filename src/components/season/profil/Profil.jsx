@@ -130,7 +130,7 @@ function Profil() {
               color: 'rgba(255, 255, 255, 0.7)'
             }}
           >
-            {thisTrophy.earned && timeDifference < 2
+            {thisTrophy.earned && timeDifference < 2 && !thisTrophy.isViewed
               ? 'Just now'
               : thisTrophy.earned
               ? `${date} - ${hour}`
