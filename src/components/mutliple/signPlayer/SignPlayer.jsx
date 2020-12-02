@@ -183,6 +183,34 @@ function SignPlayer({
     }
   ]
 
+  const displaySalaryLeftAfter = () => {
+    let salaryLeftAfter
+
+    if (player.TeamUuid === myteamData.uuid) {
+      salaryLeftAfter = myteamData.salaryCapLeft - salary + player.salary
+    } else {
+      salaryLeftAfter = myteamData.salaryCapLeft - salary
+    }
+
+    let backgroundColorDisplay
+
+    if (salaryLeftAfter < 0) {
+      backgroundColorDisplay = 'rgb(217, 48, 33)'
+    } else {
+      backgroundColorDisplay = 'rgb(76, 175, 80)'
+    }
+
+    return (
+      <Chip
+        style={{
+          backgroundColor: backgroundColorDisplay
+        }}
+        avatar={<MonetizationOnIcon />}
+        label={salaryLeftAfter}
+      />
+    )
+  }
+
   return (
     <>
       <IconButton
@@ -258,20 +286,7 @@ function SignPlayer({
                       <Typography color="textSecondary">
                         <strong>After</strong>
                       </Typography>
-                      <Chip
-                        style={{
-                          backgroundColor:
-                            myteamData.salaryCapLeft <= salary
-                              ? 'rgb(217, 48, 33)'
-                              : 'rgb(76, 175, 80)'
-                        }}
-                        avatar={<MonetizationOnIcon />}
-                        label={
-                          player.TeamUuid === myteamData.uuid
-                            ? myteamData.salaryCapLeft - salary + player.salary
-                            : myteamData.salaryCapLeft - salary
-                        }
-                      />
+                      {displaySalaryLeftAfter()}
                     </div>
                   </div>
 
