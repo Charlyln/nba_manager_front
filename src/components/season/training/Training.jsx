@@ -13,14 +13,15 @@ import {
   Box,
   CircularProgress,
   Typography,
-  IconButton,
-  Fab
+  Fab,
+  Chip
 } from '@material-ui/core'
-import AddBoxIcon from '@material-ui/icons/AddBox'
 import ProgressBall from '../../mutliple/ProgressBall'
 import HeadShake from 'react-reveal/HeadShake'
 import AccountVerify from '../../mutliple/AccountVerify'
 import TrophySnackbar from '../../mutliple/TrophySnackbar'
+import AddCircleIcon from '@material-ui/icons/AddCircle'
+import DoneIcon from '@material-ui/icons/Done'
 
 function Training() {
   const [myteamData, setMyTeamData] = useState({})
@@ -193,23 +194,39 @@ function Training() {
             component={Paper}
             style={{ width: '90%', margin: '100px auto', padding: '0px 5px' }}
           >
-            <HeadShake spy={counter}>
-              <Fab
-                size="small"
-                aria-label="add"
+            <div style={{ float: 'right', display: 'flex' }}>
+              <Typography
+                variant="button"
+                component="div"
+                color="textSecondary"
                 style={{
-                  margin: '5px 0px 0px 2px',
-                  backgroundColor:
-                    trainingLeft === 2
-                      ? 'rgb(76, 175, 80)'
-                      : trainingLeft === 1
-                      ? '#FB8B3C'
-                      : 'rgb(217, 48, 33)'
+                  color: '#616060',
+                  alignSelf: 'center',
+                  margin: '5px 10px 0px 0px'
                 }}
               >
-                {trainingLeft}
-              </Fab>
-            </HeadShake>
+                <strong>Trainings left</strong>
+              </Typography>
+              <HeadShake spy={counter}>
+                <Fab
+                  size="small"
+                  aria-label="add"
+                  style={{
+                    margin: '5px 0px 0px 2px',
+                    width: '35px',
+                    height: '35px',
+                    backgroundColor:
+                      trainingLeft === 2
+                        ? 'rgb(76, 175, 80)'
+                        : trainingLeft === 1
+                        ? '#FB8B3C'
+                        : 'rgb(217, 48, 33)'
+                  }}
+                >
+                  {trainingLeft}
+                </Fab>
+              </HeadShake>
+            </div>
 
             <Table aria-label="simple table">
               <TableHead>
@@ -258,97 +275,107 @@ function Training() {
                       </Box>
                     </TableCell>
                     <TableCell align="center">
-                      {/* <Typography
-                      variant="button"
-                      component="div"
-                      color="textSecondary"
-                    >
-                      <strong>
-                        {Math.round(
-                          ((player.ptsMin + player.ptsMax) / 2 / 35) * 100
-                        )}
-                      </strong>
-                    </Typography> */}
-
-                      <strong>
-                        {Math.round(
-                          ((player.ptsMin + player.ptsMax) / 2 / 35) * 100
-                        )}
-                      </strong>
-
                       {Math.round(
                         ((player.ptsMin + player.ptsMax) / 2 / 35) * 100
                       ) === 99 ? (
-                        ''
+                        <Chip
+                          label={Math.round(
+                            ((player.ptsMin + player.ptsMax) / 2 / 35) * 100
+                          )}
+                          onDelete
+                          deleteIcon={<DoneIcon  />}
+                          clickable={false}
+                         
+                        />
                       ) : (
-                        <IconButton
-                          onClick={() =>
+                        <Chip
+                          onDelete={() =>
                             riseUpScoring(
                               player.ptsMin,
                               player.ptsMax,
                               player.uuid
                             )
                           }
-                        >
-                          <AddBoxIcon fontSize="small" />
-                        </IconButton>
+                          deleteIcon={
+                            <AddCircleIcon
+                              fontSize="small"
+                              style={{ color: 'white',width:'19px' }}
+                            />
+                          }
+                          label={Math.round(
+                            ((player.ptsMin + player.ptsMax) / 2 / 35) * 100
+                          )}
+                        />
                       )}
                     </TableCell>
                     <TableCell align="center">
-                      <strong>
-                        {Math.round(
-                          ((player.rebMin + player.rebMax) / 2 / 13) * 100
-                        )}
-                      </strong>
-
                       {Math.round(
                         ((player.rebMin + player.rebMax) / 2 / 13) * 100
                       ) === 99 ? (
-                        ''
+                        <Chip
+                          label={Math.round(
+                            ((player.rebMin + player.rebMax) / 2 / 13) * 100
+                          )}
+                          onDelete
+                          deleteIcon={<DoneIcon />}
+                        />
                       ) : (
-                        <IconButton
-                          onClick={() =>
+                        <Chip
+                          onDelete={() =>
                             riseUpRebound(
                               player.rebMin,
                               player.rebMax,
                               player.uuid
                             )
                           }
-                        >
-                          <AddBoxIcon fontSize="small" />
-                        </IconButton>
+                          deleteIcon={
+                            <AddCircleIcon
+                              fontSize="small"
+                              style={{ color: 'white',width:'19px' }}
+                            />
+                          }
+                          label={Math.round(
+                            ((player.rebMin + player.rebMax) / 2 / 13) * 100
+                          )}
+                        />
                       )}
                     </TableCell>
                     <TableCell align="center">
-                      <strong>
-                        {Math.round(
-                          ((player.pasMin + player.pasMax) / 2 / 11) * 100
-                        )}
-                      </strong>
-
                       {Math.round(
                         ((player.pasMin + player.pasMax) / 2 / 11) * 100
                       ) === 99 ? (
-                        ''
+                        <Chip
+                          label={Math.round(
+                            ((player.pasMin + player.pasMax) / 2 / 11) * 100
+                          )}
+                          onDelete
+                          deleteIcon={<DoneIcon />}
+                        />
                       ) : (
-                        <IconButton
-                          onClick={() =>
+                        <Chip
+                          onDelete={() =>
                             riseUpPass(
                               player.pasMin,
                               player.pasMax,
                               player.uuid
                             )
                           }
-                        >
-                          <AddBoxIcon fontSize="small" />
-                        </IconButton>
+                          deleteIcon={
+                            <AddCircleIcon
+                              fontSize="small"
+                              style={{ color: 'white',width:'19px' }}
+                            />
+                          }
+                          label={Math.round(
+                            ((player.pasMin + player.pasMax) / 2 / 11) * 100
+                          )}
+                        />
                       )}
                     </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
-            {/* </Badge> */}
           </TableContainer>
         </>
       )}

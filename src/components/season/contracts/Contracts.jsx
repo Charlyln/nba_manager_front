@@ -8,9 +8,16 @@ import TableContainer from '@material-ui/core/TableContainer'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
-import { Avatar, Box, CircularProgress, Typography } from '@material-ui/core'
+import {
+  Avatar,
+  Box,
+  Chip,
+  CircularProgress,
+  Typography
+} from '@material-ui/core'
 import ProgressBall from '../../mutliple/ProgressBall'
 import AccountVerify from '../../mutliple/AccountVerify'
+import MonetizationOnIcon from '@material-ui/icons/MonetizationOn'
 
 function Contracts() {
   const [myteamData, setMyTeamData] = useState({})
@@ -45,58 +52,28 @@ function Contracts() {
     }
   }
 
-  const renderTableCellsSalary = (yearsLeft, salary) => {
-    if (yearsLeft === 1) {
-      return (
-        <>
-          <TableCell align="right">{`${
-            salary / 1000000
-          } millions $`}</TableCell>
-        </>
-      )
-    } else if (yearsLeft === 2) {
-      return (
-        <>
-          <TableCell align="right">{`${
-            salary / 1000000
-          } millions $`}</TableCell>
-          <TableCell align="right">{`${
-            salary / 1000000
-          } millions $`}</TableCell>
-        </>
-      )
-    } else if (yearsLeft === 3) {
-      return (
-        <>
-          <TableCell align="right">{`${
-            salary / 1000000
-          } millions $`}</TableCell>
-          <TableCell align="right">{`${
-            salary / 1000000
-          } millions $`}</TableCell>
-          <TableCell align="right">{`${
-            salary / 1000000
-          } millions $`}</TableCell>
-        </>
-      )
-    } else if (yearsLeft === 4) {
-      return (
-        <>
-          <TableCell align="right">{`${
-            salary / 1000000
-          } millions $`}</TableCell>
-          <TableCell align="right">{`${
-            salary / 1000000
-          } millions $`}</TableCell>
-          <TableCell align="right">{`${
-            salary / 1000000
-          } millions $`}</TableCell>
-          <TableCell align="right">{`${
-            salary / 1000000
-          } millions $`}</TableCell>
-        </>
-      )
-    } else return ''
+  const renderTableCellsSalary = (yearsLeft, salary, player) => {
+    const years = [
+      player.contractYear1,
+      player.contractYear2,
+      player.contractYear3,
+      player.contractYear4
+    ]
+
+    return years.map((year) => (
+      <>
+        {year ? (
+          <TableCell align="right">
+            <Chip
+              avatar={<MonetizationOnIcon />}
+              label={`${year / 1000000} MM`}
+            />
+          </TableCell>
+        ) : (
+          ''
+        )}
+      </>
+    ))
   }
 
   return (
@@ -165,7 +142,11 @@ function Contracts() {
                         </Box>
                       </Box>
                     </TableCell>
-                    {renderTableCellsSalary(player.contractLeft, player.salary)}
+                    {renderTableCellsSalary(
+                      player.contractLeft,
+                      player.salary,
+                      player
+                    )}
                   </TableRow>
                 ))}
 
@@ -174,73 +155,105 @@ function Contracts() {
                   <TableCell>Total</TableCell>
                   <TableCell></TableCell>
                   <TableCell align="right">
-                    {` ${
-                      myteamData.Players.filter(
-                        (player) => player.contractLeft > 0
-                      ).reduce((a, v) => (a = a + v.salary), 0) / 1000000
-                    } millions $`}
+                    <Chip
+                      color="primary"
+                      icon={<MonetizationOnIcon />}
+                      label={` ${
+                        myteamData.Players.filter(
+                          (player) => player.contractLeft > 0
+                        ).reduce((a, v) => (a = a + v.salary), 0) / 1000000
+                      } MM`}
+                    />
                   </TableCell>
                   <TableCell align="right">
-                    {` ${
-                      myteamData.Players.filter(
-                        (player) => player.contractLeft > 1
-                      ).reduce((a, v) => (a = a + v.salary), 0) / 1000000
-                    } millions $`}
-                  </TableCell>{' '}
-                  <TableCell align="right">
-                    {` ${
-                      myteamData.Players.filter(
-                        (player) => player.contractLeft > 2
-                      ).reduce((a, v) => (a = a + v.salary), 0) / 1000000
-                    } millions $`}
+                    <Chip
+                      color="primary"
+                      icon={<MonetizationOnIcon />}
+                      label={` ${
+                        myteamData.Players.filter(
+                          (player) => player.contractLeft > 1
+                        ).reduce((a, v) => (a = a + v.salary), 0) / 1000000
+                      } MM`}
+                    />
                   </TableCell>
                   <TableCell align="right">
-                    {` ${
-                      myteamData.Players.filter(
-                        (player) => player.contractLeft > 3
-                      ).reduce((a, v) => (a = a + v.salary), 0) / 1000000
-                    } millions $`}
+                    <Chip
+                      color="primary"
+                      icon={<MonetizationOnIcon />}
+                      label={` ${
+                        myteamData.Players.filter(
+                          (player) => player.contractLeft > 2
+                        ).reduce((a, v) => (a = a + v.salary), 0) / 1000000
+                      } MM`}
+                    />
+                  </TableCell>
+                  <TableCell align="right">
+                    <Chip
+                      color="primary"
+                      icon={<MonetizationOnIcon />}
+                      label={` ${
+                        myteamData.Players.filter(
+                          (player) => player.contractLeft > 3
+                        ).reduce((a, v) => (a = a + v.salary), 0) / 1000000
+                      } MM`}
+                    />
                   </TableCell>
                 </TableRow>
-                <TableRow selected>
+                <TableRow>
                   <TableCell></TableCell>
-                  <TableCell>Salary cap balance</TableCell>
+                  <TableCell>Balance</TableCell>
                   <TableCell></TableCell>
                   <TableCell align="right">
-                    {` ${
-                      (-myteamData.Players.filter(
-                        (player) => player.contractLeft > 0
-                      ).reduce((a, v) => (a = a + v.salary), 0) +
-                        100000000) /
-                      1000000
-                    } millions $`}
+                    <Chip
+                      color="secondary"
+                      icon={<MonetizationOnIcon />}
+                      label={` ${
+                        (-myteamData.Players.filter(
+                          (player) => player.contractLeft > 0
+                        ).reduce((a, v) => (a = a + v.salary), 0) +
+                          100000000) /
+                        1000000
+                      } MM`}
+                    />
                   </TableCell>
                   <TableCell align="right">
-                    {` ${
-                      (-myteamData.Players.filter(
-                        (player) => player.contractLeft > 1
-                      ).reduce((a, v) => (a = a + v.salary), 0) +
-                        100000000) /
-                      1000000
-                    } millions $`}
+                    <Chip
+                      color="secondary"
+                      icon={<MonetizationOnIcon />}
+                      label={` ${
+                        (-myteamData.Players.filter(
+                          (player) => player.contractLeft > 1
+                        ).reduce((a, v) => (a = a + v.salary), 0) +
+                          100000000) /
+                        1000000
+                      } MM`}
+                    />
                   </TableCell>
                   <TableCell align="right">
-                    {` ${
-                      (-myteamData.Players.filter(
-                        (player) => player.contractLeft > 2
-                      ).reduce((a, v) => (a = a + v.salary), 0) +
-                        100000000) /
-                      1000000
-                    } millions $`}
+                    <Chip
+                      color="secondary"
+                      icon={<MonetizationOnIcon />}
+                      label={` ${
+                        (-myteamData.Players.filter(
+                          (player) => player.contractLeft > 2
+                        ).reduce((a, v) => (a = a + v.salary), 0) +
+                          100000000) /
+                        1000000
+                      } MM`}
+                    />
                   </TableCell>
                   <TableCell align="right">
-                    {` ${
-                      (-myteamData.Players.filter(
-                        (player) => player.contractLeft > 3
-                      ).reduce((a, v) => (a = a + v.salary), 0) +
-                        100000000) /
-                      1000000
-                    } millions $`}
+                    <Chip
+                      color="secondary"
+                      icon={<MonetizationOnIcon />}
+                      label={` ${
+                        (-myteamData.Players.filter(
+                          (player) => player.contractLeft > 3
+                        ).reduce((a, v) => (a = a + v.salary), 0) +
+                          100000000) /
+                        1000000
+                      } MM`}
+                    />
                   </TableCell>
                 </TableRow>
               </TableBody>

@@ -26,6 +26,7 @@ import StatsHistory from './components/season/Stats history/StatsHistory'
 import BestPlayers from './components/season/bestplayers/BestPlayers'
 import Profil from './components/season/profil/Profil'
 import AllTeams from './components/season/allteams/AllTeams'
+import Charts from './components/season/charts/Charts'
 
 const darkTheme = createMuiTheme({
   palette: {
@@ -48,7 +49,6 @@ ReactDOM.render(
       <CssBaseline />
       <BrowserRouter>
         <MyAppBar />
-        {console.log(process.env)}
         <Switch>
           <Route exact path="/" component={Start} />
           <Route exact path="/signup" component={SignUp} />
@@ -69,6 +69,7 @@ ReactDOM.render(
           <Route exact path="/standings" component={BestPlayers} />
           <Route exact path="/profil" component={Profil} />
           <Route exact path="/allteams" component={AllTeams} />
+          <Route exact path="/charts" component={Charts} />
         </Switch>
       </BrowserRouter>
     </ThemeProvider>

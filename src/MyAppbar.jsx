@@ -26,11 +26,12 @@ import HistoryIcon from '@material-ui/icons/History'
 import StarsIcon from '@material-ui/icons/Stars'
 import PostAddIcon from '@material-ui/icons/PostAdd'
 import HelpIcon from '@material-ui/icons/Help'
-import TocIcon from '@material-ui/icons/Toc'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 import PersonIcon from '@material-ui/icons/Person'
 import trophyIcon from './images/trophyIconDark.png'
 import trophyIconLight from './images/trophyIconLight.png'
+import TocIcon from '@material-ui/icons/Toc'
+import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered'
 
 const useStyles = makeStyles({
   list: {
@@ -94,19 +95,24 @@ function MyAppBar() {
       icon: <GroupIcon />
     },
     {
-      to: '/ranking',
-      name: 'Ranking',
-      icon: <TocIcon />
+      to: '/charts',
+      name: 'Charts',
+      icon: <TrendingUpIcon />
     },
     {
-      to: '/stats',
-      name: 'Season stats',
-      icon: <TrendingUpIcon />
+      to: '/ranking',
+      name: 'Ranking',
+      icon: <FormatListNumberedIcon />
     },
     {
       to: '/standings',
       name: 'Best players',
       icon: <StarsIcon />
+    },
+    {
+      to: '/stats',
+      name: 'Season stats',
+      icon: <TocIcon />
     },
     {
       to: '/history',
@@ -168,7 +174,11 @@ function MyAppBar() {
               onMouseEnter={link.name === 'Trophies' ? putRightTrophyIcon : ''}
               onMouseLeave={link.name === 'Trophies' ? putRightTrophyIcon : ''}
             >
-              <ListItem button key={link.name} onClick={handleClose}>
+              <ListItem
+                button
+                key={link.name}
+                onClick={handleClose}
+              >
                 <ListItemIcon>{link.icon}</ListItemIcon>
                 <ListItemText primary={link.name} />
               </ListItem>
@@ -201,50 +211,9 @@ function MyAppBar() {
         </Toolbar>
       </AppBar>
 
-      {/* <Button onClick={toggleSwipeableDrawer(anchor, true)}>{anchor}</Button> */}
       <SwipeableDrawer anchor="left" open={open} onClose={handleClose}>
         {list()}
       </SwipeableDrawer>
-
-      {/* <Dialog fullScreen open={open} onClose={handleClose}>
-        <AppBar>
-          <Toolbar>
-            <IconButton
-              edge="start"
-              color="inherit"
-              onClick={handleClose}
-              aria-label="close"
-            >
-              <CloseIcon />
-            </IconButton>
-          </Toolbar>
-        </AppBar>
-        <div
-          style={{
-            margin: '100px auto ',
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'center'
-          }}
-        >
-          {links.map((link) => (
-            <Paper
-              elevation={10}
-              style={{ width: '200px', height: '100px', margin: '10px' }}
-            >
-              <Link to={link.to} style={{ textDecoration: 'none' }}>
-                <Button
-                  startIcon={link.icon}
-                  style={{ width: '200px', height: '100px' }}
-                  onClick={handleClose}
-                >
-                  {link.name}
-                </Button>
-              </Link>
-            </Paper>
-          ))}
-        </div>
-      </Dialog> */}
     </>
   )
 }

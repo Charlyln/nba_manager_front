@@ -6,6 +6,7 @@ import {
   DialogContentText
 } from '@material-ui/core'
 import React, { useState } from 'react'
+import updateSalaryCapLeft from '../../api calls/updateSalaryCapLeft'
 
 function SignPlayerDialog({
   proposeContract,
@@ -16,7 +17,9 @@ function SignPlayerDialog({
   hasSign,
   getMyTeam,
   myteamData,
-  salary
+  salary,
+  UserUuid,
+  TeamUuid
 }) {
   const [open, setOpen] = useState(false)
 
@@ -27,15 +30,16 @@ function SignPlayerDialog({
     }
   }
 
-  const handleClose = () => {
+  const handleClose = async () => {
+    await updateSalaryCapLeft(UserUuid, TeamUuid)
     setOpen(false)
+    handleCloseAll()
     if (getMyTeam) {
-      getMyTeam()
+      await getMyTeam()
     }
     if (getPlayers) {
-      getPlayers()
+      await getPlayers()
     }
-    handleCloseAll()
   }
 
   return (

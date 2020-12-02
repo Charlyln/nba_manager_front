@@ -8,8 +8,14 @@ import TableContainer from '@material-ui/core/TableContainer'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
-import { Avatar, Box, CircularProgress, Typography } from '@material-ui/core'
-import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward'
+import {
+  Avatar,
+  Box,
+  Chip,
+  CircularProgress,
+  Typography
+} from '@material-ui/core'
+import ArrowDropDownCircleIcon from '@material-ui/icons/ArrowDropDownCircle'
 import FreePlayer from './FreePlayer'
 import ProgressBall from '../../mutliple/ProgressBall'
 import AccountVerify from '../../mutliple/AccountVerify'
@@ -129,58 +135,70 @@ function MyTeam() {
                       </Box>
                     </TableCell>
                     <TableCell align="right">
-                      {player.ptsMin > player.ptsBeg && player.ptsBeg ? (
-                        <>
-                          <ArrowUpwardIcon
-                            style={{
-                              backgroundColor: 'green',
-                              fontSize: '1rem',
-                              borderRadius: '100%'
-                            }}
-                          />
-                        </>
-                      ) : (
-                        ''
-                      )}{' '}
-                      {Math.round(
-                        ((player.ptsMin + player.ptsMax) / 2 / 35) * 100
-                      )}
+                      <Chip
+                        avatar={
+                          player.ptsMin > player.ptsBeg && player.ptsBeg ? (
+                            <>
+                              <ArrowDropDownCircleIcon
+                                style={{
+                                  margin: '0px -8px 0px 5px',
+                                  transform: 'rotate(180deg)',
+                                  color: 'rgb(76, 175, 80)'
+                                }}
+                              />
+                            </>
+                          ) : (
+                            ''
+                          )
+                        }
+                        label={Math.round(
+                          ((player.ptsMin + player.ptsMax) / 2 / 35) * 100
+                        )}
+                      />
                     </TableCell>
                     <TableCell align="right">
-                      {player.rebMin > player.rebBeg && player.rebBeg ? (
-                        <>
-                          <ArrowUpwardIcon
-                            style={{
-                              backgroundColor: 'green',
-                              fontSize: '1rem',
-                              borderRadius: '100%'
-                            }}
-                          />
-                        </>
-                      ) : (
-                        ''
-                      )}{' '}
-                      {Math.round(
-                        ((player.rebMin + player.rebMax) / 2 / 13) * 100
-                      )}
+                      <Chip
+                        avatar={
+                          player.rebMin > player.rebBeg && player.rebBeg ? (
+                            <>
+                              <ArrowDropDownCircleIcon
+                                style={{
+                                  margin: '0px -8px 0px 5px',
+                                  transform: 'rotate(180deg)',
+                                  color: 'rgb(76, 175, 80)'
+                                }}
+                              />
+                            </>
+                          ) : (
+                            ''
+                          )
+                        }
+                        label={Math.round(
+                          ((player.rebMin + player.rebMax) / 2 / 13) * 100
+                        )}
+                      />
                     </TableCell>
                     <TableCell align="right">
-                      {player.pasMin > player.pasBeg && player.pasBeg ? (
-                        <>
-                          <ArrowUpwardIcon
-                            style={{
-                              backgroundColor: 'green',
-                              fontSize: '1rem',
-                              borderRadius: '100%'
-                            }}
-                          />
-                        </>
-                      ) : (
-                        ''
-                      )}{' '}
-                      {Math.round(
-                        ((player.pasMin + player.pasMax) / 2 / 11) * 100
-                      )}
+                      <Chip
+                        avatar={
+                          player.pasMin > player.pasBeg && player.pasBeg ? (
+                            <>
+                              <ArrowDropDownCircleIcon
+                                style={{
+                                  margin: '0px -8px 0px 5px',
+                                  transform: 'rotate(180deg)',
+                                  color: 'rgb(76, 175, 80)'
+                                }}
+                              />
+                            </>
+                          ) : (
+                            ''
+                          )
+                        }
+                        label={Math.round(
+                          ((player.pasMin + player.pasMax) / 2 / 11) * 100
+                        )}
+                      />
                     </TableCell>
                     <TableCell align="center">
                       <FreePlayer
@@ -190,6 +208,7 @@ function MyTeam() {
                         TrophyData={TrophyData}
                         trophyName={trophyName}
                         UserUuid={UserUuid}
+                        myteamData={myteamData}
                       />
                     </TableCell>
                   </TableRow>

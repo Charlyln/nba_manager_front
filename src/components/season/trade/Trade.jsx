@@ -26,6 +26,7 @@ import ProgressBall from '../../mutliple/ProgressBall'
 import SpeedDials from './SpeedDials'
 import AccountVerify from '../../mutliple/AccountVerify'
 import TrophySnackbar from '../../mutliple/TrophySnackbar'
+import updateSalaryCapLeft from '../../api calls/updateSalaryCapLeft'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -181,11 +182,6 @@ export default function Trade() {
     setChecked(not(checked, rightChecked))
   }
 
-  const goBack = () => {
-    handleClose()
-    getTeams()
-  }
-
   const tradeIt = async () => {
     const rightFiltered = right.find(
       (player) => player.TeamUuid === myteamsData.uuid
@@ -257,6 +253,7 @@ export default function Trade() {
               TeamUuid: teamsData.uuid
             })
         )
+        await updateSalaryCapLeft(uuid, myteamsData.uuid)
         await getTeams()
         await getMyTeams()
       }
@@ -346,7 +343,6 @@ export default function Trade() {
         <ProgressBall />
       ) : (
         <>
-          {' '}
           <TrophySnackbar
             openTrophySnackbar={openTrophySnackbar}
             closeTrophySnackbar={closeTrophySnackbar}
@@ -456,7 +452,7 @@ export default function Trade() {
             >
               <DialogTitle id="alert-dialog-title">{message}</DialogTitle>
               <DialogActions>
-                <Button onClick={goBack} color="primary">
+                <Button onClick={handleClose} color="primary">
                   Back
                 </Button>
               </DialogActions>
