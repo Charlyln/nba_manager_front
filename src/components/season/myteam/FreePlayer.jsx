@@ -33,7 +33,11 @@ function SignPlayer({
       await Axios.put(`${apiUrl}/players/${player.uuid}`, {
         TeamUuid: null,
         contractLeft: 0,
-        salary: 0
+        salary: 0,
+        contractYear1: 0,
+        contractYear2: 0,
+        contractYear3: 0,
+        contractYear4: 0
       })
       if (!TrophyData.earned) {
         await Axios.post(`${apiUrl}/trophies/earned/${UserUuid}`, {
