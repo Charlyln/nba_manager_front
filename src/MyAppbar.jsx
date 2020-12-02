@@ -209,46 +209,6 @@ function MyAppBar() {
       <SwipeableDrawer anchor="left" open={open} onClose={handleClose}>
         {list()}
       </SwipeableDrawer>
-
-      {/* <Dialog fullScreen open={open} onClose={handleClose}>
-        <AppBar>
-          <Toolbar>
-            <IconButton
-              edge="start"
-              color="inherit"
-              onClick={handleClose}
-              aria-label="close"
-            >
-              <CloseIcon />
-            </IconButton>
-          </Toolbar>
-        </AppBar>
-        <div
-          style={{
-            margin: '100px auto ',
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'center'
-          }}
-        >
-          {links.map((link) => (
-            <Paper
-              elevation={10}
-              style={{ width: '200px', height: '100px', margin: '10px' }}
-            >
-              <Link to={link.to} style={{ textDecoration: 'none' }}>
-                <Button
-                  startIcon={link.icon}
-                  style={{ width: '200px', height: '100px' }}
-                  onClick={handleClose}
-                >
-                  {link.name}
-                </Button>
-              </Link>
-            </Paper>
-          ))}
-        </div>
-      </Dialog> */}
     </>
   )
 }
