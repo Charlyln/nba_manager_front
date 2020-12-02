@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import {
   Avatar,
+  Chip,
+  Fab,
   Grid,
   IconButton,
   LinearProgress,
@@ -15,6 +17,7 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 import { apiUrl } from '../../../apiUrl'
 import Axios from 'axios'
 import SignPlayerDialog from './SignPlayerDialog'
+import MonetizationOnIcon from '@material-ui/icons/MonetizationOn'
 
 function SignPlayer({
   player,
@@ -30,8 +33,8 @@ function SignPlayer({
   myteamData
 }) {
   const [open, setOpen] = useState(false)
-  const [userUuid] = useState(window.localStorage.getItem('uuid'))
-  const [salary, setSalary] = useState(4000000)
+  const [UserUuid] = useState(window.localStorage.getItem('uuid'))
+  const [salary, setSalary] = useState(7000000)
   const [duration, setDuration] = useState(3)
   const [interest, setInterest] = useState(0)
   const [hasSign, setHasSign] = useState(false)
@@ -48,7 +51,7 @@ function SignPlayer({
         player.TeamUuid === TeamUuid &&
         !TrophyData.earned
       ) {
-        await Axios.post(`${apiUrl}/trophies/earned/${userUuid}`, {
+        await Axios.post(`${apiUrl}/trophies/earned/${UserUuid}`, {
           name: trophyName
         })
         iOpenTrophySnackbar()
@@ -63,7 +66,7 @@ function SignPlayer({
       setHasSign(true)
 
       if (trophyName && player.TeamUuid === null && !TrophyData.earned) {
-        await Axios.post(`${apiUrl}/trophies/earned/${userUuid}`, {
+        await Axios.post(`${apiUrl}/trophies/earned/${UserUuid}`, {
           name: trophyName
         })
         iOpenTrophySnackbar()
@@ -77,7 +80,7 @@ function SignPlayer({
         player.TeamUuid === TeamUuid &&
         !TrophyData.earned
       ) {
-        await Axios.post(`${apiUrl}/trophies/earned/${userUuid}`, {
+        await Axios.post(`${apiUrl}/trophies/earned/${UserUuid}`, {
           name: trophyName
         })
         iOpenTrophySnackbar()
@@ -208,11 +211,7 @@ function SignPlayer({
             } to ${player.firstName} ${player.lastName}`}</DialogTitle>
             <DialogContent>
               <Grid container>
-                <Grid
-                  item
-                  xs={6}
-                  style={{ alignSelf: 'center', padding: '40px 50px' }}
-                >
+                <Grid item xs={12} md={6}>
                   <Avatar
                     style={{
                       margin: 'auto',
@@ -221,47 +220,94 @@ function SignPlayer({
                     }}
                     src={player.photo}
                   />
-                  <Typography id="discrete-slider" gutterBottom>
-                    Player interest
-                  </Typography>
+                  <div style={{ padding: '20px 30px' }}>
+                    <Typography
+                      id="discrete-slider"
+                      gutterBottom
+                      style={{ marginBottom: '15px' }}
+                    >
+                      Player interest
+                    </Typography>
 
-                  <LinearProgress
-                    color="secondary"
-                    variant="determinate"
-                    value={getValue(player.value)}
-                  />
+                    <LinearProgress
+                      color="secondary"
+                      variant="determinate"
+                      value={getValue(player.value)}
+                    />
+                  </div>
                 </Grid>
-                <Grid
-                  item
-                  xs={6}
-                  style={{ alignSelf: 'center', padding: '40px 30px' }}
-                >
-                  <Typography id="discrete-slider" gutterBottom>
-                    Salary
-                  </Typography>
-                  <Slider
-                    marks={marks}
-                    defaultValue={4}
-                    valueLabelDisplay="on"
-                    step={1}
-                    min={1}
-                    max={30}
-                    onChange={(e, value) => handleChange(value, player.value)}
-                  />
+                <Grid item xs={12} md={6}>
+                  <div style={{ marginLeft: '30px', display: 'flex' }}>
+                    <div>
+                      <Typography color="textSecondary">
+                        <strong>Before</strong>
+                      </Typography>
 
-                  <Typography id="discrete-slider" gutterBottom>
-                    Duration
-                  </Typography>
-                  <Slider
-                    defaultValue={3}
-                    aria-labelledby="discrete-slider"
-                    valueLabelDisplay="on"
-                    step={1}
-                    marks={marks2}
-                    min={1}
-                    max={4}
-                    onChange={(e, value) => setDuration(value)}
-                  />
+                      <Chip
+                        style={{
+                          backgroundColor:
+                            myteamData.salaryCapLeft < 0
+                              ? 'rgb(217, 48, 33)'
+                              : 'rgb(76, 175, 80)'
+                        }}
+                        avatar={<MonetizationOnIcon />}
+                        label={myteamData.salaryCapLeft}
+                      />
+                    </div>
+
+                    <div style={{ marginLeft: '10px' }}>
+                      <Typography color="textSecondary">
+                        <strong>After</strong>
+                      </Typography>
+                      <Chip
+                        style={{
+                          backgroundColor:
+                            myteamData.salaryCapLeft <= salary
+                              ? 'rgb(217, 48, 33)'
+                              : 'rgb(76, 175, 80)'
+                        }}
+                        avatar={<MonetizationOnIcon />}
+                        label={
+                          player.TeamUuid === myteamData.uuid
+                            ? myteamData.salaryCapLeft - salary + player.salary
+                            : myteamData.salaryCapLeft - salary
+                        }
+                      />
+                    </div>
+                  </div>
+
+                  <div style={{ padding: '20px 30px' }}>
+                    <Typography id="discrete-slider" gutterBottom>
+                      Salary
+                    </Typography>
+                    <Slider
+                      aria-labelledby="discrete-slider"
+                      marks={marks}
+                      defaultValue={7}
+                      valueLabelDisplay="on"
+                      step={1}
+                      min={1}
+                      max={30}
+                      onChange={(e, value) => handleChange(value, player.value)}
+                    />
+                    <Typography
+                      style={{ marginTop: '10px' }}
+                      id="discrete-slider"
+                      gutterBottom
+                    >
+                      Duration
+                    </Typography>
+                    <Slider
+                      defaultValue={3}
+                      aria-labelledby="discrete-slider"
+                      valueLabelDisplay="on"
+                      step={1}
+                      marks={marks2}
+                      min={1}
+                      max={4}
+                      onChange={(e, value) => setDuration(value)}
+                    />
+                  </div>
                 </Grid>
               </Grid>
             </DialogContent>
@@ -277,6 +323,8 @@ function SignPlayer({
                 hasSign={hasSign}
                 myteamData={myteamData}
                 salary={salary}
+                UserUuid={UserUuid}
+                TeamUuid={TeamUuid}
               />
             </DialogActions>
           </>
