@@ -190,6 +190,7 @@ function MyTeam() {
                         TrophyData={TrophyData}
                         trophyName={trophyName}
                         UserUuid={UserUuid}
+                        myteamData={myteamData}
                       />
                     </TableCell>
                   </TableRow>
