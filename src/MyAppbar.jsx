@@ -178,7 +178,6 @@ function MyAppBar() {
                 button
                 key={link.name}
                 onClick={handleClose}
-                style={{ padding: '3px 16px 3px 16px' }}
               >
                 <ListItemIcon>{link.icon}</ListItemIcon>
                 <ListItemText primary={link.name} />
