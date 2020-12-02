@@ -26,11 +26,12 @@ import HistoryIcon from '@material-ui/icons/History'
 import StarsIcon from '@material-ui/icons/Stars'
 import PostAddIcon from '@material-ui/icons/PostAdd'
 import HelpIcon from '@material-ui/icons/Help'
-import TocIcon from '@material-ui/icons/Toc'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 import PersonIcon from '@material-ui/icons/Person'
 import trophyIcon from './images/trophyIconDark.png'
 import trophyIconLight from './images/trophyIconLight.png'
+import TocIcon from '@material-ui/icons/Toc'
+import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered'
 
 const useStyles = makeStyles({
   list: {
@@ -94,19 +95,24 @@ function MyAppBar() {
       icon: <GroupIcon />
     },
     {
-      to: '/ranking',
-      name: 'Ranking',
-      icon: <TocIcon />
+      to: '/charts',
+      name: 'Charts',
+      icon: <TrendingUpIcon />
     },
     {
-      to: '/stats',
-      name: 'Season stats',
-      icon: <TrendingUpIcon />
+      to: '/ranking',
+      name: 'Ranking',
+      icon: <FormatListNumberedIcon />
     },
     {
       to: '/standings',
       name: 'Best players',
       icon: <StarsIcon />
+    },
+    {
+      to: '/stats',
+      name: 'Season stats',
+      icon: <TocIcon />
     },
     {
       to: '/history',
