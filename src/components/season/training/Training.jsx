@@ -213,6 +213,8 @@ function Training() {
                   aria-label="add"
                   style={{
                     margin: '5px 0px 0px 2px',
+                    width: '35px',
+                    height: '35px',
                     backgroundColor:
                       trainingLeft === 2
                         ? 'rgb(76, 175, 80)'
@@ -281,7 +283,9 @@ function Training() {
                             ((player.ptsMin + player.ptsMax) / 2 / 35) * 100
                           )}
                           onDelete
-                          deleteIcon={<DoneIcon />}
+                          deleteIcon={<DoneIcon  />}
+                          clickable={false}
+                         
                         />
                       ) : (
                         <Chip
@@ -295,7 +299,7 @@ function Training() {
                           deleteIcon={
                             <AddCircleIcon
                               fontSize="small"
-                              style={{ color: 'white' }}
+                              style={{ color: 'white',width:'19px' }}
                             />
                           }
                           label={Math.round(
@@ -327,7 +331,7 @@ function Training() {
                           deleteIcon={
                             <AddCircleIcon
                               fontSize="small"
-                              style={{ color: 'white' }}
+                              style={{ color: 'white',width:'19px' }}
                             />
                           }
                           label={Math.round(
@@ -359,7 +363,7 @@ function Training() {
                           deleteIcon={
                             <AddCircleIcon
                               fontSize="small"
-                              style={{ color: 'white' }}
+                              style={{ color: 'white',width:'19px' }}
                             />
                           }
                           label={Math.round(
