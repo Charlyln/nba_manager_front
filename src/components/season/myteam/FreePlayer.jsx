@@ -7,6 +7,7 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 import { apiUrl } from '../../../apiUrl'
 import Axios from 'axios'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
+import updateSalaryCapLeft from '../../api calls/updateSalaryCapLeft'
 
 function SignPlayer({
   player,
@@ -14,7 +15,8 @@ function SignPlayer({
   iOpenTrophySnackbar,
   TrophyData,
   trophyName,
-  UserUuid
+  UserUuid,
+  myteamData
 }) {
   const [open, setOpen] = useState(false)
 
@@ -41,6 +43,7 @@ function SignPlayer({
       }
 
       handleClose()
+      updateSalaryCapLeft(UserUuid, myteamData.uuid)
       getMyTeam()
     } catch (error) {
       console.log(error)
