@@ -194,23 +194,37 @@ function Training() {
             component={Paper}
             style={{ width: '90%', margin: '100px auto', padding: '0px 5px' }}
           >
-            <HeadShake spy={counter}>
-              <Fab
-                size="small"
-                aria-label="add"
+            <div style={{ float: 'right', display: 'flex' }}>
+              <Typography
+                variant="button"
+                component="div"
+                color="textSecondary"
                 style={{
-                  margin: '5px 0px 0px 2px',
-                  backgroundColor:
-                    trainingLeft === 2
-                      ? 'rgb(76, 175, 80)'
-                      : trainingLeft === 1
-                      ? '#FB8B3C'
-                      : 'rgb(217, 48, 33)'
+                  color: '#616060',
+                  alignSelf: 'center',
+                  margin: '5px 10px 0px 0px'
                 }}
               >
-                {trainingLeft}
-              </Fab>
-            </HeadShake>
+                <strong>Trainings left</strong>
+              </Typography>
+              <HeadShake spy={counter}>
+                <Fab
+                  size="small"
+                  aria-label="add"
+                  style={{
+                    margin: '5px 0px 0px 2px',
+                    backgroundColor:
+                      trainingLeft === 2
+                        ? 'rgb(76, 175, 80)'
+                        : trainingLeft === 1
+                        ? '#FB8B3C'
+                        : 'rgb(217, 48, 33)'
+                  }}
+                >
+                  {trainingLeft}
+                </Fab>
+              </HeadShake>
+            </div>
 
             <Table aria-label="simple table">
               <TableHead>
