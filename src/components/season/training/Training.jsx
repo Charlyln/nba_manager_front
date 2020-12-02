@@ -200,7 +200,7 @@ function Training() {
                 component="div"
                 color="textSecondary"
                 style={{
-                  color: '#616060',
+                  color: 'rgb(128 127 127)',
                   alignSelf: 'center',
                   margin: '5px 10px 0px 0px'
                 }}
