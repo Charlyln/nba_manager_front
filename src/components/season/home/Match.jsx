@@ -13,10 +13,17 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemSecondaryAction,
-  ListItemText
+  ListItemText,
+  Paper
 } from '@material-ui/core'
 import PlayArrowIcon from '@material-ui/icons/PlayArrow'
 import CountUp from 'react-countup'
+import Table from '@material-ui/core/Table'
+import TableBody from '@material-ui/core/TableBody'
+import TableCell from '@material-ui/core/TableCell'
+import TableContainer from '@material-ui/core/TableContainer'
+import TableHead from '@material-ui/core/TableHead'
+import TableRow from '@material-ui/core/TableRow'
 
 function Match({
   team2,
@@ -38,7 +45,6 @@ function Match({
   TrophyData,
   trophyName
 }) {
-
   const [open, setOpen] = useState(false)
   const [matchLoading, setMatchLoading] = useState(false)
   const [isPlayed, setIsPlayed] = useState(game.team1)
@@ -206,106 +212,135 @@ function Match({
         onClose={handleClose}
         aria-labelledby="simple-dialog-title"
         open={open}
+        fullWidth
+        maxWidth="md"
       >
         <Grid container>
           <Grid item xs={12}>
             <Grid container justify="center">
-              <Grid item>
-                <List>
-                  <ListItem>
-                    <ListItemAvatar style={{ margin: '0px 5px' }}>
-                      <Avatar
-                        src={team1.logo}
-                        style={{ width: '60px', height: '60px' }}
-                      />
-                    </ListItemAvatar>
-                    <ListItemText
-                      style={{ margin: '5px 20px' }}
-                      primary={` ${team1.name}`}
-                    />
-                    <ListItemSecondaryAction>
-                      {game.team1}
-                    </ListItemSecondaryAction>
-                  </ListItem>
-
-                  <Divider />
-
-                  {playerStats
-                    .filter((stat) => stat.teamIdAtTheGame === team1.uuid)
-                    .sort(function (a, b) {
-                      return new Date(b.pts) - new Date(a.pts)
-                    })
-                    .map((player) => {
-                      return (
-                        <ListItem>
-                          <ListItemAvatar style={{ margin: '0px 5px' }}>
-                            <Avatar
-                              alt={player.Player.lastName}
-                              src={player.Player.photo}
-                              style={{ width: '60px', height: '60px' }}
-                            />
-                          </ListItemAvatar>
-                          <ListItemText
-                            style={{ margin: '5px 20px' }}
-                            primary={player.Player.firstName}
-                            secondary={player.Player.lastName}
+              <Grid item style={{ margin: 'auto' }}>
+                <TableContainer component={Paper}>
+                  <Table aria-label="simple table">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell align="center">
+                          <Avatar
+                            src={team1.logo}
+                            style={{ width: '60px', height: '60px' }}
                           />
-                          <ListItemSecondaryAction>
-                            {player.pts}
-                          </ListItemSecondaryAction>
-                        </ListItem>
-                      )
-                    })}
-                </List>
+                        </TableCell>
+                        <TableCell align="center">{team1.name}</TableCell>
+                        <TableCell align="center">{game.team1}</TableCell>
+                        <TableCell align="center"></TableCell>
+                        <TableCell align="center"></TableCell>
+                        <TableCell align="center"></TableCell>
+                        <TableCell align="center"></TableCell>
+                      </TableRow>
+
+                      <TableRow>
+                        <TableCell align="center">Photo</TableCell>
+                        <TableCell align="center">Name</TableCell>
+                        <TableCell align="center">Pts</TableCell>
+                        <TableCell align="center">Reb</TableCell>
+                        <TableCell align="center">Ass</TableCell>
+                        <TableCell align="center">Blk</TableCell>
+                        <TableCell align="center">Stl</TableCell>
+                      </TableRow>
+                    </TableHead>
+
+                    <TableBody>
+                      {playerStats
+                        .filter((stat) => stat.teamIdAtTheGame === team1.uuid)
+                        .sort(function (a, b) {
+                          return new Date(b.pts) - new Date(a.pts)
+                        })
+                        .map((player) => {
+                          return (
+                            <TableRow>
+                              <TableCell align="center">
+                                <Avatar
+                                  alt={player.Player.lastName}
+                                  src={player.Player.photo}
+                                  style={{ width: '60px', height: '60px' }}
+                                />
+                              </TableCell>
+                              <TableCell align="center">
+                                {player.Player.firstName}
+                              </TableCell>
+                              <TableCell align="center">{player.pts}</TableCell>
+                              <TableCell align="center">{player.reb}</TableCell>
+                              <TableCell align="center">{player.pas}</TableCell>
+                              <TableCell align="center">{player.blk}</TableCell>
+                              <TableCell align="center">{player.stl}</TableCell>
+                            </TableRow>
+                          )
+                        })}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
               </Grid>
               <Divider orientation="vertical" flexItem />
-              <Grid item>
-                <List>
-                  <ListItem>
-                    <ListItemAvatar style={{ margin: '0px 5px' }}>
-                      <Avatar
-                        src={team2.logo}
-                        style={{ width: '60px', height: '60px' }}
-                      />
-                    </ListItemAvatar>
-                    <ListItemText
-                      style={{ margin: '5px 20px' }}
-                      primary={` ${team2.name}`}
-                    />
-                    <ListItemSecondaryAction>
-                      {game.team2}
-                    </ListItemSecondaryAction>
-                  </ListItem>
-
-                  <Divider />
-
-                  {playerStats
-                    .filter((stat) => stat.teamIdAtTheGame !== team1.uuid)
-                    .sort(function (a, b) {
-                      return new Date(b.pts) - new Date(a.pts)
-                    })
-                    .map((player) => {
-                      return (
-                        <ListItem>
-                          <ListItemAvatar style={{ margin: '0px 5px' }}>
-                            <Avatar
-                              alt={player.Player.lastName}
-                              src={player.Player.photo}
-                              style={{ width: '60px', height: '60px' }}
-                            />
-                          </ListItemAvatar>
-                          <ListItemText
-                            style={{ margin: '5px 20px' }}
-                            primary={player.Player.firstName}
-                            secondary={player.Player.lastName}
+              <Grid item style={{ margin: 'auto' }}>
+                <TableContainer component={Paper}>
+                  <Table aria-label="simple table">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell align="center">
+                          <Avatar
+                            src={team2.logo}
+                            style={{ width: '60px', height: '60px' }}
                           />
-                          <ListItemSecondaryAction>
-                            {player.pts}
-                          </ListItemSecondaryAction>
-                        </ListItem>
-                      )
-                    })}
-                </List>
+                        </TableCell>
+                        <TableCell align="center">{team2.name}</TableCell>
+                        <TableCell align="center">{game.team2}</TableCell>
+                        <TableCell align="center"></TableCell>
+                        <TableCell align="center"></TableCell>
+                        <TableCell align="center"></TableCell>
+                        <TableCell align="center"></TableCell>
+                      </TableRow>
+
+                      <TableRow>
+                        <TableCell align="center">Photo</TableCell>
+                        <TableCell align="center">Name</TableCell>
+                        <TableCell align="center">Pts</TableCell>
+                        <TableCell align="center">Reb</TableCell>
+                        <TableCell align="center">Ass</TableCell>
+                        <TableCell align="center">Blk</TableCell>
+                        <TableCell align="center">Stl</TableCell>
+                      </TableRow>
+                    </TableHead>
+
+                    <TableBody>
+                      {playerStats
+                        .filter((stat) => stat.teamIdAtTheGame !== team1.uuid)
+
+                        .sort(function (a, b) {
+                          return new Date(b.pts) - new Date(a.pts)
+                        })
+                        .map((player) => {
+                          return (
+                            <TableRow>
+                              <TableCell align="center">
+                                <Avatar
+                                  alt={player.Player.lastName}
+                                  src={player.Player.photo}
+                                  style={{ width: '60px', height: '60px' }}
+                                />
+                              </TableCell>
+                              <TableCell align="center">
+                                {player.Player.firstName}
+                              </TableCell>
+                              <TableCell align="center">{player.pts}</TableCell>
+                              <TableCell align="center">{player.reb}</TableCell>
+                              <TableCell align="center">{player.pas}</TableCell>
+                              <TableCell align="center">{player.blk}</TableCell>
+                              <TableCell align="center">{player.stl}</TableCell>
+                            </TableRow>
+                          )
+                        })}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
               </Grid>
             </Grid>
           </Grid>
