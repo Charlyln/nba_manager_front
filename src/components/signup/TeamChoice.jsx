@@ -102,12 +102,12 @@ function TeamChoice() {
         <Toolbar>
           <Typography
             variant="h6"
-            display="block"
-            gutterBottom
-            style={{ marginLeft: '30px' }}
+            component="h6"
+            style={{ marginLeft: '30px', fontSize: 'medium' }}
           >
-            2. Choose your team
+            CHOOSE YOUR TEAM
           </Typography>
+
           {teamChoice ? (
             <>
               {postLoading ? (

@@ -73,11 +73,10 @@ function SignUp() {
         <Toolbar>
           <Typography
             variant="h6"
-            display="block"
-            gutterBottom
-            style={{ marginLeft: '30px' }}
+            component="h6"
+            style={{ marginLeft: '30px', fontSize: 'medium' }}
           >
-            1. Choose your pseudo
+            CHOOSE YOUR PSEUDO
           </Typography>
         </Toolbar>
       </AppBar>

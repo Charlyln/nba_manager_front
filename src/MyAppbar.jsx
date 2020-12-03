@@ -156,7 +156,7 @@ function MyAppBar() {
   const getPageName = () => {
     const page = links.find((link) => link.to === location.pathname)
     if (page) {
-      return page.name
+      return page.name.toUpperCase()
     }
   }
   const putRightTrophyIcon = () => {
@@ -174,11 +174,7 @@ function MyAppBar() {
               onMouseEnter={link.name === 'Trophies' ? putRightTrophyIcon : ''}
               onMouseLeave={link.name === 'Trophies' ? putRightTrophyIcon : ''}
             >
-              <ListItem
-                button
-                key={link.name}
-                onClick={handleClose}
-              >
+              <ListItem button key={link.name} onClick={handleClose}>
                 <ListItemIcon>{link.icon}</ListItemIcon>
                 <ListItemText primary={link.name} />
               </ListItem>
@@ -205,7 +201,11 @@ function MyAppBar() {
             <MenuIcon style={{ color: '#2F2E2C' }} />
           </IconButton>
 
-          <Typography style={{ color: '#2F2E2C' }} variant="h6">
+          <Typography
+            style={{ color: '#2F2E2C' }}
+            variant="h6"
+            component="h6"
+          >
             {getPageName()}
           </Typography>
         </Toolbar>
