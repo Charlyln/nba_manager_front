@@ -1,4 +1,4 @@
-import { AppBar, Grid, Toolbar } from '@material-ui/core'
+import { AppBar, Grid, Paper, Toolbar, Typography } from '@material-ui/core'
 import React, { useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
 import Jump from 'react-reveal/Jump'
@@ -49,7 +49,20 @@ function Start() {
       <AppBar className="appBar">
         <Toolbar></Toolbar>
       </AppBar>
-      <Grid container justify="center" style={{ marginTop: '200px' }}>
+
+      <Grid container justify="center" style={{ marginTop: '120px' }}>
+        <Paper elevation={10} style={{ padding: '5px 15px' }}>
+          <Typography
+            component="h6"
+            style={{ fontSize: 'xx-large', color: '#000000' }}
+            variant="h6"
+          >
+            NBA MANAGER
+          </Typography>
+        </Paper>
+      </Grid>
+
+      <Grid container justify="center" style={{ marginTop: '100px' }}>
         <Zoom when={show && counter > 0}>
           <div
             onMouseEnter={inMouse}
