@@ -7,6 +7,8 @@ import PropTypes from 'prop-types'
 import AccountVerify from '../../mutliple/AccountVerify'
 import ProgressBall from '../../mutliple/ProgressBall'
 import getChartsData from '../../api calls/getChartsData'
+import { assistsOptions } from './chartsOptions'
+import { pointsOptions } from './chartsOptions'
 
 // const useStyles = makeStyles((theme) => ({
 //   paper: {
@@ -29,16 +31,12 @@ import getChartsData from '../../api calls/getChartsData'
 // }))
 
 function Charts() {
-  // const classes = useStyles()
-  // const [myteamData, setMyTeamData] = useState({})
   const [UserUuid] = useState(window.localStorage.getItem('uuid'))
   const [TeamUuid] = useState(window.localStorage.getItem('TeamUuid'))
   const [SeasonUuid] = useState(window.localStorage.getItem('SeasonUuid'))
   const [isLoading, setIsLoading] = useState(true)
   const [value, setValue] = useState(0)
-  // const [series, setSeries] = useState([])
-  const [panels] = useState(['Season'])
-  // const [series2, setSeries2] = useState([])
+  const [panels] = useState(['Points', 'Rebounds', 'Assists'])
   const [seasonSeries, setSeries3] = useState([
     {
       name: 'Jayson Tatum',
@@ -61,58 +59,6 @@ function Charts() {
       data: [8, 10, 6, 18, 7, 9, 11, 10, 10, 12]
     }
   ])
-
-  const [seasonOptions] = useState({
-    chart: {
-      height: 350,
-      type: 'line',
-      dropShadow: {
-        enabled: true,
-        color: '#000',
-        top: 18,
-        left: 7,
-        blur: 10,
-        opacity: 0.2
-      },
-      zoom: {
-        enabled: false
-      },
-      toolbar: {
-        show: false
-      }
-    },
-    colors: ['#2E93fA', '#66DA26', '#1D1D1D', '#E91E63', '#FF9800'],
-    stroke: {
-      curve: 'straight'
-    },
-    title: {
-      text: 'Points per game',
-      align: 'left'
-    },
-    grid: {
-      row: {
-        colors: ['#f3f3f3', 'transparent'],
-        opacity: 0.5
-      }
-    },
-    xaxis: {
-      categories: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-      title: {
-        text: 'Game'
-      }
-    },
-    yaxis: {
-      title: {
-        text: 'Points'
-      },
-      min: 0,
-      max: 40
-    },
-    legend: {
-      position: 'top',
-      horizontalAlign: 'right'
-    }
-  })
 
   function TabPanel(props) {
     const { children, value, index, ...other } = props
@@ -158,78 +104,9 @@ function Charts() {
 
   const getAllData = async () => {
     try {
-      // const res = await getMyTeam(UserUuid)
-      // setMyTeamData(res.data)
-
       const charts = await getChartsData(UserUuid, TeamUuid, SeasonUuid)
 
-      // console.log(charts.data)
       setSeries3(charts.data)
-
-      // const array = res.data.Players.sort(function (a, b) {
-      //   return new Date(b.value) - new Date(a.value)
-      // }).map((player) => {
-      //   return {
-      //     name: player.firstName + ' ' + player.lastName,
-      //     data: [
-      //       player.value,
-      //       player.value > 90
-      //         ? player.value + 3
-      //         : player.value > 85
-      //         ? player.value + 2
-      //         : player.value > 80
-      //         ? player.value + 1
-      //         : player.value > 75
-      //         ? player.value - 2
-      //         : player.value + 1,
-      //       player.value,
-      //       player.value > 90
-      //         ? player.value - 2
-      //         : player.value > 85
-      //         ? player.value + 1
-      //         : player.value > 80
-      //         ? player.value - 1
-      //         : player.value > 75
-      //         ? player.value + 2
-      //         : player.value + 1,
-      //       player.value
-      //     ]
-      //   }
-      // })
-
-      // const array2 = res.data.Players.sort(function (a, b) {
-      //   return new Date(b.value) - new Date(a.value)
-      // }).map((player) => {
-      //   return {
-      //     name: player.firstName + ' ' + player.lastName,
-      //     data: [
-      //       player.value,
-      //       player.value > 90
-      //         ? player.value - 2
-      //         : player.value > 85
-      //         ? player.value + 1
-      //         : player.value > 80
-      //         ? player.value - 1
-      //         : player.value > 75
-      //         ? player.value + 2
-      //         : player.value + 1,
-      //       player.value,
-      //       player.value > 90
-      //         ? player.value - 4
-      //         : player.value > 85
-      //         ? player.value + 2
-      //         : player.value > 80
-      //         ? player.value + 3
-      //         : player.value > 75
-      //         ? player.value + 4
-      //         : player.value + 4,
-      //       player.value
-      //     ]
-      //   }
-      // })
-
-      // setSeries(array)
-      // setSeries2(array2)
 
       setIsLoading(false)
     } catch (error) {
@@ -272,50 +149,24 @@ function Charts() {
                 ))}
               </Tabs>
 
-              <TabPanel value={value} index={0}>
-                <Chart
-                  options={seasonOptions}
-                  series={seasonSeries}
-                  type="line"
-                  width={600}
-                  height={500}
-                  style={{
-                    backgroundColor: '#8a8a8a',
-                    color: 'black',
-                    borderRadius: '4px'
-                  }}
-                />
-              </TabPanel>
-
-              {/* <TabPanel value={value} index={1}>
-                <Chart
-                  options={options}
-                  series={series}
-                  type="line"
-                  width={600}
-                  height={500}
-                  style={{
-                    backgroundColor: '#8a8a8a',
-                    color: 'black',
-                    borderRadius: '4px'
-                  }}
-                />
-              </TabPanel>
-
-              <TabPanel value={value} index={2}>
-                <Chart
-                  options={options2}
-                  series={series2}
-                  type="line"
-                  width={600}
-                  height={500}
-                  style={{
-                    backgroundColor: '#8a8a8a',
-                    color: 'black',
-                    borderRadius: '4px'
-                  }}
-                />
-              </TabPanel> */}
+              {seasonSeries.map((serie, i) => (
+                <TabPanel value={value} index={i}>
+                  <Chart
+                    options={
+                      panels[i] === 'Points' ? pointsOptions : assistsOptions
+                    }
+                    series={seasonSeries[i]}
+                    type="line"
+                    width={600}
+                    height={500}
+                    style={{
+                      backgroundColor: '#8a8a8a',
+                      color: 'black',
+                      borderRadius: '4px'
+                    }}
+                  />
+                </TabPanel>
+              ))}
             </Paper>
           </Grid>
         )}
@@ -324,113 +175,3 @@ function Charts() {
   )
 }
 export default Charts
-
-// const [options] = useState({
-//   chart: {
-//     height: 350,
-//     type: 'line',
-//     dropShadow: {
-//       enabled: true,
-//       color: '#000',
-//       top: 18,
-//       left: 7,
-//       blur: 10,
-//       opacity: 0.2
-//     },
-//     zoom: {
-//       enabled: false
-//     },
-//     toolbar: {
-//       show: false
-//     }
-//   },
-//   colors: ['#2E93fA', '#66DA26', '#1D1D1D', '#E91E63', '#FF9800'],
-//   dataLabels: {
-//     // enabled: true
-//   },
-//   stroke: {
-//     curve: 'straight'
-//   },
-//   title: {
-//     text: 'Value',
-//     align: 'left'
-//   },
-//   grid: {
-//     row: {
-//       colors: ['#f3f3f3', 'transparent'],
-//       opacity: 0.5
-//     }
-//   },
-//   xaxis: {
-//     categories: ['2020', '2021', '2022', '2023', '2024'],
-//     title: {
-//       text: 'Year'
-//     }
-//   },
-//   yaxis: {
-//     title: {
-//       text: 'Value'
-//     },
-//     min: 65,
-//     max: 99
-//   },
-//   legend: {
-//     position: 'top',
-//     horizontalAlign: 'right'
-//   }
-// })
-
-// const [options2] = useState({
-//   chart: {
-//     height: 350,
-//     type: 'line',
-//     dropShadow: {
-//       enabled: true,
-//       color: '#000',
-//       top: 18,
-//       left: 7,
-//       blur: 10,
-//       opacity: 0.2
-//     },
-//     zoom: {
-//       enabled: false
-//     },
-//     toolbar: {
-//       show: false
-//     }
-//   },
-//   colors: ['#2E93fA', '#66DA26', '#1D1D1D', '#E91E63', '#FF9800'],
-//   dataLabels: {
-//     // enabled: true
-//   },
-//   stroke: {
-//     curve: 'straight'
-//   },
-//   title: {
-//     text: 'Scoring',
-//     align: 'left'
-//   },
-//   grid: {
-//     row: {
-//       colors: ['#f3f3f3', 'transparent'],
-//       opacity: 0.5
-//     }
-//   },
-//   xaxis: {
-//     categories: ['2020', '2021', '2022', '2023', '2024'],
-//     title: {
-//       text: 'Year'
-//     }
-//   },
-//   yaxis: {
-//     title: {
-//       text: 'Value'
-//     },
-//     min: 65,
-//     max: 99
-//   },
-//   legend: {
-//     position: 'top',
-//     horizontalAlign: 'right'
-//   }
-// })
