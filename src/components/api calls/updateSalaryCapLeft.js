@@ -8,4 +8,4 @@ const updateSalaryCapLeft = async (UserUuid, TeamUuid) => {
   return res.data
 }
 
-module.exports = updateSalaryCapLeft
+export default updateSalaryCapLeft

@@ -6,4 +6,4 @@ const getMyTeam = async (UserUuid) => {
   return res
 }
 
-module.exports = getMyTeam
+export default getMyTeam
