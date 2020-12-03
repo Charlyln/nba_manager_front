@@ -88,6 +88,7 @@ function Extensions() {
             trophyName={trophyName}
           />
           <TableContainer
+            elevation={10}
             component={Paper}
             style={{ width: '90%', margin: '100px auto ' }}
           >

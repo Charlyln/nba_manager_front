@@ -76,7 +76,11 @@ function BestPlayers() {
                 </ListItem>
               </Paper>
             ) : (
-              <TableContainer component={Paper} style={{ width: '70%' }}>
+              <TableContainer
+                elevation={10}
+                component={Paper}
+                style={{ width: '70%' }}
+              >
                 <Table aria-label="simple table">
                   <TableHead>
                     <TableRow>

@@ -191,6 +191,7 @@ function Training() {
             trophyName={'Increase a player stat'}
           />
           <TableContainer
+            elevation={10}
             component={Paper}
             style={{ width: '90%', margin: '100px auto', padding: '0px 5px' }}
           >
@@ -283,9 +284,8 @@ function Training() {
                             ((player.ptsMin + player.ptsMax) / 2 / 35) * 100
                           )}
                           onDelete
-                          deleteIcon={<DoneIcon  />}
+                          deleteIcon={<DoneIcon />}
                           clickable={false}
-                         
                         />
                       ) : (
                         <Chip
@@ -299,7 +299,7 @@ function Training() {
                           deleteIcon={
                             <AddCircleIcon
                               fontSize="small"
-                              style={{ color: 'white',width:'19px' }}
+                              style={{ color: 'white', width: '19px' }}
                             />
                           }
                           label={Math.round(
@@ -331,7 +331,7 @@ function Training() {
                           deleteIcon={
                             <AddCircleIcon
                               fontSize="small"
-                              style={{ color: 'white',width:'19px' }}
+                              style={{ color: 'white', width: '19px' }}
                             />
                           }
                           label={Math.round(
@@ -363,7 +363,7 @@ function Training() {
                           deleteIcon={
                             <AddCircleIcon
                               fontSize="small"
-                              style={{ color: 'white',width:'19px' }}
+                              style={{ color: 'white', width: '19px' }}
                             />
                           }
                           label={Math.round(

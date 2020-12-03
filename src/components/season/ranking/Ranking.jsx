@@ -91,6 +91,7 @@ function Ranking() {
             <Grid item xs={12}>
               <Grid container justify="center">
                 <TableContainer
+                  elevation={10}
                   component={Paper}
                   style={{ width: '60%', margin: '0 auto ' }}
                 >
