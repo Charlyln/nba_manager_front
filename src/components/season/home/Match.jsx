@@ -9,11 +9,6 @@ import {
   CircularProgress,
   Divider,
   Grid,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemSecondaryAction,
-  ListItemText,
   Paper
 } from '@material-ui/core'
 import PlayArrowIcon from '@material-ui/icons/PlayArrow'
