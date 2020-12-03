@@ -190,78 +190,82 @@ function Home() {
                 padding: '20px'
               }}
             >
-              {teamsData.map((team, i, arr) => {
-                let previousItem = arr[i - 1]
-                return (
-                  <Paper
-                    elevation={10}
-                    style={{
-                      margin: '4px',
-                      padding: '15px 15px',
-                      width: '210px',
-                      height: '230px'
-                    }}
-                  >
-                    <Typography gutterBottom variant="button" component="h5">
-                      {`${team.Team.name} @ ${team.Visitor.name}`}
-                    </Typography>
+              {teamsData
+                .sort(function (a, b) {
+                  return new Date(b.date) - new Date(a.date)
+                })
+                .map((team, i, arr) => {
+                  let previousItem = arr[i - 1]
+                  return (
+                    <Paper
+                      elevation={10}
+                      style={{
+                        margin: '4px',
+                        padding: '15px 15px',
+                        width: '210px',
+                        height: '230px'
+                      }}
+                    >
+                      <Typography gutterBottom variant="button" component="h5">
+                        {`${team.Team.name} @ ${team.Visitor.name}`}
+                      </Typography>
 
-                    <Typography gutterBottom variant="button" component="h2">
-                      {`Match ${i + 1}`}
-                    </Typography>
-                    {logoLoading ? (
-                      <Skeleton
-                        variant="circle"
+                      <Typography gutterBottom variant="button" component="h2">
+                        {`Match ${i + 1}`}
+                      </Typography>
+                      {logoLoading ? (
+                        <Skeleton
+                          variant="circle"
+                          style={{
+                            width: '100px',
+                            height: '100px',
+                            margin: 'auto'
+                          }}
+                        />
+                      ) : (
+                        ''
+                      )}
+
+                      <Avatar
                         style={{
-                          width: '100px',
-                          height: '100px',
+                          width: logoLoading ? 0 : '100px',
+                          height: logoLoading ? 0 : '100px',
                           margin: 'auto'
                         }}
+                        src={
+                          myteamsData.uuid === team.Team.uuid
+                            ? team.Visitor.Team.logo
+                            : team.Team.logo
+                        }
                       />
-                    ) : (
-                      ''
-                    )}
 
-                    <Avatar
-                      style={{
-                        width: logoLoading ? 0 : '100px',
-                        height: logoLoading ? 0 : '100px',
-                        margin: 'auto'
-                      }}
-                      src={
-                        myteamsData.uuid === team.Team.uuid
-                          ? team.Visitor.Team.logo
-                          : team.Team.logo
-                      }
-                    />
-
-                    <Match
-                      team1={team.Team}
-                      team2={team.Visitor.Team}
-                      gameUuid={team.uuid}
-                      playerStats={team.PlayerStats}
-                      getGames={getGames}
-                      game={team}
-                      previousItem={previousItem || 'first'}
-                      allGames={allGames}
-                      i={i}
-                      simulateAllGames={simulateAllGames}
-                      allGameLoading={allGameLoading}
-                      TeamUuid={myteamsData.uuid}
-                      myteamsData={myteamsData}
-                      handleClickOpenMessage={handleClickOpenMessage}
-                      teamsData={teamsData}
-                      matchAllGames={matchAllGames}
-                      mySeason={mySeason}
-                      iOpenTrophySnackbar={iOpenTrophySnackbar}
-                      UserUuid={uuid}
-                      TrophyData={TrophyData}
-                      trophyName={trophyName}
-                      getAllData={getAllData}
-                    />
-                  </Paper>
-                )
-              })}
+                      <Match
+                        team1={team.Team}
+                        team2={team.Visitor.Team}
+                        gameUuid={team.uuid}
+                        playerStats={team.PlayerStats}
+                        getGames={getGames}
+                        game={team}
+                        previousItem={previousItem || 'first'}
+                        allGames={allGames}
+                        i={i}
+                        simulateAllGames={simulateAllGames}
+                        allGameLoading={allGameLoading}
+                        TeamUuid={myteamsData.uuid}
+                        myteamsData={myteamsData}
+                        handleClickOpenMessage={handleClickOpenMessage}
+                        teamsData={teamsData}
+                        matchAllGames={matchAllGames}
+                        mySeason={mySeason}
+                        iOpenTrophySnackbar={iOpenTrophySnackbar}
+                        UserUuid={uuid}
+                        TrophyData={TrophyData}
+                        trophyName={trophyName}
+                        getAllData={getAllData}
+                      />
+                    </Paper>
+                  )
+                })}
               <Paper
                 elevation={10}
                 style={{
