@@ -205,12 +205,22 @@ function Contracts() {
                   <TableCell></TableCell>
                   <TableCell align="right">
                     <Chip
-                      color="secondary"
+                      style={{
+                        backgroundColor:
+                          myteamData.Players.reduce(
+                            (a, v) => (a = a + v.contractYear1),
+                            0
+                          ) < 100000000
+                            ? 'rgb(76, 175, 80)'
+                            : 'rgb(217, 48, 33)'
+                      }}
+                      color="blue"
                       icon={<MonetizationOnIcon />}
                       label={` ${
-                        (-myteamData.Players.filter(
-                          (player) => player.contractLeft > 0
-                        ).reduce((a, v) => (a = a + v.salary), 0) +
+                        (-myteamData.Players.reduce(
+                          (a, v) => (a = a + v.contractYear1),
+                          0
+                        ) +
                           100000000) /
                         1000000
                       } MM`}
@@ -218,12 +228,22 @@ function Contracts() {
                   </TableCell>
                   <TableCell align="right">
                     <Chip
+                      style={{
+                        backgroundColor:
+                          myteamData.Players.reduce(
+                            (a, v) => (a = a + v.contractYear2),
+                            0
+                          ) < 100000000
+                            ? 'rgb(76, 175, 80)'
+                            : 'rgb(217, 48, 33)'
+                      }}
                       color="secondary"
                       icon={<MonetizationOnIcon />}
                       label={` ${
-                        (-myteamData.Players.filter(
-                          (player) => player.contractLeft > 1
-                        ).reduce((a, v) => (a = a + v.salary), 0) +
+                        (-myteamData.Players.reduce(
+                          (a, v) => (a = a + v.contractYear2),
+                          0
+                        ) +
                           100000000) /
                         1000000
                       } MM`}
@@ -231,12 +251,22 @@ function Contracts() {
                   </TableCell>
                   <TableCell align="right">
                     <Chip
+                      style={{
+                        backgroundColor:
+                          myteamData.Players.reduce(
+                            (a, v) => (a = a + v.contractYear3),
+                            0
+                          ) < 100000000
+                            ? 'rgb(76, 175, 80)'
+                            : 'rgb(217, 48, 33)'
+                      }}
                       color="secondary"
                       icon={<MonetizationOnIcon />}
                       label={` ${
-                        (-myteamData.Players.filter(
-                          (player) => player.contractLeft > 2
-                        ).reduce((a, v) => (a = a + v.salary), 0) +
+                        (-myteamData.Players.reduce(
+                          (a, v) => (a = a + v.contractYear3),
+                          0
+                        ) +
                           100000000) /
                         1000000
                       } MM`}
@@ -244,12 +274,22 @@ function Contracts() {
                   </TableCell>
                   <TableCell align="right">
                     <Chip
+                      style={{
+                        backgroundColor:
+                          myteamData.Players.reduce(
+                            (a, v) => (a = a + v.contractYear4),
+                            0
+                          ) < 100000000
+                            ? 'rgb(76, 175, 80)'
+                            : 'rgb(217, 48, 33)'
+                      }}
                       color="secondary"
                       icon={<MonetizationOnIcon />}
                       label={` ${
-                        (-myteamData.Players.filter(
-                          (player) => player.contractLeft > 3
-                        ).reduce((a, v) => (a = a + v.salary), 0) +
+                        (-myteamData.Players.reduce(
+                          (a, v) => (a = a + v.contractYear4),
+                          0
+                        ) +
                           100000000) /
                         1000000
                       } MM`}
