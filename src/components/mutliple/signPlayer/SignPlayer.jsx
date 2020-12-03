@@ -4,7 +4,6 @@ import {
   Button,
   Chip,
   Grid,
-  IconButton,
   LinearProgress,
   Slider,
   Typography
