@@ -2,63 +2,72 @@ import { Box, Grid, Paper, Typography, Tab, Tabs } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
 import Chart from 'react-apexcharts'
 import PropTypes from 'prop-types'
-// import { makeStyles } from '@material-ui/core/styles'
-// import getMyTeam from '../../api calls/getMyTeam'
+import { makeStyles } from '@material-ui/core/styles'
 import AccountVerify from '../../mutliple/AccountVerify'
 import ProgressBall from '../../mutliple/ProgressBall'
 import getChartsData from '../../api calls/getChartsData'
-import { assistsOptions } from './chartsOptions'
-import { pointsOptions } from './chartsOptions'
+import {
+  pointsOptions,
+  stealsOptions,
+  blocksOptions,
+  reboundsOptions,
+  assistsOptions
+} from './chartsOptions'
 
-// const useStyles = makeStyles((theme) => ({
-//   paper: {
-//     [theme.breakpoints.down('xs')]: {
-//       width: '100%'
-//     },
-//     [theme.breakpoints.up('sm')]: {
-//       width: '80%'
-//     },
-//     [theme.breakpoints.up('md')]: {
-//       width: '60%'
-//     },
-//     [theme.breakpoints.up('lg')]: {
-//       width: '50%'
-//     },
-//     [theme.breakpoints.up('xl')]: {
-//       width: '40%'
-//     }
-//   }
-// }))
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    margin: '5px',
+    padding: '0px 0px 30px 0px',
+    [theme.breakpoints.down('xs')]: {
+      width: '100%'
+    },
+    [theme.breakpoints.up('sm')]: {
+      width: '100%'
+    },
+    [theme.breakpoints.up('md')]: {
+      width: 700
+    },
+    [theme.breakpoints.up('lg')]: {
+      width: 700
+    },
+    [theme.breakpoints.up('xl')]: {
+      width: 700
+    }
+  },
+  chart: {
+    [theme.breakpoints.down('xs')]: {
+      width: '99%'
+    },
+    [theme.breakpoints.up('sm')]: {
+      width: '99%'
+    },
+    [theme.breakpoints.up('md')]: {
+      width: 600
+    },
+    [theme.breakpoints.up('lg')]: {
+      width: 600
+    },
+    [theme.breakpoints.up('xl')]: {
+      width: 600
+    }
+  }
+}))
 
 function Charts() {
+  const classes = useStyles()
   const [UserUuid] = useState(window.localStorage.getItem('uuid'))
   const [TeamUuid] = useState(window.localStorage.getItem('TeamUuid'))
   const [SeasonUuid] = useState(window.localStorage.getItem('SeasonUuid'))
   const [isLoading, setIsLoading] = useState(true)
   const [value, setValue] = useState(0)
-  const [panels] = useState(['Points', 'Rebounds', 'Assists'])
-  const [seasonSeries, setSeries3] = useState([
-    {
-      name: 'Jayson Tatum',
-      data: [23, 18, 26, 24, 33, 26, 21, 20, 12, 14]
-    },
-    {
-      name: 'Kemba Walker',
-      data: [15, 17, 39, 22, 19, 23, 17, 22, 29, 20]
-    },
-    {
-      name: 'Jaylen Brown',
-      data: [23, 15, 22, 20, 17, 14, 12, 16, 10, 17]
-    },
-    {
-      name: 'Marcus Smart',
-      data: [10, 9, 5, 15, 15, 12, 14, 8, 10, 6]
-    },
-    {
-      name: 'Daniel Theis',
-      data: [8, 10, 6, 18, 7, 9, 11, 10, 10, 12]
-    }
+  const [panels] = useState([
+    'Points',
+    'Rebounds',
+    'Assists',
+    'Blocks',
+    'Steals'
   ])
+  const [seasonSeries, setSeasonSeries] = useState([])
 
   function TabPanel(props) {
     const { children, value, index, ...other } = props
@@ -106,7 +115,7 @@ function Charts() {
     try {
       const charts = await getChartsData(UserUuid, TeamUuid, SeasonUuid)
 
-      setSeries3(charts.data)
+      setSeasonSeries(charts.data)
 
       setIsLoading(false)
     } catch (error) {
@@ -131,10 +140,7 @@ function Charts() {
               justifyContent: 'center'
             }}
           >
-            <Paper
-              elevation={10}
-              style={{ margin: '5px', padding: '0px 0px 30px 0px' }}
-            >
+            <Paper className={classes.paper} elevation={10}>
               <Tabs
                 value={value}
                 indicatorColor="primary"
@@ -153,11 +159,19 @@ function Charts() {
                 <TabPanel value={value} index={i}>
                   <Chart
                     options={
-                      panels[i] === 'Points' ? pointsOptions : assistsOptions
+                      panels[i] === 'Points'
+                        ? pointsOptions
+                        : panels[i] === 'Rebounds'
+                        ? reboundsOptions
+                        : panels[i] === 'Assists'
+                        ? assistsOptions
+                        : panels[i] === 'Steals'
+                        ? stealsOptions
+                        : blocksOptions
                     }
                     series={seasonSeries[i]}
                     type="line"
-                    width={600}
+                    width={classes.chart.width}
                     height={500}
                     style={{
                       backgroundColor: '#8a8a8a',

@@ -1,3 +1,55 @@
+export const reboundsOptions = {
+  chart: {
+    height: 350,
+    type: 'line',
+    dropShadow: {
+      enabled: true,
+      color: '#000',
+      top: 18,
+      left: 7,
+      blur: 10,
+      opacity: 0.2
+    },
+    zoom: {
+      enabled: false
+    },
+    toolbar: {
+      show: false
+    }
+  },
+  colors: ['#2E93fA', '#66DA26', '#1D1D1D', '#E91E63', '#FF9800'],
+  stroke: {
+    curve: 'straight'
+  },
+  title: {
+    text: 'Rebounds per game',
+    align: 'left'
+  },
+  grid: {
+    row: {
+      colors: ['#f3f3f3', 'transparent'],
+      opacity: 0.5
+    }
+  },
+  xaxis: {
+    categories: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    title: {
+      text: 'Game'
+    }
+  },
+  yaxis: {
+    title: {
+      text: 'Rebounds'
+    },
+    min: 0,
+    max: 15
+  },
+  legend: {
+    position: 'top',
+    horizontalAlign: 'right'
+  }
+}
+
 export const assistsOptions = {
   chart: {
     height: 350,
@@ -22,7 +74,7 @@ export const assistsOptions = {
     curve: 'straight'
   },
   title: {
-    text: 'Points per game',
+    text: 'Assists per game',
     align: 'left'
   },
   grid: {
@@ -39,7 +91,7 @@ export const assistsOptions = {
   },
   yaxis: {
     title: {
-      text: 'Points'
+      text: 'Assists'
     },
     min: 0,
     max: 15
@@ -94,7 +146,111 @@ export const pointsOptions = {
       text: 'Points'
     },
     min: 0,
-    max: 40
+    max: 50
+  },
+  legend: {
+    position: 'top',
+    horizontalAlign: 'right'
+  }
+}
+
+export const blocksOptions = {
+  chart: {
+    height: 350,
+    type: 'line',
+    dropShadow: {
+      enabled: true,
+      color: '#000',
+      top: 18,
+      left: 7,
+      blur: 10,
+      opacity: 0.2
+    },
+    zoom: {
+      enabled: false
+    },
+    toolbar: {
+      show: false
+    }
+  },
+  colors: ['#2E93fA', '#66DA26', '#1D1D1D', '#E91E63', '#FF9800'],
+  stroke: {
+    curve: 'straight'
+  },
+  title: {
+    text: 'Blocks per game',
+    align: 'left'
+  },
+  grid: {
+    row: {
+      colors: ['#f3f3f3', 'transparent'],
+      opacity: 0.5
+    }
+  },
+  xaxis: {
+    categories: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    title: {
+      text: 'Game'
+    }
+  },
+  yaxis: {
+    title: {
+      text: 'Blocks'
+    },
+    min: 0,
+    max: 5
+  },
+  legend: {
+    position: 'top',
+    horizontalAlign: 'right'
+  }
+}
+
+export const stealsOptions = {
+  chart: {
+    height: 350,
+    type: 'line',
+    dropShadow: {
+      enabled: true,
+      color: '#000',
+      top: 18,
+      left: 7,
+      blur: 10,
+      opacity: 0.2
+    },
+    zoom: {
+      enabled: false
+    },
+    toolbar: {
+      show: false
+    }
+  },
+  colors: ['#2E93fA', '#66DA26', '#1D1D1D', '#E91E63', '#FF9800'],
+  stroke: {
+    curve: 'straight'
+  },
+  title: {
+    text: 'Steals per game',
+    align: 'left'
+  },
+  grid: {
+    row: {
+      colors: ['#f3f3f3', 'transparent'],
+      opacity: 0.5
+    }
+  },
+  xaxis: {
+    categories: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    title: {
+      text: 'Game'
+    }
+  },
+  yaxis: {
+    title: {
+      text: 'Steals'
+    },
+    min: 0,
+    max: 5
   },
   legend: {
     position: 'top',
