@@ -18,7 +18,7 @@ function Ranking() {
   const [uuid] = useState(window.localStorage.getItem('uuid'))
   const [teamsData, setTeamsData] = useState([])
   const [SeasonUuid] = useState(window.localStorage.getItem('SeasonUuid'))
-  // const [TeamUuid] = useState(window.localStorage.getItem('TeamUuid'))
+  const [TeamUuid] = useState(window.localStorage.getItem('TeamUuid'))
   const [gamesData, setGamesData] = useState([])
 
   useEffect(() => {
@@ -112,7 +112,10 @@ function Ranking() {
                           return new Date(getWin(b)) - new Date(getWin(a))
                         })
                         .map((team, i) => (
-                          <TableRow hover>
+                          <TableRow
+                            hover
+                            selected={TeamUuid === team.uuid ? true : false}
+                          >
                             <TableCell
                               align="center"
                               component="th"
