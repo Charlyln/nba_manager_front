@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import {
   Avatar,
+  Button,
   Chip,
   Grid,
   IconButton,
@@ -226,15 +227,15 @@ function SignPlayer({
 
   return (
     <>
-      <IconButton
+      <Button
         onClick={handleClickOpen}
         color="primary"
-        style={{ border: 'solid 1px' }}
-        size="medium"
+        size="small"
+        endIcon={<CreateIcon />}
+        variant="outlined"
       >
-        <CreateIcon color="primary" />
-      </IconButton>
-
+        Sign
+      </Button>
       <Dialog
         maxWidth="md"
         fullWidth
