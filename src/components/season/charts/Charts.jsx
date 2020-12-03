@@ -1,4 +1,12 @@
-import { Box, Grid, Paper, Typography, Tab, Tabs } from '@material-ui/core'
+import {
+  Box,
+  Grid,
+  Paper,
+  Typography,
+  Tab,
+  Tabs,
+  Button
+} from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
 import Chart from 'react-apexcharts'
 import PropTypes from 'prop-types'
@@ -13,11 +21,18 @@ import {
   reboundsOptions,
   assistsOptions
 } from './chartsOptions'
+import LaunchIcon from '@material-ui/icons/Launch'
 
 const useStyles = makeStyles((theme) => ({
+  button: {
+    marginLeft: '30px',
+    [theme.breakpoints.down('sm')]: {
+      display: 'none'
+    }
+  },
   paper: {
     margin: '5px',
-    padding: '0px 0px 30px 0px',
+    padding: '0px 0px 10px 0px',
     [theme.breakpoints.down('xs')]: {
       width: '100%'
     },
@@ -34,21 +49,57 @@ const useStyles = makeStyles((theme) => ({
       width: 700
     }
   },
-  chart: {
+  paperExpanded: {
+    margin: '5px',
+    padding: '0px 0px 10px 0px',
     [theme.breakpoints.down('xs')]: {
-      width: '99%'
+      width: '100%'
     },
     [theme.breakpoints.up('sm')]: {
-      width: '99%'
+      width: '100%'
     },
     [theme.breakpoints.up('md')]: {
-      width: 600
+      width: 900
     },
     [theme.breakpoints.up('lg')]: {
-      width: 600
+      width: 1100
     },
     [theme.breakpoints.up('xl')]: {
-      width: 600
+      width: 1100
+    }
+  },
+  chart: {
+    [theme.breakpoints.down('xs')]: {
+      width: '100%'
+    },
+    [theme.breakpoints.up('sm')]: {
+      width: '100%'
+    },
+    [theme.breakpoints.up('md')]: {
+      width: 638
+    },
+    [theme.breakpoints.up('lg')]: {
+      width: 638
+    },
+    [theme.breakpoints.up('xl')]: {
+      width: 638
+    }
+  },
+  chartExpanded: {
+    [theme.breakpoints.down('xs')]: {
+      width: '100%'
+    },
+    [theme.breakpoints.up('sm')]: {
+      width: '100%'
+    },
+    [theme.breakpoints.up('md')]: {
+      width: 838
+    },
+    [theme.breakpoints.up('lg')]: {
+      width: 1038
+    },
+    [theme.breakpoints.up('xl')]: {
+      width: 1038
     }
   }
 }))
@@ -60,6 +111,7 @@ function Charts() {
   const [SeasonUuid] = useState(window.localStorage.getItem('SeasonUuid'))
   const [isLoading, setIsLoading] = useState(true)
   const [value, setValue] = useState(0)
+  const [chartWidth, setChartWidth] = useState(false)
   const [panels] = useState([
     'Points',
     'Rebounds',
@@ -132,57 +184,81 @@ function Charts() {
             <ProgressBall />
           </>
         ) : (
-          <Grid
-            container
-            style={{
-              marginTop: '100px',
-              marginBottom: '50px',
-              justifyContent: 'center'
-            }}
-          >
-            <Paper className={classes.paper} elevation={10}>
-              <Tabs
-                value={value}
-                indicatorColor="primary"
-                textColor="primary"
-                onChange={handleChange}
-                aria-label="tabs"
-                variant="scrollable"
-                scrollButtons="on"
+          <>
+            <Grid
+              container
+              style={{
+                marginTop: '100px',
+                marginBottom: '50px',
+                justifyContent: 'center'
+              }}
+            >
+              <Paper
+                className={chartWidth ? classes.paperExpanded : classes.paper}
+                elevation={10}
               >
-                {panels.map((panel) => (
-                  <Tab label={panel} {...a11yProps(value)} />
-                ))}
-              </Tabs>
+                <Tabs
+                  value={value}
+                  indicatorColor="primary"
+                  textColor="primary"
+                  onChange={handleChange}
+                  aria-label="tabs"
+                  variant="scrollable"
+                  scrollButtons="on"
+                >
+                  {panels.map((panel) => (
+                    <Tab label={panel} {...a11yProps(value)} />
+                  ))}
+                </Tabs>
 
-              {seasonSeries.map((serie, i) => (
-                <TabPanel value={value} index={i}>
-                  <Chart
-                    options={
-                      panels[i] === 'Points'
-                        ? pointsOptions
-                        : panels[i] === 'Rebounds'
-                        ? reboundsOptions
-                        : panels[i] === 'Assists'
-                        ? assistsOptions
-                        : panels[i] === 'Steals'
-                        ? stealsOptions
-                        : blocksOptions
-                    }
-                    series={seasonSeries[i]}
-                    type="line"
-                    width={classes.chart.width}
-                    height={500}
-                    style={{
-                      backgroundColor: '#8a8a8a',
-                      color: 'black',
-                      borderRadius: '4px'
-                    }}
-                  />
-                </TabPanel>
-              ))}
-            </Paper>
-          </Grid>
+                {seasonSeries.map((serie, i) => (
+                  <TabPanel value={value} index={i}>
+                    <Chart
+                      options={
+                        panels[i] === 'Points'
+                          ? pointsOptions
+                          : panels[i] === 'Rebounds'
+                          ? reboundsOptions
+                          : panels[i] === 'Assists'
+                          ? assistsOptions
+                          : panels[i] === 'Steals'
+                          ? stealsOptions
+                          : blocksOptions
+                      }
+                      series={seasonSeries[i]}
+                      type="line"
+                      height={500}
+                      // width={600}
+                      className={
+                        chartWidth ? classes.chartExpanded : classes.chart
+                      }
+                      style={{
+                        backgroundColor: '#8a8a8a',
+                        color: 'black',
+                        borderRadius: '4px'
+                      }}
+                    />
+                  </TabPanel>
+                ))}
+                <Button
+                  variant="outlined"
+                  size="small"
+                  className={classes.button}
+                  onClick={() => setChartWidth((chartWidth) => !chartWidth)}
+                >
+                  {chartWidth ? (
+                    <LaunchIcon
+                      style={{
+                        transform: 'rotate(180deg)'
+                      }}
+                    />
+                  ) : (
+                    <LaunchIcon />
+                  )}
+                </Button>
+              </Paper>
+            </Grid>
+          </>
         )}
       </>
     </>
