@@ -57,7 +57,7 @@ function Charts() {
       title: {
         text: 'Value'
       },
-      min: 75,
+      min: 65,
       max: 99
     },
     legend: {
@@ -112,7 +112,7 @@ function Charts() {
       title: {
         text: 'Value'
       },
-      min: 75,
+      min: 65,
       max: 99
     },
     legend: {
