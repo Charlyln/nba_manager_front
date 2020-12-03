@@ -192,7 +192,7 @@ function Home() {
             >
               {teamsData
                 .sort(function (a, b) {
-                  return new Date(b.date) - new Date(a.date)
+                  return new Date(Number(a.date)) - new Date(Number(b.date))
                 })
                 .map((team, i, arr) => {
                   let previousItem = arr[i - 1]
