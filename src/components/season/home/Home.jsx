@@ -12,6 +12,7 @@ import HomeMessage from './HomeMessage'
 import FastForwardIcon from '@material-ui/icons/FastForward'
 import AccountVerify from '../../mutliple/AccountVerify'
 import TrophySnackbar from '../../mutliple/TrophySnackbar'
+import ChampionsDialog from './ChampionsDialog'
 
 function Home() {
   const [isLoading, setIsLoading] = useState(true)
@@ -167,6 +168,11 @@ function Home() {
         </>
       ) : (
         <>
+          <ChampionsDialog
+            teamsData={teamsData}
+            UserUuid={uuid}
+            SeasonUuid={SeasonUuid}
+          />
           <HomeMessage
             handleCloseMessage={handleCloseMessage}
             openMessage={openMessage}
