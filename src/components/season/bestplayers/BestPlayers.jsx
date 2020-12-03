@@ -26,6 +26,7 @@ function BestPlayers() {
   const [UserUuid] = useState(window.localStorage.getItem('uuid'))
   const [isLoading, setIsLoading] = useState(true)
   const [SeasonUuid] = useState(window.localStorage.getItem('SeasonUuid'))
+  const [TeamUuid] = useState(window.localStorage.getItem('TeamUuid'))
 
   useEffect(() => {
     getPlayers()
@@ -79,6 +80,7 @@ function BestPlayers() {
                 <Table aria-label="simple table">
                   <TableHead>
                     <TableRow>
+                      <TableCell align="center">Rank</TableCell>
                       <TableCell align="center">Photo</TableCell>
                       <TableCell align="left">Name</TableCell>
                       <TableCell align="center">Value</TableCell>
@@ -88,8 +90,11 @@ function BestPlayers() {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {playersData.map((player) => (
+                    {playersData.map((player, i) => (
                       <TableRow hover>
+                        <TableCell align="center" component="th" scope="row">
+                          {i + 1}
+                        </TableCell>
                         <TableCell align="center" component="th" scope="row">
                           <Avatar
                             style={{ margin: 'auto' }}
@@ -102,6 +107,11 @@ function BestPlayers() {
                             <CircularProgress
                               variant="static"
                               value={player.value}
+                              color={
+                                player.TeamUuid === TeamUuid
+                                  ? 'secondary'
+                                  : 'primary'
+                              }
                             />
                             <Box
                               top={0}
