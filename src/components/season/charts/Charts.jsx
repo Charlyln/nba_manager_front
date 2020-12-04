@@ -19,19 +19,22 @@ import {
   stealsOptions,
   blocksOptions,
   reboundsOptions,
-  assistsOptions
+  assistsOptions,
+  progressOptions
 } from './chartsOptions'
 import LaunchIcon from '@material-ui/icons/Launch'
+import getProgressCharts from '../../api calls/getProgressCharts'
 
 const useStyles = makeStyles((theme) => ({
   button: {
-    marginLeft: '30px',
+    margin: '5px 5px 0px 0px',
+    float: 'right',
     [theme.breakpoints.down('sm')]: {
       display: 'none'
     }
   },
   paper: {
-    margin: '5px',
+    margin: '10px auto',
     padding: '0px 0px 10px 0px',
     [theme.breakpoints.down('xs')]: {
       width: '100%'
@@ -120,6 +123,7 @@ function Charts() {
     'Steals'
   ])
   const [seasonSeries, setSeasonSeries] = useState([])
+  const [progressSeries, setProgressSeries] = useState([])
 
   function TabPanel(props) {
     const { children, value, index, ...other } = props
@@ -166,9 +170,10 @@ function Charts() {
   const getAllData = async () => {
     try {
       const charts = await getChartsData(UserUuid, TeamUuid, SeasonUuid)
-
       setSeasonSeries(charts.data)
-
+      const progressCharts = await getProgressCharts(TeamUuid)
+      setProgressSeries(progressCharts.data)
+      console.log(progressCharts.data)
       setIsLoading(false)
     } catch (error) {
       console.log(error)
@@ -187,76 +192,155 @@ function Charts() {
           <>
             <Grid
               container
+              
               style={{
                 marginTop: '100px',
                 marginBottom: '50px',
                 justifyContent: 'center'
               }}
             >
-              <Paper
-                className={chartWidth ? classes.paperExpanded : classes.paper}
-                elevation={10}
-              >
-                <Tabs
-                  value={value}
-                  indicatorColor="primary"
-                  textColor="primary"
-                  onChange={handleChange}
-                  aria-label="tabs"
-                  variant="scrollable"
-                  scrollButtons="on"
+              <Grid item xs={12}>
+                <Paper
+                  className={chartWidth ? classes.paperExpanded : classes.paper}
+                  elevation={10}
                 >
-                  {panels.map((panel) => (
-                    <Tab label={panel} {...a11yProps(value)} />
-                  ))}
-                </Tabs>
+                  <Grid container>
+                    <Grid item xs={6}>
+                      <Typography
+                        variant="button"
+                        component="div"
+                        color="textSecondary"
+                        style={{
+                          margin: '5px 0px 0px 10px'
+                        }}
+                      >
+                        <strong>Season stats</strong>
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        className={classes.button}
+                        onClick={() =>
+                          setChartWidth((chartWidth) => !chartWidth)
+                        }
+                      >
+                        {chartWidth ? (
+                          <LaunchIcon
+                            style={{
+                              transform: 'rotate(180deg)'
+                            }}
+                          />
+                        ) : (
+                          <LaunchIcon />
+                        )}
+                      </Button>
+                    </Grid>
+                  </Grid>
+                  <Tabs
+                    value={value}
+                    indicatorColor="primary"
+                    textColor="primary"
+                    onChange={handleChange}
+                    aria-label="tabs"
+                    variant="scrollable"
+                    scrollButtons="on"
+                  >
+                    {panels.map((panel) => (
+                      <Tab label={panel} {...a11yProps(value)} />
+                    ))}
+                  </Tabs>
 
-                {seasonSeries.map((serie, i) => (
-                  <TabPanel value={value} index={i}>
-                    <Chart
-                      options={
-                        panels[i] === 'Points'
-                          ? pointsOptions
-                          : panels[i] === 'Rebounds'
-                          ? reboundsOptions
-                          : panels[i] === 'Assists'
-                          ? assistsOptions
-                          : panels[i] === 'Steals'
-                          ? stealsOptions
-                          : blocksOptions
-                      }
-                      series={seasonSeries[i]}
-                      type="line"
-                      height={500}
-                      // width={600}
-                      className={
-                        chartWidth ? classes.chartExpanded : classes.chart
-                      }
-                      style={{
-                        backgroundColor: '#8a8a8a',
-                        color: 'black',
-                        borderRadius: '4px'
-                      }}
-                    />
-                  </TabPanel>
-                ))}
-                <Button
-                  variant="outlined"
-                  size="small"
-                  className={classes.button}
-                  onClick={() => setChartWidth((chartWidth) => !chartWidth)}
+                  {seasonSeries.map((serie, i) => (
+                    <TabPanel value={value} index={i}>
+                      <Chart
+                        options={
+                          panels[i] === 'Points'
+                            ? pointsOptions
+                            : panels[i] === 'Rebounds'
+                            ? reboundsOptions
+                            : panels[i] === 'Assists'
+                            ? assistsOptions
+                            : panels[i] === 'Steals'
+                            ? stealsOptions
+                            : blocksOptions
+                        }
+                        series={seasonSeries[i]}
+                        type="line"
+                        height={500}
+                        // width={600}
+                        className={
+                          chartWidth ? classes.chartExpanded : classes.chart
+                        }
+                        style={{
+                          backgroundColor: '#8a8a8a',
+                          color: 'black',
+                          borderRadius: '4px'
+                        }}
+                      />
+                    </TabPanel>
+                  ))}
+                </Paper>
+              </Grid>
+              <Grid item xs={12}>
+                <Paper
+                  className={chartWidth ? classes.paperExpanded : classes.paper}
+                  elevation={10}
                 >
-                  {chartWidth ? (
-                    <LaunchIcon
-                      style={{
-                        transform: 'rotate(180deg)'
-                      }}
-                    />
-                  ) : (
-                    <LaunchIcon />
-                  )}
-                </Button>
-              </Paper>
+                  <Grid container>
+                    <Grid item xs={6}>
+                      <Typography
+                        variant="button"
+                        component="div"
+                        color="textSecondary"
+                        style={{
+                          margin: '5px 0px 0px 10px'
+                        }}
+                      >
+                        <strong>Player value progress</strong>
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        className={classes.button}
+                        onClick={() =>
+                          setChartWidth((chartWidth) => !chartWidth)
+                        }
+                      >
+                        {chartWidth ? (
+                          <LaunchIcon
+                            style={{
+                              transform: 'rotate(180deg)'
+                            }}
+                          />
+                        ) : (
+                          <LaunchIcon />
+                        )}
+                      </Button>
+                    </Grid>
+                  </Grid>
+
+                  <Chart
+                    options={progressOptions}
+                    series={progressSeries}
+                    type="line"
+                    height={500}
+                    // width={600}
+                    className={
+                      chartWidth ? classes.chartExpanded : classes.chart
+                    }
+                    style={{
+                      backgroundColor: '#8a8a8a',
+                      color: 'black',
+                      borderRadius: '4px',
+                      margin: '10px auto'
+                    }}
+                  />
+                </Paper>
+              </Grid>
             </Grid>
           </>
         )}
