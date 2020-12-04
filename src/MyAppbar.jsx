@@ -56,7 +56,7 @@ function MyAppBar() {
     },
     {
       to: '/myteam',
-      name: 'My team',
+      name: 'My roster',
       icon: <PersonIcon />
     },
     {
