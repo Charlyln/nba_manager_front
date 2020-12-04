@@ -18,7 +18,7 @@ import { initialSalary } from '../../../components/mutliple/variables/variables'
 import Axios from 'axios'
 import SignPlayerDialog from './SignPlayerDialog'
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn'
-import DoneIcon from '@material-ui/icons/Done'
+import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import getPlayerInterest from './getPlayerInterest'
 
 function SignPlayer({
@@ -309,10 +309,14 @@ function SignPlayer({
                     <div>
                       {player.contractLeft ? (
                         <Chip
-                          style={{
-                            backgroundColor: 'rgb(76, 175, 80)'
-                          }}
-                          avatar={<DoneIcon />}
+                          color="secondary"
+                          avatar={
+                            <InfoOutlinedIcon
+                              style={{
+                                backgroundColor: 'unset'
+                              }}
+                            />
+                          }
                           label={`You can exceed the salary cap for a extension.`}
                         />
                       ) : (
