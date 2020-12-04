@@ -257,3 +257,70 @@ export const stealsOptions = {
     horizontalAlign: 'right'
   }
 }
+
+export const progressOptions = {
+  chart: {
+    height: 350,
+    type: 'line',
+    dropShadow: {
+      enabled: true,
+      color: '#000',
+      top: 18,
+      left: 7,
+      blur: 10,
+      opacity: 0.2
+    },
+    zoom: {
+      enabled: false
+    },
+    toolbar: {
+      show: false
+    }
+  },
+  dataLabels: {
+    enabled: true
+  },
+  colors: ['#2E93fA', '#66DA26', '#1D1D1D', '#E91E63', '#FF9800'],
+  stroke: {
+    curve: 'straight'
+  },
+  title: {
+    text: 'Value progress per year',
+    align: 'left'
+  },
+  grid: {
+    row: {
+      colors: ['#f3f3f3', 'transparent'],
+      opacity: 0.5
+    }
+  },
+  xaxis: {
+    categories: [
+      2020,
+      2021,
+      2021,
+      2022,
+      2023,
+      2025,
+      2026,
+      2027,
+      2028,
+      2029,
+      2030
+    ],
+    title: {
+      text: 'Year'
+    }
+  },
+  yaxis: {
+    title: {
+      text: 'Player value progress'
+    },
+    min: 65,
+    max: 100
+  },
+  legend: {
+    position: 'top',
+    horizontalAlign: 'right'
+  }
+}
