@@ -217,13 +217,7 @@ function SignPlayer({
   ]
 
   const displaySalaryLeftAfter = () => {
-    let salaryLeftAfter
-
-    if (player.TeamUuid === myteamData.uuid) {
-      salaryLeftAfter = myteamData.salaryCapLeft - salary + player.salary
-    } else {
-      salaryLeftAfter = myteamData.salaryCapLeft - salary
-    }
+    let salaryLeftAfter = myteamData.salaryCapLeft - salary
 
     let backgroundColorDisplay
 
