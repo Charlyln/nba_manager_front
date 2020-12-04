@@ -9,7 +9,7 @@ import React, { useState } from 'react'
 import updateSalaryCapLeft from '../../api calls/updateSalaryCapLeft'
 
 function SignPlayerDialog({
-  proposeContract,
+  signContract,
   player,
   getPlayers,
   handleCloseAll,
@@ -23,11 +23,17 @@ function SignPlayerDialog({
 }) {
   const [open, setOpen] = useState(false)
 
-  const handleClickOpen = () => {
-    setOpen(true)
-    if (myteamData.salaryCapLeft > salary && interest > 85) {
-      proposeContract()
+  const proposeContract = () => {
+    if (
+      (player.TeamUuid == TeamUuid && player.contractLeft && interest > 85) ||
+      (salary < 2000000 && interest > 85)
+    ) {
+      // case where no salary cap limit
+      signContract()
+    } else if (myteamData.salaryCapLeft >= salary && interest > 85) {
+      signContract()
     }
+    setOpen(true)
   }
 
   const handleClose = async () => {
@@ -44,7 +50,7 @@ function SignPlayerDialog({
 
   return (
     <>
-      <Button color="primary" autoFocus onClick={handleClickOpen}>
+      <Button color="primary" autoFocus onClick={proposeContract}>
         Propose
       </Button>
       <Dialog
@@ -54,7 +60,9 @@ function SignPlayerDialog({
         aria-describedby="alert-dialog-description"
       >
         <DialogContent>
-          {myteamData.salaryCapLeft < salary ? (
+          {!player.contractLeft &&
+          myteamData.salaryCapLeft < salary &&
+          !hasSign ? (
             <DialogContentText id="alert-dialog-description">
               {`You don't have enough money.`}
             </DialogContentText>
