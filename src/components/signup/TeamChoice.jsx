@@ -12,6 +12,7 @@ import { Redirect } from 'react-router-dom'
 import TeamChoiceCard from './TeamChoiceCard'
 import { apiUrl } from '../../apiUrl'
 import CheckIcon from '@material-ui/icons/Check'
+import postProgressValue from '../api calls/postProgressValue'
 
 function TeamChoice() {
   const [isLoading, setIsLoading] = useState(true)
@@ -62,7 +63,7 @@ function TeamChoice() {
       const res = await Axios.post(`${apiUrl}/dataCreation/games2/${uuid}`)
       await Axios.post(`${apiUrl}/dataCreation/trophies/${uuid}`)
       await Axios.post(`${apiUrl}/teams/salaryCap/${uuid}/${TeamUuidToPost}`)
-
+      await postProgressValue(uuid, res.data.uuid)
       window.localStorage.setItem('SeasonUuid', res.data.uuid)
       window.localStorage.setItem('canPlay', '1')
       window.localStorage.setItem('trainingLeft', 2)
