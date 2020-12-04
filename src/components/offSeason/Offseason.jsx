@@ -15,6 +15,7 @@ import { Redirect } from 'react-router-dom'
 import AccountVerify from '../../components/mutliple/AccountVerify'
 import ProgressBall from '../mutliple/ProgressBall'
 import TrophySnackbar from '../mutliple/TrophySnackbar'
+import postProgressValue from '../api calls/postProgressValue'
 
 function Offseason() {
   const [activeStep, setActiveStep] = useState(
@@ -144,6 +145,7 @@ function Offseason() {
         }
       )
       window.localStorage.setItem('SeasonUuid', res.data.uuid)
+      await postProgressValue(UserUuid, res.data.uuid)
       window.localStorage.removeItem('offseason')
       setRedirect(true)
     } catch (err) {
