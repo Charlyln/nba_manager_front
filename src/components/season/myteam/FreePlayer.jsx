@@ -56,9 +56,15 @@ function SignPlayer({
 
   return (
     <>
-      <IconButton color="primary" onClick={handleClickOpen}>
-        <ExitToAppIcon />
-      </IconButton>
+      <Button
+        onClick={handleClickOpen}
+        color="primary"
+        size="small"
+        endIcon={<ExitToAppIcon />}
+        variant="outlined"
+      >
+        Fire
+      </Button>
 
       <Dialog
         open={open}
