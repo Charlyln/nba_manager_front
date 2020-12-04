@@ -168,11 +168,6 @@ function Home() {
         </>
       ) : (
         <>
-          <ChampionsDialog
-            teamsData={teamsData}
-            UserUuid={uuid}
-            SeasonUuid={SeasonUuid}
-          />
           <HomeMessage
             handleCloseMessage={handleCloseMessage}
             openMessage={openMessage}
@@ -307,6 +302,12 @@ function Home() {
                   >
                     off season
                   </Button>
+                  <ChampionsDialog
+                    TeamUuid={TeamUuid}
+                    teamsData={teamsData}
+                    UserUuid={uuid}
+                    SeasonUuid={SeasonUuid}
+                  />
                 </>
               </Paper>
             </GridList>
