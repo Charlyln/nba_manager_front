@@ -17,6 +17,7 @@ import { apiUrl } from '../../../apiUrl'
 import Axios from 'axios'
 import SignPlayerDialog from './SignPlayerDialog'
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn'
+import DoneIcon from '@material-ui/icons/Done'
 
 function SignPlayer({
   player,
@@ -38,7 +39,7 @@ function SignPlayer({
   const [interest, setInterest] = useState(0)
   const [hasSign, setHasSign] = useState(false)
 
-  const proposeContract = async () => {
+  const signContract = async () => {
     if (contractLeft) {
       // const payload = { salary, contractLeft: duration }
 
@@ -119,7 +120,9 @@ function SignPlayer({
     setSalary(value * 1000000)
     let pourcentage
 
-    if (playerVal < 80) {
+    if (playerVal < 75) {
+      pourcentage = 0.01
+    } else if (playerVal < 80) {
       pourcentage = 0.05
     } else if (playerVal >= 80 && playerVal < 85) {
       pourcentage = 0.15
@@ -136,7 +139,9 @@ function SignPlayer({
   const getValue = (PlayerValue) => {
     let pourcentage
 
-    if (PlayerValue < 80) {
+    if (PlayerValue < 75) {
+      pourcentage = 0.01
+    } else if (PlayerValue < 80) {
       pourcentage = 0.05
     } else if (PlayerValue >= 80 && PlayerValue < 85) {
       pourcentage = 0.15
@@ -177,7 +182,7 @@ function SignPlayer({
     }
   ]
 
-  const marks2 = [
+  const yearsMarks4 = [
     {
       value: 1,
       label: '1 year'
@@ -193,6 +198,21 @@ function SignPlayer({
     {
       value: 4,
       label: '4 years'
+    }
+  ]
+
+  const yearsMarks3 = [
+    {
+      value: 1,
+      label: '1 year'
+    },
+    {
+      value: 2,
+      label: '2 years'
+    },
+    {
+      value: 3,
+      label: '3 years'
     }
   ]
 
@@ -212,16 +232,24 @@ function SignPlayer({
     } else {
       backgroundColorDisplay = 'rgb(76, 175, 80)'
     }
-
-    return (
-      <Chip
-        style={{
-          backgroundColor: backgroundColorDisplay
-        }}
-        avatar={<MonetizationOnIcon />}
-        label={salaryLeftAfter}
-      />
-    )
+    if (player.contractLeft) {
+      return
+    } else {
+      return (
+        <>
+          <Typography color="textSecondary">
+            <strong>After</strong>
+          </Typography>
+          <Chip
+            style={{
+              backgroundColor: backgroundColorDisplay
+            }}
+            avatar={<MonetizationOnIcon />}
+            label={`${salaryLeftAfter / 1000000} MM`}
+          />
+        </>
+      )
+    }
   }
 
   return (
@@ -279,26 +307,34 @@ function SignPlayer({
                 <Grid item xs={12} md={6}>
                   <div style={{ marginLeft: '30px', display: 'flex' }}>
                     <div>
-                      <Typography color="textSecondary">
-                        <strong>Before</strong>
-                      </Typography>
-
-                      <Chip
-                        style={{
-                          backgroundColor:
-                            myteamData.salaryCapLeft < 0
-                              ? 'rgb(217, 48, 33)'
-                              : 'rgb(76, 175, 80)'
-                        }}
-                        avatar={<MonetizationOnIcon />}
-                        label={myteamData.salaryCapLeft}
-                      />
+                      {player.contractLeft ? (
+                        <Chip
+                          style={{
+                            backgroundColor: 'rgb(76, 175, 80)'
+                          }}
+                          avatar={<DoneIcon />}
+                          label={`You can exceed the salary cap for a extension.`}
+                        />
+                      ) : (
+                        <>
+                          <Typography color="textSecondary">
+                            <strong>Before</strong>
+                          </Typography>
+                          <Chip
+                            style={{
+                              backgroundColor:
+                                myteamData.salaryCapLeft < 0
+                                  ? 'rgb(217, 48, 33)'
+                                  : 'rgb(76, 175, 80)'
+                            }}
+                            avatar={<MonetizationOnIcon />}
+                            label={`${myteamData.salaryCapLeft / 1000000} MM`}
+                          />
+                        </>
+                      )}
                     </div>
 
                     <div style={{ marginLeft: '10px' }}>
-                      <Typography color="textSecondary">
-                        <strong>After</strong>
-                      </Typography>
                       {displaySalaryLeftAfter()}
                     </div>
                   </div>
@@ -329,9 +365,9 @@ function SignPlayer({
                       aria-labelledby="discrete-slider"
                       valueLabelDisplay="on"
                       step={1}
-                      marks={marks2}
+                      marks={player.contractLeft ? yearsMarks3 : yearsMarks4}
                       min={1}
-                      max={4}
+                      max={player.contractLeft ? 3 : 4}
                       onChange={(e, value) => setDuration(value)}
                     />
                   </div>
@@ -340,7 +376,7 @@ function SignPlayer({
             </DialogContent>
             <DialogActions>
               <SignPlayerDialog
-                proposeContract={proposeContract}
+                signContract={signContract}
                 player={player}
                 getPlayers={getPlayers}
                 contractLeft={contractLeft}
