@@ -14,10 +14,12 @@ import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import { apiUrl } from '../../../apiUrl'
+import { initialSalary } from '../../../components/mutliple/variables/variables'
 import Axios from 'axios'
 import SignPlayerDialog from './SignPlayerDialog'
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn'
 import DoneIcon from '@material-ui/icons/Done'
+import getPlayerInterest from './getPlayerInterest'
 
 function SignPlayer({
   player,
@@ -34,9 +36,11 @@ function SignPlayer({
 }) {
   const [open, setOpen] = useState(false)
   const [UserUuid] = useState(window.localStorage.getItem('uuid'))
-  const [salary, setSalary] = useState(7000000)
+  const [salary, setSalary] = useState(initialSalary)
   const [duration, setDuration] = useState(3)
-  const [interest, setInterest] = useState(0)
+  const [interest, setInterest] = useState(
+    getPlayerInterest(player.value, initialSalary)
+  )
   const [hasSign, setHasSign] = useState(false)
 
   const signContract = async () => {
@@ -153,6 +157,8 @@ function SignPlayer({
     const salaryExpected = 100000000 * pourcentage // 15 millions
 
     const valueCal = (salary / salaryExpected) * 100
+
+    // setInterest(valueCal)
 
     if (valueCal <= 0) {
       return 0
