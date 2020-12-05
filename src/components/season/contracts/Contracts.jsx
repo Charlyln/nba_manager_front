@@ -10,10 +10,7 @@ import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
 import {
   Avatar,
-  Box,
   Chip,
-  CircularProgress,
-  Typography
 } from '@material-ui/core'
 import ProgressBall from '../../mutliple/ProgressBall'
 import AccountVerify from '../../mutliple/AccountVerify'

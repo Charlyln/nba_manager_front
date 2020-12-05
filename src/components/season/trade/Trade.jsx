@@ -10,14 +10,11 @@ import Button from '@material-ui/core/Button'
 import Paper from '@material-ui/core/Paper'
 import {
   Avatar,
-  Box,
-  CircularProgress,
   Dialog,
   DialogActions,
   DialogTitle,
   Divider,
-  ListItemAvatar,
-  Typography
+  ListItemAvatar
 } from '@material-ui/core'
 import { apiUrl } from '../../../apiUrl'
 import Axios from 'axios'

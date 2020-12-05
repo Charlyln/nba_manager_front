@@ -8,7 +8,7 @@ import TableContainer from '@material-ui/core/TableContainer'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
-import { Avatar, Box, CircularProgress, Typography } from '@material-ui/core'
+import { Avatar } from '@material-ui/core'
 import SignPlayer from '../../mutliple/signPlayer/SignPlayer'
 import ProgressBall from '../../mutliple/ProgressBall'
 import AccountVerify from '../../mutliple/AccountVerify'
@@ -130,7 +130,7 @@ function FreeAgent() {
                       </TableCell>
                       <TableCell align="left">{`${player.firstName} ${player.lastName}`}</TableCell>
                       <TableCell align="left">
-                      <PlayerValue playerValue={player.value} />
+                        <PlayerValue playerValue={player.value} />
                       </TableCell>
                       <TableCell align="center">
                         {Math.round(

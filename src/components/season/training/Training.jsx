@@ -8,14 +8,7 @@ import TableContainer from '@material-ui/core/TableContainer'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
-import {
-  Avatar,
-  Box,
-  CircularProgress,
-  Typography,
-  Fab,
-  Chip
-} from '@material-ui/core'
+import { Avatar, Typography, Fab, Chip } from '@material-ui/core'
 import ProgressBall from '../../mutliple/ProgressBall'
 import HeadShake from 'react-reveal/HeadShake'
 import AccountVerify from '../../mutliple/AccountVerify'

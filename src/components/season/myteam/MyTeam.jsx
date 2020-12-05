@@ -8,13 +8,7 @@ import TableContainer from '@material-ui/core/TableContainer'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
-import {
-  Avatar,
-  Box,
-  Chip,
-  CircularProgress,
-  Typography
-} from '@material-ui/core'
+import { Avatar, Chip } from '@material-ui/core'
 import ArrowDropDownCircleIcon from '@material-ui/icons/ArrowDropDownCircle'
 import FreePlayer from './FreePlayer'
 import ProgressBall from '../../mutliple/ProgressBall'

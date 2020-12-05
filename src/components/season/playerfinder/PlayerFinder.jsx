@@ -8,15 +8,7 @@ import TableContainer from '@material-ui/core/TableContainer'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
-import {
-  Avatar,
-  Box,
-  Button,
-  CircularProgress,
-  ListItem,
-  TextField,
-  Typography
-} from '@material-ui/core'
+import { Avatar, Button, ListItem, TextField } from '@material-ui/core'
 import SearchIcon from '@material-ui/icons/Search'
 import RotateLeftIcon from '@material-ui/icons/RotateLeft'
 import ProgressBall from '../../mutliple/ProgressBall'

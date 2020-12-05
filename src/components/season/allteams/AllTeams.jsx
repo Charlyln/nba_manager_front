@@ -13,7 +13,6 @@ import {
   List,
   ListItemSecondaryAction,
   Typography,
-  CircularProgress,
   Box,
   Tab,
   Tabs

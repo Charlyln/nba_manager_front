@@ -5,9 +5,6 @@ import {
   DialogContent,
   DialogTitle,
   Avatar,
-  Box,
-  CircularProgress,
-  Typography,
   Paper
 } from '@material-ui/core'
 import Table from '@material-ui/core/Table'

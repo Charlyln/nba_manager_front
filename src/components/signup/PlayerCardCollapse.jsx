@@ -10,9 +10,6 @@ import {
   ListItemAvatar,
   List,
   ListItemSecondaryAction,
-  Typography,
-  CircularProgress,
-  Box
 } from '@material-ui/core'
 import CheckIcon from '@material-ui/icons/Check'
 import AddIcon from '@material-ui/icons/Add'
