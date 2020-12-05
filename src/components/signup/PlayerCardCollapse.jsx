@@ -18,6 +18,7 @@ import CheckIcon from '@material-ui/icons/Check'
 import AddIcon from '@material-ui/icons/Add'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import ExpandLessIcon from '@material-ui/icons/ExpandLess'
+import PlayerValue from '../mutliple/PlayerValue'
 
 const PlayerCardCollapse = ({ teamChoice, uuid, putTeamChoice, players }) => {
   const [expanded, setExpanded] = useState(false)
@@ -83,31 +84,7 @@ const PlayerCardCollapse = ({ teamChoice, uuid, putTeamChoice, players }) => {
                       secondary={player.lastName}
                     />
                     <ListItemSecondaryAction>
-                      <Box position="relative" display="inline-flex">
-                        <CircularProgress
-                          variant="static"
-                          value={player.value}
-                          color={teamChoice === uuid ? 'secondary' : 'primary'}
-                        />
-                        <Box
-                          top={0}
-                          left={0}
-                          bottom={0}
-                          right={0}
-                          position="absolute"
-                          display="flex"
-                          alignItems="center"
-                          justifyContent="center"
-                        >
-                          <Typography
-                            variant="button"
-                            component="div"
-                            color="textSecondary"
-                          >
-                            <strong>{player.value}</strong>
-                          </Typography>
-                        </Box>
-                      </Box>
+                      <PlayerValue playerValue={player.value} />
                     </ListItemSecondaryAction>
                   </ListItem>
                 )

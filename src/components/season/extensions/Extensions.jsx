@@ -13,6 +13,7 @@ import SignPlayer from '../../mutliple/signPlayer/SignPlayer'
 import ProgressBall from '../../mutliple/ProgressBall'
 import AccountVerify from '../../mutliple/AccountVerify'
 import TrophySnackbar from '../../mutliple/TrophySnackbar'
+import PlayerValue from '../../mutliple/PlayerValue'
 
 function Extensions() {
   const [myteamData, setMyTeamData] = useState({})
@@ -115,30 +116,7 @@ function Extensions() {
                       </TableCell>
                       <TableCell align="right">{`${player.firstName} ${player.lastName}`}</TableCell>
                       <TableCell align="right">
-                        <Box position="relative" display="inline-flex">
-                          <CircularProgress
-                            variant="static"
-                            value={player.value}
-                          />
-                          <Box
-                            top={0}
-                            left={0}
-                            bottom={0}
-                            right={0}
-                            position="absolute"
-                            display="flex"
-                            alignItems="center"
-                            justifyContent="center"
-                          >
-                            <Typography
-                              variant="button"
-                              component="div"
-                              color="textSecondary"
-                            >
-                              <strong>{player.value}</strong>
-                            </Typography>
-                          </Box>
-                        </Box>
+                        <PlayerValue playerValue={player.value} />
                       </TableCell>
                       <TableCell align="center">
                         {player.contractLeft}

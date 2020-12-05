@@ -22,6 +22,7 @@ import { apiUrl } from '../../apiUrl'
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward'
 import SignPlayer from '../mutliple/signPlayer/SignPlayer'
 import OffSeasonMessage from './OffSeasonMessage'
+import PlayerValue from '../mutliple/PlayerValue'
 
 function OffSeasonDialog({
   goNext,
@@ -163,30 +164,7 @@ function OffSeasonDialog({
                       </TableCell>
                       <TableCell align="right">{`${player.firstName} ${player.lastName}`}</TableCell>
                       <TableCell align="right">
-                        <Box position="relative" display="inline-flex">
-                          <CircularProgress
-                            variant="static"
-                            value={player.value}
-                          />
-                          <Box
-                            top={0}
-                            left={0}
-                            bottom={0}
-                            right={0}
-                            position="absolute"
-                            display="flex"
-                            alignItems="center"
-                            justifyContent="center"
-                          >
-                            <Typography
-                              variant="button"
-                              component="div"
-                              color="textSecondary"
-                            >
-                              <strong>{player.value}</strong>
-                            </Typography>
-                          </Box>
-                        </Box>
+                        <PlayerValue playerValue={player.value} />
                       </TableCell>
 
                       {step === 'Player progress' ? (
@@ -305,30 +283,7 @@ function OffSeasonDialog({
                       </TableCell>
                       <TableCell align="left">{`${player.firstName} ${player.lastName}`}</TableCell>
                       <TableCell align="center">
-                        <Box position="relative" display="inline-flex">
-                          <CircularProgress
-                            variant="static"
-                            value={player.value}
-                          />
-                          <Box
-                            top={0}
-                            left={0}
-                            bottom={0}
-                            right={0}
-                            position="absolute"
-                            display="flex"
-                            alignItems="center"
-                            justifyContent="center"
-                          >
-                            <Typography
-                              variant="button"
-                              component="div"
-                              color="textSecondary"
-                            >
-                              <strong>{player.value}</strong>
-                            </Typography>
-                          </Box>
-                        </Box>
+                        <PlayerValue playerValue={player.value} />
                       </TableCell>
                       <TableCell align="center">{player.age}</TableCell>
 

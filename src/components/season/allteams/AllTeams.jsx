@@ -20,6 +20,7 @@ import {
 } from '@material-ui/core'
 import './Allteams.css'
 import AccountVerify from '../../mutliple/AccountVerify'
+import PlayerValue from '../../mutliple/PlayerValue'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -154,30 +155,7 @@ function AllTeams() {
                           secondary={player.lastName}
                         />
                         <ListItemSecondaryAction>
-                          <Box position="relative" display="inline-flex">
-                            <CircularProgress
-                              variant="static"
-                              value={player.value}
-                            />
-                            <Box
-                              top={0}
-                              left={0}
-                              bottom={0}
-                              right={0}
-                              position="absolute"
-                              display="flex"
-                              alignItems="center"
-                              justifyContent="center"
-                            >
-                              <Typography
-                                variant="button"
-                                component="div"
-                                color="textSecondary"
-                              >
-                                <strong>{player.value}</strong>
-                              </Typography>
-                            </Box>
-                          </Box>
+                          <PlayerValue playerValue={player.value} />
                         </ListItemSecondaryAction>
                       </ListItem>
                     </TabPanel>

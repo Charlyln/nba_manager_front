@@ -27,6 +27,7 @@ import SpeedDials from './SpeedDials'
 import AccountVerify from '../../mutliple/AccountVerify'
 import TrophySnackbar from '../../mutliple/TrophySnackbar'
 import updateSalaryCapLeft from '../../api calls/updateSalaryCapLeft'
+import PlayerValue from '../../mutliple/PlayerValue'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -289,35 +290,7 @@ export default function Trade() {
                   primary={`${value.firstName || ''} ${value.lastName || ''}`}
                 />
 
-                <Box position="relative" display="inline-flex">
-                  <CircularProgress
-                    variant="static"
-                    value={value.value}
-                    color={
-                      value.TeamUuid === myteamsData.uuid
-                        ? 'primary'
-                        : 'secondary'
-                    }
-                  />
-                  <Box
-                    top={0}
-                    left={0}
-                    bottom={0}
-                    right={0}
-                    position="absolute"
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="center"
-                  >
-                    <Typography
-                      variant="button"
-                      component="div"
-                      color="textSecondary"
-                    >
-                      <strong>{value.value}</strong>
-                    </Typography>
-                  </Box>
-                </Box>
+                <PlayerValue playerValue={value.value} />
 
                 <ListItemIcon>
                   <Checkbox

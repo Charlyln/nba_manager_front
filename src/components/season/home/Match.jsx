@@ -131,7 +131,7 @@ function Match({
           setMatchLoading(false)
         } else {
           await Axios.post(
-            `${apiUrl}/gamePlayed/${uuid}/${SeasonUuid}/${TeamUuid}`
+            `${apiUrl}/gamePlayed/${uuid}/${SeasonUuid}/${TeamUuid}/${UserUuid}`
           )
           if (!TrophyData.earned) {
             await Axios.post(`${apiUrl}/trophies/earned/${UserUuid}`, {

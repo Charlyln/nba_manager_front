@@ -21,6 +21,7 @@ import SearchIcon from '@material-ui/icons/Search'
 import RotateLeftIcon from '@material-ui/icons/RotateLeft'
 import ProgressBall from '../../mutliple/ProgressBall'
 import AccountVerify from '../../mutliple/AccountVerify'
+import PlayerValue from '../../mutliple/PlayerValue'
 
 function PlayerFinder() {
   const [playersData, setPlayersData] = useState({})
@@ -133,7 +134,7 @@ function PlayerFinder() {
                   .sort(function (a, b) {
                     return new Date(b.value) - new Date(a.value)
                   })
-                  .filter((player) => !player.isRookie)
+                  // .filter((player) => !player.isRookie)
                   .map((player) => (
                     <TableRow>
                       <TableCell align="center" component="th" scope="row">
@@ -143,30 +144,7 @@ function PlayerFinder() {
                       <TableCell align="left">{`${player.age}`}</TableCell>
                       <TableCell align="left">{`${player.contractLeft}`}</TableCell>
                       <TableCell align="left">
-                        <Box position="relative" display="inline-flex">
-                          <CircularProgress
-                            variant="static"
-                            value={player.value}
-                          />
-                          <Box
-                            top={0}
-                            left={0}
-                            bottom={0}
-                            right={0}
-                            position="absolute"
-                            display="flex"
-                            alignItems="center"
-                            justifyContent="center"
-                          >
-                            <Typography
-                              variant="button"
-                              component="div"
-                              color="textSecondary"
-                            >
-                              <strong>{player.value}</strong>
-                            </Typography>
-                          </Box>
-                        </Box>
+                        <PlayerValue playerValue={player.value} />
                       </TableCell>
                       <TableCell align="center">
                         {Math.round(

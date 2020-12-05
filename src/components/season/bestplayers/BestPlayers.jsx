@@ -20,6 +20,7 @@ import {
 import ProgressBall from '../../mutliple/ProgressBall'
 import { apiUrl } from '../../../apiUrl'
 import AccountVerify from '../../mutliple/AccountVerify'
+import PlayerValue from '../../mutliple/PlayerValue'
 
 function BestPlayers() {
   const [playersData, setPlayersData] = useState([])
@@ -107,35 +108,7 @@ function BestPlayers() {
                         </TableCell>
                         <TableCell align="left">{`${player.firstName} ${player.lastName}`}</TableCell>
                         <TableCell align="center">
-                          <Box position="relative" display="inline-flex">
-                            <CircularProgress
-                              variant="static"
-                              value={player.value}
-                              color={
-                                player.TeamUuid === TeamUuid
-                                  ? 'secondary'
-                                  : 'primary'
-                              }
-                            />
-                            <Box
-                              top={0}
-                              left={0}
-                              bottom={0}
-                              right={0}
-                              position="absolute"
-                              display="flex"
-                              alignItems="center"
-                              justifyContent="center"
-                            >
-                              <Typography
-                                variant="button"
-                                component="div"
-                                color="textSecondary"
-                              >
-                                <strong>{player.value}</strong>
-                              </Typography>
-                            </Box>
-                          </Box>
+                          <PlayerValue playerValue={player.value} />
                         </TableCell>
                         <TableCell align="center">{`${(
                           player.PlayerStats.reduce(

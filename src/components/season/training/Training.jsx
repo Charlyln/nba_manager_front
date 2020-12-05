@@ -22,6 +22,7 @@ import AccountVerify from '../../mutliple/AccountVerify'
 import TrophySnackbar from '../../mutliple/TrophySnackbar'
 import AddCircleIcon from '@material-ui/icons/AddCircle'
 import DoneIcon from '@material-ui/icons/Done'
+import PlayerValue from '../../mutliple/PlayerValue'
 
 function Training() {
   const [myteamData, setMyTeamData] = useState({})
@@ -250,30 +251,7 @@ function Training() {
                     </TableCell>
                     <TableCell align="left">{`${player.firstName} ${player.lastName}`}</TableCell>
                     <TableCell align="left">
-                      <Box position="relative" display="inline-flex">
-                        <CircularProgress
-                          variant="static"
-                          value={player.value}
-                        />
-                        <Box
-                          top={0}
-                          left={0}
-                          bottom={0}
-                          right={0}
-                          position="absolute"
-                          display="flex"
-                          alignItems="center"
-                          justifyContent="center"
-                        >
-                          <Typography
-                            variant="button"
-                            component="div"
-                            color="textSecondary"
-                          >
-                            <strong>{player.value}</strong>
-                          </Typography>
-                        </Box>
-                      </Box>
+                      <PlayerValue playerValue={player.value} />
                     </TableCell>
                     <TableCell align="center">
                       {Math.round(
