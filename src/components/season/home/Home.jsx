@@ -121,6 +121,7 @@ function Home() {
       setAllGameLoading(true)
       const SeasonUuid = teamsData[0].SeasonUuid
       await Axios.post(`${apiUrl}/gamePlayed/all/${SeasonUuid}`)
+      await Axios.post(`${apiUrl}/progress/season/${uuid}/${SeasonUuid}`)
       window.localStorage.setItem('trainingLeft', 2)
       if (!TrophyData.earned) {
         await Axios.post(`${apiUrl}/trophies/earned/${uuid}`, {
