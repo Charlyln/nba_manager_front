@@ -83,9 +83,9 @@ function Training() {
       console.log(error)
     }
   }
-  const riseUpScoring = async (min, max, uuid) => {
+  const riseUpScoring = async (playerValue, min, max, uuid) => {
     try {
-      if (trainingLeft > 0) {
+      if (trainingLeft > 0 && playerValue < 99) {
         checkTrophy()
         if (min + max < 68) {
           await Axios.put(`${apiUrl}/players/${uuid}`, {
@@ -104,6 +104,8 @@ function Training() {
           setTrainingLeft(trainingLeft - 1)
           getMyTeam()
         }
+      } else if (playerValue >= 99) {
+        console.log('already at the max')
       } else {
         setCounter((counter) => counter + 1)
       }
@@ -111,9 +113,9 @@ function Training() {
       console.log(err)
     }
   }
-  const riseUpRebound = async (min, max, uuid) => {
+  const riseUpRebound = async (playerValue, min, max, uuid) => {
     try {
-      if (trainingLeft > 0) {
+      if (trainingLeft > 0 && playerValue < 99) {
         checkTrophy()
         if (min + max < 25) {
           await Axios.put(`${apiUrl}/players/${uuid}`, {
@@ -132,6 +134,8 @@ function Training() {
           setTrainingLeft(trainingLeft - 1)
           getMyTeam()
         }
+      } else if (playerValue >= 99) {
+        console.log('already at the max')
       } else {
         setCounter((counter) => counter + 1)
       }
@@ -139,9 +143,9 @@ function Training() {
       console.log(err)
     }
   }
-  const riseUpPass = async (min, max, uuid) => {
+  const riseUpPass = async (playerValue, min, max, uuid) => {
     try {
-      if (trainingLeft > 0) {
+      if (trainingLeft > 0 && playerValue < 99) {
         checkTrophy()
         if (min + max < 21) {
           await Axios.put(`${apiUrl}/players/${uuid}`, {
@@ -162,6 +166,8 @@ function Training() {
 
           getMyTeam()
         }
+      } else if (playerValue >= 99) {
+        console.log('already at the max')
       } else {
         setCounter((counter) => counter + 1)
       }
@@ -262,6 +268,7 @@ function Training() {
                         <Chip
                           onDelete={() =>
                             riseUpScoring(
+                              player.value,
                               player.ptsMin,
                               player.ptsMax,
                               player.uuid
@@ -294,6 +301,7 @@ function Training() {
                         <Chip
                           onDelete={() =>
                             riseUpRebound(
+                              player.value,
                               player.rebMin,
                               player.rebMax,
                               player.uuid
@@ -326,6 +334,7 @@ function Training() {
                         <Chip
                           onDelete={() =>
                             riseUpPass(
+                              player.value,
                               player.pasMin,
                               player.pasMax,
                               player.uuid
