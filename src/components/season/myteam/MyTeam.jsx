@@ -8,13 +8,13 @@ import TableContainer from '@material-ui/core/TableContainer'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
-import { Avatar, Chip } from '@material-ui/core'
-import ArrowDropDownCircleIcon from '@material-ui/icons/ArrowDropDownCircle'
+import { Avatar } from '@material-ui/core'
 import FreePlayer from './FreePlayer'
 import ProgressBall from '../../mutliple/ProgressBall'
 import AccountVerify from '../../mutliple/AccountVerify'
 import TrophySnackbar from '../../mutliple/TrophySnackbar'
 import PlayerValue from '../../mutliple/PlayerValue'
+import PlayerStatChip from '../../mutliple/PlayerStatChip'
 
 function MyTeam() {
   const [myteamData, setMyTeamData] = useState({})
@@ -108,69 +108,27 @@ function MyTeam() {
                       <PlayerValue playerValue={player.value} />
                     </TableCell>
                     <TableCell align="right">
-                      <Chip
-                        avatar={
-                          player.ptsMin > player.ptsBeg && player.ptsBeg ? (
-                            <>
-                              <ArrowDropDownCircleIcon
-                                style={{
-                                  margin: '0px -8px 0px 5px',
-                                  transform: 'rotate(180deg)',
-                                  color: 'rgb(76, 175, 80)'
-                                }}
-                              />
-                            </>
-                          ) : (
-                            ''
-                          )
-                        }
-                        label={Math.round(
-                          ((player.ptsMin + player.ptsMax) / 2 / 35) * 100
-                        )}
+                      <PlayerStatChip
+                        statMin={player.ptsMin}
+                        statBeg={player.ptsBeg}
+                        statMax={player.ptsMax}
+                        divisor={35}
                       />
                     </TableCell>
                     <TableCell align="right">
-                      <Chip
-                        avatar={
-                          player.rebMin > player.rebBeg && player.rebBeg ? (
-                            <>
-                              <ArrowDropDownCircleIcon
-                                style={{
-                                  margin: '0px -8px 0px 5px',
-                                  transform: 'rotate(180deg)',
-                                  color: 'rgb(76, 175, 80)'
-                                }}
-                              />
-                            </>
-                          ) : (
-                            ''
-                          )
-                        }
-                        label={Math.round(
-                          ((player.rebMin + player.rebMax) / 2 / 13) * 100
-                        )}
+                      <PlayerStatChip
+                        statMin={player.rebMin}
+                        statBeg={player.rebBeg}
+                        statMax={player.rebMax}
+                        divisor={13}
                       />
                     </TableCell>
                     <TableCell align="right">
-                      <Chip
-                        avatar={
-                          player.pasMin > player.pasBeg && player.pasBeg ? (
-                            <>
-                              <ArrowDropDownCircleIcon
-                                style={{
-                                  margin: '0px -8px 0px 5px',
-                                  transform: 'rotate(180deg)',
-                                  color: 'rgb(76, 175, 80)'
-                                }}
-                              />
-                            </>
-                          ) : (
-                            ''
-                          )
-                        }
-                        label={Math.round(
-                          ((player.pasMin + player.pasMax) / 2 / 11) * 100
-                        )}
+                      <PlayerStatChip
+                        statMin={player.pasMin}
+                        statBeg={player.pasBeg}
+                        statMax={player.pasMax}
+                        divisor={11}
                       />
                     </TableCell>
                     <TableCell align="center">

@@ -16,10 +16,10 @@ import TableRow from '@material-ui/core/TableRow'
 import Axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { apiUrl } from '../../apiUrl'
-import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward'
 import SignPlayer from '../mutliple/signPlayer/SignPlayer'
 import OffSeasonMessage from './OffSeasonMessage'
 import PlayerValue from '../mutliple/PlayerValue'
+import PlayerStatChip from '../mutliple/PlayerStatChip'
 
 function OffSeasonDialog({
   goNext,
@@ -167,59 +167,29 @@ function OffSeasonDialog({
                       {step === 'Player progress' ? (
                         <>
                           <TableCell align="center">{`${player.age}`}</TableCell>
-                          <TableCell align="center">
-                            {player.ptsMin > player.ptsBeg && player.ptsBeg ? (
-                              <>
-                                <ArrowUpwardIcon
-                                  style={{
-                                    backgroundColor: 'green',
-                                    fontSize: '1rem',
-                                    borderRadius: '100%'
-                                  }}
-                                />
-                              </>
-                            ) : (
-                              ''
-                            )}{' '}
-                            {Math.round(
-                              ((player.ptsMin + player.ptsMax) / 2 / 35) * 100
-                            )}
+                          <TableCell align="right">
+                            <PlayerStatChip
+                              statMin={player.ptsMin}
+                              statBeg={player.ptsBeg}
+                              statMax={player.ptsMax}
+                              divisor={35}
+                            />
                           </TableCell>
-                          <TableCell align="center">
-                            {player.rebMin > player.rebBeg && player.rebBeg ? (
-                              <>
-                                <ArrowUpwardIcon
-                                  style={{
-                                    backgroundColor: 'green',
-                                    fontSize: '1rem',
-                                    borderRadius: '100%'
-                                  }}
-                                />
-                              </>
-                            ) : (
-                              ''
-                            )}{' '}
-                            {Math.round(
-                              ((player.rebMin + player.rebMax) / 2 / 13) * 100
-                            )}
+                          <TableCell align="right">
+                            <PlayerStatChip
+                              statMin={player.rebMin}
+                              statBeg={player.rebBeg}
+                              statMax={player.rebMax}
+                              divisor={13}
+                            />
                           </TableCell>
-                          <TableCell align="center">
-                            {player.pasMin > player.pasBeg && player.pasBeg ? (
-                              <>
-                                <ArrowUpwardIcon
-                                  style={{
-                                    backgroundColor: 'green',
-                                    fontSize: '1rem',
-                                    borderRadius: '100%'
-                                  }}
-                                />
-                              </>
-                            ) : (
-                              ''
-                            )}{' '}
-                            {Math.round(
-                              ((player.pasMin + player.pasMax) / 2 / 11) * 100
-                            )}
+                          <TableCell align="right">
+                            <PlayerStatChip
+                              statMin={player.pasMin}
+                              statBeg={player.pasBeg}
+                              statMax={player.pasMax}
+                              divisor={11}
+                            />
                           </TableCell>
                         </>
                       ) : step === 'Player options' ? (
