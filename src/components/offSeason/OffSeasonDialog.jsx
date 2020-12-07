@@ -5,7 +5,9 @@ import {
   DialogContent,
   DialogTitle,
   Avatar,
-  Paper
+  Paper,
+  Chip,
+  Checkbox
 } from '@material-ui/core'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
@@ -33,11 +35,13 @@ function OffSeasonDialog({
   TrophyData,
   iOpenTrophySnackbar,
   trophyName,
-  getTrophy
+  getTrophy,
+  myPick
 }) {
   const [open, setOpen] = React.useState(false)
   const [userUuid] = useState(window.localStorage.getItem('uuid'))
   const [openFreeAgencyMessage, setOpenFreeAgencyMessage] = useState(false)
+  const [myPickChoice, setMyPickChoice] = useState('')
 
   useEffect(() => {
     getPlayers()
@@ -67,6 +71,10 @@ function OffSeasonDialog({
       await Axios.post(`${apiUrl}/players/retirements/${userUuid}`)
     } else if (step === 'Player options') {
       await Axios.post(`${apiUrl}/players/playerOptions/${TeamUuid}`)
+    } else if (step === 'Draft') {
+      await Axios.put(`${apiUrl}/players/${myPickChoice}`, {
+        rookieTeam: myteamData.uuid
+      })
     }
 
     if (step === 'Free agency') {
@@ -136,6 +144,13 @@ function OffSeasonDialog({
                       <TableCell align="center">Rebound</TableCell>
                       <TableCell align="center">Pass</TableCell>
                       <TableCell align="center">Sign</TableCell>
+                    </>
+                  ) : step === 'Draft' ? (
+                    <>
+                      <TableCell align="center">Scoring</TableCell>
+                      <TableCell align="center">Rebound</TableCell>
+                      <TableCell align="center">Pass</TableCell>
+                      <TableCell align="center">Choose</TableCell>
                     </>
                   ) : (
                     ''
@@ -236,7 +251,7 @@ function OffSeasonDialog({
                       ? player.isRookie
                       : ''
                   )
-                  .map((player) => (
+                  .map((player, i) => (
                     <TableRow>
                       <TableCell align="center" component="th" scope="row">
                         <Avatar
@@ -250,7 +265,15 @@ function OffSeasonDialog({
                       </TableCell>
                       <TableCell align="left">{`${player.firstName} ${player.lastName}`}</TableCell>
                       <TableCell align="center">
-                        <PlayerValue playerValue={player.value} />
+                        {step === 'Draft' ? (
+                          <Chip
+                            label={`${Math.round(player.value) - 5} - ${
+                              Math.round(player.value) + 5
+                            }`}
+                          />
+                        ) : (
+                          <PlayerValue playerValue={player.value} />
+                        )}
                       </TableCell>
                       <TableCell align="center">{player.age}</TableCell>
 
@@ -283,6 +306,67 @@ function OffSeasonDialog({
                               step={step}
                               myteamData={myteamData}
                               getMyTeam={getMyTeam}
+                            />
+                          </TableCell>
+                        </>
+                      ) : (
+                        ''
+                      )}
+
+                      {step === 'Draft' ? (
+                        <>
+                          <TableCell align="center">
+                            <Chip
+                              label={`${
+                                Math.round(
+                                  ((player.ptsMin + player.ptsMax) / 2 / 35) *
+                                    100
+                                ) - 5
+                              } - ${
+                                Math.round(
+                                  ((player.ptsMin + player.ptsMax) / 2 / 35) *
+                                    100
+                                ) + 5
+                              }`}
+                            />
+                          </TableCell>
+                          <TableCell align="center">
+                            <Chip
+                              label={`${
+                                Math.round(
+                                  ((player.rebMin + player.rebMax) / 2 / 13) *
+                                    100
+                                ) - 5
+                              } - ${
+                                Math.round(
+                                  ((player.rebMin + player.rebMax) / 2 / 13) *
+                                    100
+                                ) + 5
+                              }`}
+                            />
+                          </TableCell>
+                          <TableCell align="center">
+                            <Chip
+                              label={`${
+                                Math.round(
+                                  ((player.pasMin + player.pasMax) / 2 / 11) *
+                                    100
+                                ) - 5
+                              } - ${
+                                Math.round(
+                                  ((player.pasMin + player.pasMax) / 2 / 11) *
+                                    100
+                                ) + 5
+                              }`}
+                            />
+                          </TableCell>
+                          <TableCell align="center">
+                            <Checkbox
+                              disabled={i + 1 < myPick}
+                              checked={
+                                i + 1 < myPick || myPickChoice === player.uuid
+                              }
+                              onChange={() => setMyPickChoice(player.uuid)}
                             />
                           </TableCell>
                         </>
