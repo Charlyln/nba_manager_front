@@ -44,8 +44,9 @@ function ChampionsDialog({ teamsData, SeasonUuid, UserUuid, TeamUuid }) {
   }
 
   const getAllData = async () => {
-    setOpen(true)
+    await Axios.post(`${apiUrl}/progress/adjsutPlayerValue/${UserUuid}`)
     const res = await getSeasonRewards(UserUuid, SeasonUuid)
+    setOpen(true)
     setRewardsData(res.data)
     const res2 = await getTrophy(UserUuid, trophyName)
     if (!res2.data.earned && res.data[0].TeamUuid === TeamUuid) {
