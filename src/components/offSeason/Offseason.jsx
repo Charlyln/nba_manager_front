@@ -16,6 +16,7 @@ import AccountVerify from '../../components/mutliple/AccountVerify'
 import ProgressBall from '../mutliple/ProgressBall'
 import TrophySnackbar from '../mutliple/TrophySnackbar'
 import postProgressValue from '../api calls/postProgressValue'
+import getMyPick from '../api calls/getMyPick'
 
 function Offseason() {
   const [activeStep, setActiveStep] = useState(
@@ -35,6 +36,7 @@ function Offseason() {
   const [openTrophySnackbar, setOpenTrophySnackbar] = useState(false)
   const [TrophyData, setTrophyData] = useState([])
   const [trophyName, setTrophyName] = useState('')
+  const [myPick, setMyPick] = useState(null)
 
   const iOpenTrophySnackbar = () => {
     setOpenTrophySnackbar(true)
@@ -71,6 +73,7 @@ function Offseason() {
 
   const steps = [
     'Retirements',
+    'Draft',
     'Player options',
     'Free agency',
     'Player progress'
@@ -86,6 +89,8 @@ function Offseason() {
       await getMySeason()
       await getPlayers()
       await getMyTeam()
+      const res = await getMyPick(SeasonUuid, TeamUuid, UserUuid)
+      setMyPick(res.data)
       setIsLoading(false)
     } catch (error) {
       console.log(error)
@@ -208,6 +213,7 @@ function Offseason() {
                             iOpenTrophySnackbar={iOpenTrophySnackbar}
                             trophyName={trophyName}
                             getTrophy={getTrophy}
+                            myPick={myPick}
                           />
                           <Button
                             disabled={!canGoNext}
