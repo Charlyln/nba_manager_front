@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import Grid from '@material-ui/core/Grid'
+import { makeStyles } from '@material-ui/core/styles'
 import Axios from 'axios'
 import {
   Button,
   CircularProgress,
   AppBar,
   Toolbar,
-  Typography
+  Typography,
+  GridList
 } from '@material-ui/core'
 import { Redirect } from 'react-router-dom'
 import TeamChoiceCard from './TeamChoiceCard'
@@ -14,7 +15,20 @@ import { apiUrl } from '../../apiUrl'
 import CheckIcon from '@material-ui/icons/Check'
 import postProgressValue from '../api calls/postProgressValue'
 
+const useStyles = makeStyles((theme) => ({
+  gridList: {
+    padding: '20px',
+    [theme.breakpoints.down('lg')]: {
+      justifyContent: 'center'
+    },
+    [theme.breakpoints.up('lg')]: {
+      justifyContent: 'unset'
+    }
+  }
+}))
+
 function TeamChoice() {
+  const classes = useStyles()
   const [isLoading, setIsLoading] = useState(true)
   const [uuid] = useState(window.localStorage.getItem('uuid'))
   const [teamsData, setTeamsData] = useState([])
@@ -111,7 +125,7 @@ function TeamChoice() {
 
           {teamChoice ? (
             <>
-              {postLoading ? (
+              {postLoading && !postSuccess ? (
                 <Button
                   style={{
                     width: '85px',
@@ -132,24 +146,11 @@ function TeamChoice() {
                       height: '35px',
                       marginLeft: 'auto'
                     }}
-                    variant="contained"
+                    variant="outlined"
                     endIcon={<CheckIcon />}
                     color="secondary"
                   >
                     Done
-                  </Button>
-                  <Button
-                    style={{
-                      width: '85px',
-                      height: '35px',
-                      marginLeft: '10px'
-                    }}
-                    color="secondary"
-                    variant="outlined"
-                    onClick={SignupPost2}
-                    disabled={!postSuccess}
-                  >
-                    Start
                   </Button>
                 </>
               ) : (
@@ -166,6 +167,35 @@ function TeamChoice() {
                   Next
                 </Button>
               )}
+
+              {postLoading && postSuccess ? (
+                <Button
+                  style={{
+                    width: '85px',
+                    height: '35px',
+                    marginLeft: '10px',
+                    backgroundColor: '#8C8988'
+                  }}
+                  variant="contained"
+                  disabled={postLoading}
+                >
+                  <CircularProgress size={23} />
+                </Button>
+              ) : (
+                <Button
+                  style={{
+                    width: '85px',
+                    height: '35px',
+                    marginLeft: '10px'
+                  }}
+                  color="secondary"
+                  variant={postSuccess ? 'contained' : 'outlined'}
+                  onClick={SignupPost2}
+                  disabled={!postSuccess}
+                >
+                  Start
+                </Button>
+              )}
             </>
           ) : (
             ''
@@ -176,29 +206,29 @@ function TeamChoice() {
       {isLoading ? (
         <CircularProgress style={{ margin: 'auto' }} />
       ) : (
-        <Grid
-          container
-          justify="center"
+        <div
           style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'space-around',
+            overflow: 'hidden',
             marginTop: '100px'
           }}
         >
-          {teamsData.map((team) => (
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-              <Grid container justify="center">
-                <TeamChoiceCard
-                  name={team.name}
-                  logo={team.logo}
-                  uuid={team.uuid}
-                  putTeamChoice={putTeamChoice}
-                  teamChoice={teamChoice}
-                  players={team.Players}
-                  key={team.uuid}
-                />
-              </Grid>
-            </Grid>
-          ))}
-        </Grid>
+          <GridList className={classes.gridList}>
+            {teamsData.map((team) => (
+              <TeamChoiceCard
+                name={team.name}
+                logo={team.logo}
+                uuid={team.uuid}
+                putTeamChoice={putTeamChoice}
+                teamChoice={teamChoice}
+                players={team.Players}
+                key={team.uuid}
+              />
+            ))}
+          </GridList>
+        </div>
       )}
     </>
   )
