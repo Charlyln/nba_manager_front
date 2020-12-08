@@ -8,24 +8,50 @@ import TableContainer from '@material-ui/core/TableContainer'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
-import {
-  Avatar,
-  Chip,
-} from '@material-ui/core'
+import { Avatar, Chip } from '@material-ui/core'
 import ProgressBall from '../../mutliple/ProgressBall'
 import AccountVerify from '../../mutliple/AccountVerify'
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn'
 import PlayerValue from '../../mutliple/PlayerValue'
+import TrophySnackbar from '../../mutliple/TrophySnackbar'
+import FreePlayer from './FreePlayer'
 
 function Contracts() {
   const [myteamData, setMyTeamData] = useState({})
-  const [userUuid] = useState(window.localStorage.getItem('uuid'))
+  const [UserUuid] = useState(window.localStorage.getItem('uuid'))
   const [isLoading, setIsLoading] = useState(true)
   const [SeasonUuid] = useState(window.localStorage.getItem('SeasonUuid'))
   const [mySeason, setMySeason] = useState({})
+  const [openTrophySnackbar, setOpenTrophySnackbar] = useState(false)
+  const [TrophyData, setTrophyData] = useState([])
+  const [trophyName] = useState('Fire a player')
+
+  const iOpenTrophySnackbar = () => {
+    setOpenTrophySnackbar(true)
+  }
+
+  const closeTrophySnackbar = (event, reason) => {
+    if (reason === 'clickaway') {
+      return
+    }
+
+    setOpenTrophySnackbar(false)
+  }
+
+  const getTrophy = async () => {
+    try {
+      const res = await Axios.get(
+        `${apiUrl}/trophies/${trophyName}/${UserUuid}`
+      )
+      setTrophyData(res.data)
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
   useEffect(() => {
     getMyTeam()
+    getTrophy()
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -41,9 +67,10 @@ function Contracts() {
 
   const getMyTeam = async () => {
     try {
-      const res = await Axios.get(`${apiUrl}/teams/myteam/${userUuid}`)
+      const res = await Axios.get(`${apiUrl}/teams/myteam/${UserUuid}`)
       setMyTeamData(res.data)
       await getMySeason()
+      await getTrophy()
       setIsLoading(false)
     } catch (err) {
       console.log(err)
@@ -61,7 +88,7 @@ function Contracts() {
     return years.map((year) => (
       <>
         {year ? (
-          <TableCell align="right">
+          <TableCell align="center">
             <Chip
               avatar={<MonetizationOnIcon />}
               label={`${year / 1000000} MM`}
@@ -83,6 +110,11 @@ function Contracts() {
         </>
       ) : (
         <>
+          <TrophySnackbar
+            openTrophySnackbar={openTrophySnackbar}
+            closeTrophySnackbar={closeTrophySnackbar}
+            trophyName={trophyName}
+          />
           <TableContainer
             elevation={10}
             component={Paper}
@@ -92,16 +124,17 @@ function Contracts() {
               <TableHead>
                 <TableRow>
                   <TableCell>Photo</TableCell>
-                  <TableCell align="right">Name</TableCell>
-                  <TableCell align="right">Value</TableCell>
-                  <TableCell align="right">{`${mySeason.startYear} - ${mySeason.endYear}`}</TableCell>
-                  <TableCell align="right">{`${mySeason.startYear + 1} - ${
+                  <TableCell align="center">Name</TableCell>
+                  <TableCell align="center">Value</TableCell>
+                  <TableCell align="center">Fire player</TableCell>
+                  <TableCell align="center">{`${mySeason.startYear} - ${mySeason.endYear}`}</TableCell>
+                  <TableCell align="center">{`${mySeason.startYear + 1} - ${
                     mySeason.endYear + 1
                   }`}</TableCell>
-                  <TableCell align="right">{`${mySeason.startYear + 2} - ${
+                  <TableCell align="center">{`${mySeason.startYear + 2} - ${
                     mySeason.endYear + 2
                   }`}</TableCell>
-                  <TableCell align="right">{`${mySeason.startYear + 3} - ${
+                  <TableCell align="center">{`${mySeason.startYear + 3} - ${
                     mySeason.endYear + 3
                   }`}</TableCell>
                 </TableRow>
@@ -114,15 +147,27 @@ function Contracts() {
                     <TableCell component="th" scope="row">
                       <Avatar src={player.photo} />
                     </TableCell>
-                    <TableCell align="right">{`${player.firstName} ${player.lastName}`}</TableCell>
-                    <TableCell align="right">
+                    <TableCell align="center">{`${player.firstName} ${player.lastName}`}</TableCell>
+                    <TableCell align="center">
                       <PlayerValue playerValue={player.value} />
+                    </TableCell>
+                    <TableCell  style={{textAlign: 'center'}} >
+                      <FreePlayer
+                        player={player}
+                        getMyTeam={getMyTeam}
+                        iOpenTrophySnackbar={iOpenTrophySnackbar}
+                        TrophyData={TrophyData}
+                        trophyName={trophyName}
+                        UserUuid={UserUuid}
+                        myteamData={myteamData}
+                      />
                     </TableCell>
                     {renderTableCellsSalary(
                       player.contractLeft,
                       player.salary,
                       player
                     )}
+                    
                   </TableRow>
                 ))}
 
@@ -130,7 +175,8 @@ function Contracts() {
                   <TableCell></TableCell>
                   <TableCell>Total</TableCell>
                   <TableCell></TableCell>
-                  <TableCell align="right">
+                  <TableCell></TableCell>
+                  <TableCell align="center">
                     <Chip
                       color="primary"
                       icon={<MonetizationOnIcon />}
@@ -141,7 +187,7 @@ function Contracts() {
                       } MM`}
                     />
                   </TableCell>
-                  <TableCell align="right">
+                  <TableCell align="center">
                     <Chip
                       color="primary"
                       icon={<MonetizationOnIcon />}
@@ -152,7 +198,7 @@ function Contracts() {
                       } MM`}
                     />
                   </TableCell>
-                  <TableCell align="right">
+                  <TableCell align="center">
                     <Chip
                       color="primary"
                       icon={<MonetizationOnIcon />}
@@ -163,7 +209,7 @@ function Contracts() {
                       } MM`}
                     />
                   </TableCell>
-                  <TableCell align="right">
+                  <TableCell align="center">
                     <Chip
                       color="primary"
                       icon={<MonetizationOnIcon />}
@@ -179,7 +225,8 @@ function Contracts() {
                   <TableCell></TableCell>
                   <TableCell>Balance</TableCell>
                   <TableCell></TableCell>
-                  <TableCell align="right">
+                  <TableCell></TableCell>
+                  <TableCell align="center">
                     <Chip
                       style={{
                         backgroundColor:
@@ -202,7 +249,7 @@ function Contracts() {
                       } MM`}
                     />
                   </TableCell>
-                  <TableCell align="right">
+                  <TableCell align="center">
                     <Chip
                       style={{
                         backgroundColor:
@@ -225,7 +272,7 @@ function Contracts() {
                       } MM`}
                     />
                   </TableCell>
-                  <TableCell align="right">
+                  <TableCell align="center">
                     <Chip
                       style={{
                         backgroundColor:
@@ -248,7 +295,7 @@ function Contracts() {
                       } MM`}
                     />
                   </TableCell>
-                  <TableCell align="right">
+                  <TableCell align="center">
                     <Chip
                       style={{
                         backgroundColor:

@@ -57,10 +57,10 @@ function SignPlayer({
     <>
       <Button
         onClick={handleClickOpen}
-        color="primary"
+        color="secondary"
         size="small"
         endIcon={<ExitToAppIcon />}
-        variant="outlined"
+        variant="contained"
       >
         Fire
       </Button>
