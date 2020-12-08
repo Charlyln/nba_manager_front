@@ -272,7 +272,7 @@ function SignPlayer({
         aria-describedby="alert-dialog-description"
       >
         {(player.contractLeft < 2 && player.TeamUuid === myteamData.uuid) ||
-        (!player.TeamUuid && myteamData.Players.length < 5) ? (
+        (!player.TeamUuid && myteamData.Players.length < 10) ? (
           <>
             <DialogTitle id="alert-dialog-title">{`Propose a ${
               contractLeft ? 'extension' : 'contract'
@@ -395,7 +395,7 @@ function SignPlayer({
               />
             </DialogActions>
           </>
-        ) : myteamData.Players.length >= 5 ? (
+        ) : myteamData.Players.length >= 10 ? (
           <>
             <DialogTitle>
               Your team is already full ! Release a player in your team to sign
