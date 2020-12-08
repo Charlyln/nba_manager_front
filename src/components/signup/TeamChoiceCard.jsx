@@ -15,13 +15,8 @@ import {
   List,
   ListItemSecondaryAction
 } from '@material-ui/core'
-import CheckIcon from '@material-ui/icons/Check'
-import DoneOutlineIcon from '@material-ui/icons/DoneOutline'
 import RadioButtonUncheckedSharpIcon from '@material-ui/icons/RadioButtonUncheckedSharp'
 import RadioButtonCheckedSharpIcon from '@material-ui/icons/RadioButtonCheckedSharp'
-import CheckCircleOutlineSharpIcon from '@material-ui/icons/CheckCircleOutlineSharp'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import ExpandLessIcon from '@material-ui/icons/ExpandLess'
 import PlayerValue from '../mutliple/PlayerValue'
 import VisibilitySharpIcon from '@material-ui/icons/VisibilitySharp'
 import VisibilityOffSharpIcon from '@material-ui/icons/VisibilityOffSharp'
