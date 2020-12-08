@@ -117,7 +117,8 @@ function Home() {
   }
 
   const matchAllGames = async () => {
-    if (myteamsData.Players.length === 5) {
+    const nbrLineUp = myteamsData.Players.filter((player) => !player.isBench)
+    if (nbrLineUp.length === 5) {
       setAllGameLoading(true)
       const SeasonUuid = teamsData[0].SeasonUuid
       await Axios.post(`${apiUrl}/gamePlayed/all/${SeasonUuid}`)

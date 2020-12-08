@@ -121,7 +121,9 @@ function Match({
   }
 
   const matchit = async (uuid) => {
-    if (myteamsData.Players.length === 5) {
+    const nbrLineUp = myteamsData.Players.filter((player) => !player.isBench)
+
+    if (nbrLineUp.length === 5) {
       setMatchLoading(true)
       setDataLoading(true)
 
