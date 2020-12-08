@@ -71,9 +71,17 @@ function OffSeasonDialog({
       await Axios.post(`${apiUrl}/players/retirements/${userUuid}`)
     } else if (step === 'Player options') {
       await Axios.post(`${apiUrl}/players/playerOptions/${TeamUuid}`)
-    } else if (step === 'Draft') {
+    } else if (step === 'Draft' && myPickChoice) {
       await Axios.put(`${apiUrl}/players/${myPickChoice}`, {
-        rookieTeam: myteamData.uuid
+        TeamUuid: myteamData.uuid,
+        isBench: true,
+        isRookie: false,
+        contractLeft: 4,
+        salary: 5000000,
+        contractYear1: 5000000,
+        contractYear2: 5000000,
+        contractYear3: 5000000,
+        contractYear4: 5000000
       })
     }
 
