@@ -8,54 +8,23 @@ import TableContainer from '@material-ui/core/TableContainer'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
-import { Avatar, Typography } from '@material-ui/core'
-import FreePlayer from './FreePlayer'
+import { Avatar, Button } from '@material-ui/core'
 import ProgressBall from '../../mutliple/ProgressBall'
 import AccountVerify from '../../mutliple/AccountVerify'
-import TrophySnackbar from '../../mutliple/TrophySnackbar'
 import PlayerValue from '../../mutliple/PlayerValue'
 import PlayerStatChip from '../../mutliple/PlayerStatChip'
-import getMyRookies from '../../api calls/getMyRookies'
-import SignPlayer from '../../mutliple/signPlayer/SignPlayer'
+import SportsBasketballIcon from '@material-ui/icons/SportsBasketball'
+import ForwardIcon from '@material-ui/icons/Forward'
+import EventSeatIcon from '@material-ui/icons/EventSeat'
 
 function MyTeam() {
   const [myteamData, setMyTeamData] = useState({})
   const [UserUuid] = useState(window.localStorage.getItem('uuid'))
   const [isLoading, setIsLoading] = useState(true)
-  const [openTrophySnackbar, setOpenTrophySnackbar] = useState(false)
-  const [TrophyData, setTrophyData] = useState([])
-  const [trophyName] = useState('Fire a player')
-  const [TeamUuid] = useState(window.localStorage.getItem('TeamUuid'))
-  const [myRookies, setMyRookies] = useState([])
-
-  const iOpenTrophySnackbar = () => {
-    setOpenTrophySnackbar(true)
-  }
-
-  const closeTrophySnackbar = (event, reason) => {
-    if (reason === 'clickaway') {
-      return
-    }
-
-    setOpenTrophySnackbar(false)
-  }
-
-  const getTrophy = async () => {
-    try {
-      const res = await Axios.get(
-        `${apiUrl}/trophies/${trophyName}/${UserUuid}`
-      )
-      setTrophyData(res.data)
-    } catch (err) {
-      console.log(err)
-    }
-  }
 
   const getAllData = async () => {
     try {
       await getMyTeam()
-      const rookies = await getMyRookies(UserUuid, TeamUuid)
-      setMyRookies(rookies.data)
       setIsLoading(false)
     } catch (error) {
       console.log(error)
@@ -72,11 +41,23 @@ function MyTeam() {
       const res = await Axios.get(`${apiUrl}/teams/myteam/${UserUuid}`)
       setMyTeamData(res.data)
 
-      getTrophy()
       setIsLoading(false)
     } catch (err) {
       console.log(err)
     }
+  }
+
+  const putInLineUp = async (playerUuid) => {
+    await Axios.put(`${apiUrl}/players/${playerUuid}`, {
+      isBench: false
+    })
+    await getMyTeam()
+  }
+  const putOutLineUp = async (playerUuid) => {
+    await Axios.put(`${apiUrl}/players/${playerUuid}`, {
+      isBench: true
+    })
+    await getMyTeam()
   }
 
   return (
@@ -88,27 +69,19 @@ function MyTeam() {
         </>
       ) : (
         <>
-          <TrophySnackbar
-            openTrophySnackbar={openTrophySnackbar}
-            closeTrophySnackbar={closeTrophySnackbar}
-            trophyName={trophyName}
-          />
           <TableContainer
             elevation={10}
             component={Paper}
-            style={{ width: '90%', margin: '100px auto ' }}
+            style={{ width: '90%', margin: '100px auto 0px' }}
           >
-            <Typography
-              variant="button"
-              component="div"
-              color="textSecondary"
-              style={{
-                color: 'rgb(128 127 127)',
-                margin: '5px 0px 0px 10px'
-              }}
+            <Button
+              style={{ margin: '10px 0px 0px 10px ' }}
+              endIcon={<SportsBasketballIcon />}
+              variant="contained"
+              color="secondary"
             >
-              <strong>My players</strong>
-            </Typography>
+              line-up
+            </Button>
             <Table aria-label="simple table">
               <TableHead>
                 <TableRow>
@@ -120,93 +93,11 @@ function MyTeam() {
                   <TableCell align="center">Scoring</TableCell>
                   <TableCell align="center">Rebound</TableCell>
                   <TableCell align="center">Pass</TableCell>
-                  <TableCell align="center">Fire player</TableCell>
+                  <TableCell align="center">Put on bench</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {myteamData.Players.sort(function (a, b) {
-                  return new Date(b.value) - new Date(a.value)
-                }).map((player) => (
-                  <TableRow>
-                    <TableCell component="th" scope="row">
-                      <Avatar src={player.photo} />
-                    </TableCell>
-                    <TableCell align="center">{`${player.firstName} ${player.lastName}`}</TableCell>
-                    <TableCell align="center">
-                      <PlayerValue playerValue={player.value} />
-                    </TableCell>
-                    <TableCell align="center">
-                      <PlayerStatChip
-                        statMin={player.ptsMin}
-                        statBeg={player.ptsBeg}
-                        statMax={player.ptsMax}
-                        divisor={35}
-                      />
-                    </TableCell>
-                    <TableCell align="center">
-                      <PlayerStatChip
-                        statMin={player.rebMin}
-                        statBeg={player.rebBeg}
-                        statMax={player.rebMax}
-                        divisor={13}
-                      />
-                    </TableCell>
-                    <TableCell align="center">
-                      <PlayerStatChip
-                        statMin={player.pasMin}
-                        statBeg={player.pasBeg}
-                        statMax={player.pasMax}
-                        divisor={11}
-                      />
-                    </TableCell>
-                    <TableCell align="center">
-                      <FreePlayer
-                        player={player}
-                        getMyTeam={getMyTeam}
-                        iOpenTrophySnackbar={iOpenTrophySnackbar}
-                        TrophyData={TrophyData}
-                        trophyName={trophyName}
-                        UserUuid={UserUuid}
-                        myteamData={myteamData}
-                      />
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <TableContainer
-            elevation={10}
-            component={Paper}
-            style={{ width: '90%', margin: '100px auto ' }}
-          >
-            <Typography
-              variant="button"
-              component="div"
-              color="textSecondary"
-              style={{
-                color: 'rgb(128 127 127)',
-                margin: '5px 0px 0px 10px'
-              }}
-            >
-              <strong>My rookies</strong>
-            </Typography>
-            <Table aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell>Photo</TableCell>
-                  <TableCell width="25%" align="center">
-                    Name
-                  </TableCell>
-                  <TableCell align="center">Value</TableCell>
-                  <TableCell align="center">Scoring</TableCell>
-                  <TableCell align="center">Rebound</TableCell>
-                  <TableCell align="center">Pass</TableCell>
-                  <TableCell align="center">Sign contract</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {myRookies
+                {myteamData.Players.filter((player) => !player.isBench)
                   .sort(function (a, b) {
                     return new Date(b.value) - new Date(a.value)
                   })
@@ -244,14 +135,114 @@ function MyTeam() {
                         />
                       </TableCell>
                       <TableCell align="center">
-                        <SignPlayer
-                          player={player}
-                          getMyTeam={getMyTeam}
-                          contractLeft={player.contractLeft}
-                          TrophyData={TrophyData}
-                          TeamUuid={TeamUuid}
-                          myteamData={myteamData}
+                        <Button
+                          variant="contained"
+                          style={{
+                            backgroundColor: 'rgb(217, 48, 33)'
+                          }}
+                          size="small"
+                          onClick={() => putOutLineUp(player.uuid)}
+                          endIcon={
+                            <ForwardIcon
+                              style={{
+                                transform: 'rotate(90deg)'
+                              }}
+                            />
+                          }
+                        >
+                          out
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <TableContainer
+            elevation={10}
+            component={Paper}
+            style={{ width: '90%', margin: '30px auto ' }}
+          >
+            <Button
+              style={{ margin: '10px 0px 0px 10px ' }}
+              endIcon={<EventSeatIcon />}
+              variant="contained"
+              color="secondary"
+            >
+              bench
+            </Button>
+
+            <Table aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Photo</TableCell>
+                  <TableCell width="25%" align="center">
+                    Name
+                  </TableCell>
+                  <TableCell align="center">Value</TableCell>
+                  <TableCell align="center">Scoring</TableCell>
+                  <TableCell align="center">Rebound</TableCell>
+                  <TableCell align="center">Pass</TableCell>
+                  <TableCell align="center">Put in line-up</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {myteamData.Players.filter((player) => player.isBench)
+
+                  .sort(function (a, b) {
+                    return new Date(b.value) - new Date(a.value)
+                  })
+                  .map((player) => (
+                    <TableRow>
+                      <TableCell component="th" scope="row">
+                        <Avatar src={player.photo} />
+                      </TableCell>
+                      <TableCell align="center">{`${player.firstName} ${player.lastName}`}</TableCell>
+                      <TableCell align="center">
+                        <PlayerValue playerValue={player.value} />
+                      </TableCell>
+                      <TableCell align="center">
+                        <PlayerStatChip
+                          statMin={player.ptsMin}
+                          statBeg={player.ptsBeg}
+                          statMax={player.ptsMax}
+                          divisor={35}
                         />
+                      </TableCell>
+                      <TableCell align="center">
+                        <PlayerStatChip
+                          statMin={player.rebMin}
+                          statBeg={player.rebBeg}
+                          statMax={player.rebMax}
+                          divisor={13}
+                        />
+                      </TableCell>
+                      <TableCell align="center">
+                        <PlayerStatChip
+                          statMin={player.pasMin}
+                          statBeg={player.pasBeg}
+                          statMax={player.pasMax}
+                          divisor={11}
+                        />
+                      </TableCell>
+                      <TableCell align="center">
+                        <Button
+                          variant="contained"
+                          style={{
+                            backgroundColor: 'rgb(76, 175, 80)'
+                          }}
+                          size="small"
+                          onClick={() => putInLineUp(player.uuid)}
+                          endIcon={
+                            <ForwardIcon
+                              style={{
+                                transform: 'rotate(270deg)'
+                              }}
+                            />
+                          }
+                        >
+                          in
+                        </Button>
                       </TableCell>
                     </TableRow>
                   ))}
