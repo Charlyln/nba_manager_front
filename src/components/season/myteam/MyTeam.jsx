@@ -8,7 +8,7 @@ import TableContainer from '@material-ui/core/TableContainer'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
-import { Avatar, Button } from '@material-ui/core'
+import { Avatar, Button, Grow } from '@material-ui/core'
 import ProgressBall from '../../mutliple/ProgressBall'
 import AccountVerify from '../../mutliple/AccountVerify'
 import PlayerValue from '../../mutliple/PlayerValue'
@@ -99,61 +99,63 @@ function MyTeam() {
               <TableBody>
                 {myteamData.Players.filter((player) => !player.isBench)
                   .sort(function (a, b) {
-                    return new Date(b.value) - new Date(a.value)
+                    return new Date(a.updatedAt) - new Date(b.updatedAt)
                   })
                   .map((player) => (
-                    <TableRow>
-                      <TableCell component="th" scope="row">
-                        <Avatar src={player.photo} />
-                      </TableCell>
-                      <TableCell align="center">{`${player.firstName} ${player.lastName}`}</TableCell>
-                      <TableCell align="center">
-                        <PlayerValue playerValue={player.value} />
-                      </TableCell>
-                      <TableCell align="center">
-                        <PlayerStatChip
-                          statMin={player.ptsMin}
-                          statBeg={player.ptsBeg}
-                          statMax={player.ptsMax}
-                          divisor={35}
-                        />
-                      </TableCell>
-                      <TableCell align="center">
-                        <PlayerStatChip
-                          statMin={player.rebMin}
-                          statBeg={player.rebBeg}
-                          statMax={player.rebMax}
-                          divisor={13}
-                        />
-                      </TableCell>
-                      <TableCell align="center">
-                        <PlayerStatChip
-                          statMin={player.pasMin}
-                          statBeg={player.pasBeg}
-                          statMax={player.pasMax}
-                          divisor={11}
-                        />
-                      </TableCell>
-                      <TableCell align="center">
-                        <Button
-                          variant="contained"
-                          style={{
-                            backgroundColor: 'rgb(217, 48, 33)'
-                          }}
-                          size="small"
-                          onClick={() => putOutLineUp(player.uuid)}
-                          endIcon={
-                            <ForwardIcon
-                              style={{
-                                transform: 'rotate(90deg)'
-                              }}
-                            />
-                          }
-                        >
-                          out
-                        </Button>
-                      </TableCell>
-                    </TableRow>
+                    <Grow in>
+                      <TableRow>
+                        <TableCell component="th" scope="row">
+                          <Avatar src={player.photo} />
+                        </TableCell>
+                        <TableCell align="center">{`${player.firstName} ${player.lastName}`}</TableCell>
+                        <TableCell align="center">
+                          <PlayerValue playerValue={player.value} />
+                        </TableCell>
+                        <TableCell align="center">
+                          <PlayerStatChip
+                            statMin={player.ptsMin}
+                            statBeg={player.ptsBeg}
+                            statMax={player.ptsMax}
+                            divisor={35}
+                          />
+                        </TableCell>
+                        <TableCell align="center">
+                          <PlayerStatChip
+                            statMin={player.rebMin}
+                            statBeg={player.rebBeg}
+                            statMax={player.rebMax}
+                            divisor={13}
+                          />
+                        </TableCell>
+                        <TableCell align="center">
+                          <PlayerStatChip
+                            statMin={player.pasMin}
+                            statBeg={player.pasBeg}
+                            statMax={player.pasMax}
+                            divisor={11}
+                          />
+                        </TableCell>
+                        <TableCell align="center">
+                          <Button
+                            variant="contained"
+                            style={{
+                              backgroundColor: 'rgb(217, 48, 33)'
+                            }}
+                            size="small"
+                            onClick={() => putOutLineUp(player.uuid)}
+                            endIcon={
+                              <ForwardIcon
+                                style={{
+                                  transform: 'rotate(90deg)'
+                                }}
+                              />
+                            }
+                          >
+                            out
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    </Grow>
                   ))}
               </TableBody>
             </Table>
@@ -188,63 +190,64 @@ function MyTeam() {
               </TableHead>
               <TableBody>
                 {myteamData.Players.filter((player) => player.isBench)
-
                   .sort(function (a, b) {
-                    return new Date(b.value) - new Date(a.value)
+                    return new Date(a.updatedAt) - new Date(b.updatedAt)
                   })
                   .map((player) => (
-                    <TableRow>
-                      <TableCell component="th" scope="row">
-                        <Avatar src={player.photo} />
-                      </TableCell>
-                      <TableCell align="center">{`${player.firstName} ${player.lastName}`}</TableCell>
-                      <TableCell align="center">
-                        <PlayerValue playerValue={player.value} />
-                      </TableCell>
-                      <TableCell align="center">
-                        <PlayerStatChip
-                          statMin={player.ptsMin}
-                          statBeg={player.ptsBeg}
-                          statMax={player.ptsMax}
-                          divisor={35}
-                        />
-                      </TableCell>
-                      <TableCell align="center">
-                        <PlayerStatChip
-                          statMin={player.rebMin}
-                          statBeg={player.rebBeg}
-                          statMax={player.rebMax}
-                          divisor={13}
-                        />
-                      </TableCell>
-                      <TableCell align="center">
-                        <PlayerStatChip
-                          statMin={player.pasMin}
-                          statBeg={player.pasBeg}
-                          statMax={player.pasMax}
-                          divisor={11}
-                        />
-                      </TableCell>
-                      <TableCell align="center">
-                        <Button
-                          variant="contained"
-                          style={{
-                            backgroundColor: 'rgb(76, 175, 80)'
-                          }}
-                          size="small"
-                          onClick={() => putInLineUp(player.uuid)}
-                          endIcon={
-                            <ForwardIcon
-                              style={{
-                                transform: 'rotate(270deg)'
-                              }}
-                            />
-                          }
-                        >
-                          in
-                        </Button>
-                      </TableCell>
-                    </TableRow>
+                    <Grow in>
+                      <TableRow>
+                        <TableCell component="th" scope="row">
+                          <Avatar src={player.photo} />
+                        </TableCell>
+                        <TableCell align="center">{`${player.firstName} ${player.lastName}`}</TableCell>
+                        <TableCell align="center">
+                          <PlayerValue playerValue={player.value} />
+                        </TableCell>
+                        <TableCell align="center">
+                          <PlayerStatChip
+                            statMin={player.ptsMin}
+                            statBeg={player.ptsBeg}
+                            statMax={player.ptsMax}
+                            divisor={35}
+                          />
+                        </TableCell>
+                        <TableCell align="center">
+                          <PlayerStatChip
+                            statMin={player.rebMin}
+                            statBeg={player.rebBeg}
+                            statMax={player.rebMax}
+                            divisor={13}
+                          />
+                        </TableCell>
+                        <TableCell align="center">
+                          <PlayerStatChip
+                            statMin={player.pasMin}
+                            statBeg={player.pasBeg}
+                            statMax={player.pasMax}
+                            divisor={11}
+                          />
+                        </TableCell>
+                        <TableCell align="center">
+                          <Button
+                            variant="contained"
+                            style={{
+                              backgroundColor: 'rgb(76, 175, 80)'
+                            }}
+                            size="small"
+                            onClick={() => putInLineUp(player.uuid)}
+                            endIcon={
+                              <ForwardIcon
+                                style={{
+                                  transform: 'rotate(270deg)'
+                                }}
+                              />
+                            }
+                          >
+                            in
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    </Grow>
                   ))}
               </TableBody>
             </Table>
