@@ -14,6 +14,7 @@ import {
   DialogActions,
   DialogTitle,
   Divider,
+  Grow,
   ListItemAvatar
 } from '@material-ui/core'
 import { apiUrl } from '../../../apiUrl'
@@ -191,10 +192,6 @@ export default function Trade() {
 
     if (!rightFiltered && !leftFiltered) {
       setMessage('No change ! Select players you want to trade and try again.')
-    } else if (left.length !== 5 || right.length !== 5) {
-      setMessage(
-        'Trade rejected ! The 2 teams must have the same number of players after the trade.'
-      )
     } else {
       const array3 = left
         .filter((player) => player.TeamUuid === teamsData.uuid)
@@ -212,11 +209,11 @@ export default function Trade() {
       const sum = array3.reduce(add1)
       const sum2 = array4.reduce(add2)
 
-      console.log(sum, sum2)
-
       if (sum > sum2) {
+        setMessage(`Trade rejected ! We give you too much for what we receive.`)
+      } else if (array4.length !== array3.length) {
         setMessage(
-          `Trade rejected ! We give you too much for what we receive !`
+          `Trade rejected ! You must trade the same number of players.`
         )
       } else {
         setRight([])
@@ -264,41 +261,51 @@ export default function Trade() {
     return (
       <>
         {items
-          .sort(function (a, b) {
-            return new Date(b.value) - new Date(a.value)
-          })
+          // .sort(function (a, b) {
+          //   return new Date(b.value) - new Date(a.value)
+          // })
           .map((value) => {
             const labelId = `transfer-list-item-${value}-label`
 
             return (
-              <ListItem
-                key={value}
-                role="listitem"
-                button
-                disabled={wantChangeTeam}
-                onClick={handleToggle(value)}
-              >
-                <ListItemAvatar>
-                  <Avatar src={value.photo} />
-                </ListItemAvatar>
-                <ListItemText
-                  style={{ marginRight: '20px' }}
-                  id={labelId}
-                  primary={`${value.firstName || ''} ${value.lastName || ''}`}
-                />
-
-                <PlayerValue playerValue={value.value} />
-
-                <ListItemIcon>
-                  <Checkbox
-                    checked={checked.indexOf(value) !== -1}
-                    tabIndex={-1}
-                    disableRipple
-                    disabled={wantChangeTeam}
-                    inputProps={{ 'aria-labelledby': labelId }}
+              <Grow in>
+                <ListItem
+                  key={value}
+                  role="listitem"
+                  button
+                  disabled={wantChangeTeam}
+                  onClick={handleToggle(value)}
+                >
+                  <ListItemAvatar>
+                    <Avatar src={value.photo} />
+                  </ListItemAvatar>
+                  <ListItemText
+                    style={{ marginRight: '20px' }}
+                    id={labelId}
+                    primary={`${value.firstName || ''} ${value.lastName || ''}`}
                   />
-                </ListItemIcon>
-              </ListItem>
+
+                  {value.value ? (
+                    <PlayerValue
+                      playerValue={value.value}
+                      playerTeamUuid={value.TeamUuid}
+                      changeBoxColor={true}
+                    />
+                  ) : (
+                    ''
+                  )}
+
+                  <ListItemIcon>
+                    <Checkbox
+                      checked={checked.indexOf(value) !== -1}
+                      tabIndex={-1}
+                      disableRipple
+                      disabled={wantChangeTeam}
+                      inputProps={{ 'aria-labelledby': labelId }}
+                    />
+                  </ListItemIcon>
+                </ListItem>
+              </Grow>
             )
           })}
         <ListItem />
@@ -383,19 +390,18 @@ export default function Trade() {
                   style={{ marginTop: '10px' }}
                   onClick={tradeIt}
                   disabled={
-                    left.length !== 5 ||
-                    right.length !== 5 ||
                     !right.find(
                       (player) => player.TeamUuid === myteamsData.uuid
-                    )
+                    ) ||
+                    !left.find((player) => player.TeamUuid !== myteamsData.uuid)
                   }
                 >
                   Trade
                 </Button>
               </Grid>
             </Grid>
-            <Grid item className={classes.paper}>
-              <Paper>
+            <Grid item>
+              <Paper className={classes.paper}>
                 <List dense component="div" role="list">
                   <ListItem>
                     <ListItemAvatar>
