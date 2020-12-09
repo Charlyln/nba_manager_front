@@ -18,7 +18,7 @@ import { initialSalary } from '../../../components/mutliple/variables/variables'
 import Axios from 'axios'
 import SignPlayerDialog from './SignPlayerDialog'
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn'
-import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
+import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined'
 import getPlayerInterest from './getPlayerInterest'
 
 function SignPlayer({
@@ -69,6 +69,7 @@ function SignPlayer({
         getTrophy()
       }
     } else {
+      const nbrLineUp = myteamData.Players.filter((player) => !player.isBench)
       const payload = {
         TeamUuid: myteamData.uuid,
         contractYear1: duration >= 1 ? salary : 0,
@@ -76,7 +77,8 @@ function SignPlayer({
         contractYear3: duration >= 3 ? salary : 0,
         contractYear4: duration >= 4 ? salary : 0,
         salary,
-        contractLeft: duration
+        contractLeft: duration,
+        isBench: nbrLineUp.length > 4 ? true : false
       }
 
       await Axios.put(`${apiUrl}/players/${player.uuid}`, payload)
@@ -232,7 +234,7 @@ function SignPlayer({
     } else {
       backgroundColorDisplay = 'rgb(76, 175, 80)'
     }
-    if (player.contractLeft) {
+    if (player.TeamUuid === myteamData.uuid) {
       return
     } else {
       return (
@@ -305,9 +307,9 @@ function SignPlayer({
                   </div>
                 </Grid>
                 <Grid item xs={12} md={6}>
-                  <div style={{ marginLeft: '30px', display: 'flex' }}>
+                  <div style={{ marginLeft: '20px', display: 'flex' }}>
                     <div>
-                      {player.contractLeft ? (
+                      {player.TeamUuid === myteamData.uuid ? (
                         <Chip
                           color="secondary"
                           avatar={
@@ -317,7 +319,7 @@ function SignPlayer({
                               }}
                             />
                           }
-                          label={`You can exceed the salary cap for a extension.`}
+                          label={`You can exceed the salary cap for a player already in your team.`}
                         />
                       ) : (
                         <>
