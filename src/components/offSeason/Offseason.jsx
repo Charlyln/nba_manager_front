@@ -234,7 +234,7 @@ function Offseason() {
                             }
                           >
                             {activeStep === steps.length - 1
-                              ? 'Go next season'
+                              ? 'Next season'
                               : 'Next'}
                           </Button>
                         </div>
@@ -255,7 +255,7 @@ function Offseason() {
                   variant="contained"
                   color="primary"
                 >
-                  Finichaide !{' '}
+                  You find a secret !{' '}
                   <span role="img" aria-label="sheep">
                     😄
                   </span>
