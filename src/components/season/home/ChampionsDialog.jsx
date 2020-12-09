@@ -59,7 +59,7 @@ function ChampionsDialog({ teamsData, SeasonUuid, UserUuid, TeamUuid }) {
   }
   useEffect(() => {
     if (!teamsData.find((game) => !game.team1)) {
-      getAllData()
+      await getAllData()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [teamsData])
