@@ -112,6 +112,10 @@ function TeamChoice() {
     return <Redirect to="/home" />
   }
 
+  if (!uuid || (TeamUuid && !SeasonUuid)) {
+    return <Redirect to="/" />
+  }
+
   return (
     <>
       <AppBar className="appBar">
