@@ -9,6 +9,7 @@ import {
   CircularProgress,
   Divider,
   Grid,
+  ListItemText,
   Paper
 } from '@material-ui/core'
 import PlayArrowIcon from '@material-ui/icons/PlayArrow'
@@ -226,7 +227,7 @@ function Match({
                             style={{ width: '60px', height: '60px' }}
                           />
                         </TableCell>
-                        <TableCell align="center">{team1.name}</TableCell>
+                        <TableCell align="left">{team1.name}</TableCell>
                         <TableCell align="center">{game.team1}</TableCell>
                         <TableCell align="center"></TableCell>
                         <TableCell align="center"></TableCell>
@@ -236,7 +237,9 @@ function Match({
 
                       <TableRow>
                         <TableCell align="center">Photo</TableCell>
-                        <TableCell align="center">Name</TableCell>
+                        <TableCell style={{ paddingLeft: 0 }} align="left">
+                          Name
+                        </TableCell>
                         <TableCell align="center">Pts</TableCell>
                         <TableCell align="center">Reb</TableCell>
                         <TableCell align="center">Ass</TableCell>
@@ -254,15 +257,22 @@ function Match({
                         .map((player) => {
                           return (
                             <TableRow>
-                              <TableCell align="center">
+                              <TableCell
+                                align="center"
+                                style={{ padding: '5px 16px' }}
+                              >
                                 <Avatar
                                   alt={player.Player.lastName}
                                   src={player.Player.photo}
                                   style={{ width: '60px', height: '60px' }}
                                 />
                               </TableCell>
-                              <TableCell align="center">
-                                {player.Player.firstName}
+                              <TableCell align="left" style={{ padding: 0 }}>
+                                <ListItemText
+                                  style={{ padding: 0 }}
+                                  primary={player.Player.firstName}
+                                  secondary={player.Player.lastName}
+                                />
                               </TableCell>
                               <TableCell align="center">{player.pts}</TableCell>
                               <TableCell align="center">{player.reb}</TableCell>
@@ -288,7 +298,7 @@ function Match({
                             style={{ width: '60px', height: '60px' }}
                           />
                         </TableCell>
-                        <TableCell align="center">{team2.name}</TableCell>
+                        <TableCell align="left">{team2.name}</TableCell>
                         <TableCell align="center">{game.team2}</TableCell>
                         <TableCell align="center"></TableCell>
                         <TableCell align="center"></TableCell>
@@ -298,7 +308,9 @@ function Match({
 
                       <TableRow>
                         <TableCell align="center">Photo</TableCell>
-                        <TableCell align="center">Name</TableCell>
+                        <TableCell style={{ paddingLeft: 0 }} align="left">
+                          Name
+                        </TableCell>
                         <TableCell align="center">Pts</TableCell>
                         <TableCell align="center">Reb</TableCell>
                         <TableCell align="center">Ass</TableCell>
@@ -317,15 +329,23 @@ function Match({
                         .map((player) => {
                           return (
                             <TableRow>
-                              <TableCell align="center">
+                              <TableCell
+                                align="center"
+                                style={{ padding: '5px 16px' }}
+                              >
                                 <Avatar
                                   alt={player.Player.lastName}
                                   src={player.Player.photo}
                                   style={{ width: '60px', height: '60px' }}
                                 />
                               </TableCell>
-                              <TableCell align="center">
-                                {player.Player.firstName}
+                              <TableCell align="left" style={{ padding: 0 }}>
+                                <ListItemText
+                                  style={{ padding: 0 }}
+                                  primary={player.Player.firstName}
+                                  secondary={player.Player.lastName}
+                                />
+                                {/* {player.Player.firstName} */}
                               </TableCell>
                               <TableCell align="center">{player.pts}</TableCell>
                               <TableCell align="center">{player.reb}</TableCell>
