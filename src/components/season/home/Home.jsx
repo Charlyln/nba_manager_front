@@ -63,10 +63,7 @@ function Home() {
     try {
       await getGames()
       await getTrophy()
-      const timer = setTimeout(() => {
-        setIsLoading(false)
-      }, 500)
-      return () => clearTimeout(timer)
+      setIsLoading(false)
     } catch (error) {
       console.log(error)
     }
@@ -87,11 +84,7 @@ function Home() {
 
       await getMyTeams()
       await getMySeason()
-
-      const timer = setTimeout(() => {
-        setLogoLoading(false)
-      }, 1000)
-      return () => clearTimeout(timer)
+      setLogoLoading(false)
     } catch (err) {
       console.log(err)
     }
@@ -121,8 +114,11 @@ function Home() {
     if (nbrLineUp.length === 5) {
       setAllGameLoading(true)
       const SeasonUuid = teamsData[0].SeasonUuid
+      const res = await Axios.post(
+        `${apiUrl}/progress/season/${uuid}/${SeasonUuid}`
+      )
+      console.log(res.data)
       await Axios.post(`${apiUrl}/gamePlayed/all/${SeasonUuid}`)
-      await Axios.post(`${apiUrl}/progress/season/${uuid}/${SeasonUuid}`)
       window.localStorage.setItem('trainingLeft', 2)
       if (!TrophyData.earned) {
         await Axios.post(`${apiUrl}/trophies/earned/${uuid}`, {
@@ -130,14 +126,9 @@ function Home() {
         })
         iOpenTrophySnackbar()
       }
-      const timer1 = setTimeout(() => {
-        getAllData()
-      }, 2500)
+      await getAllData()
 
-      const timer2 = setTimeout(() => {
-        setAllGameLoading(false)
-      }, 5000)
-      return () => clearTimeout(timer1, timer2)
+      setAllGameLoading(false)
     } else {
       handleClickOpenMessage()
     }
@@ -151,10 +142,7 @@ function Home() {
     window.localStorage.setItem('offseason', 1)
     await Axios.post(`${apiUrl}/players/changeContract/${uuid}`)
     await Axios.post(`${apiUrl}/players/changeAge/${uuid}`)
-    const timer = setTimeout(() => {
-      setRedirect(true)
-    }, 300)
-    return () => clearTimeout(timer)
+    setRedirect(true)
   }
 
   if (redirect || isOffSeason) {
