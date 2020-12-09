@@ -77,7 +77,7 @@ function Contracts() {
     }
   }
 
-  const renderTableCellsSalary = (yearsLeft, salary, player) => {
+  const renderTableCellsSalary = (player) => {
     const years = [
       player.contractYear1,
       player.contractYear2,
@@ -141,7 +141,7 @@ function Contracts() {
               </TableHead>
               <TableBody>
                 {myteamData.Players.sort(function (a, b) {
-                  return new Date(b.salary) - new Date(a.salary)
+                  return new Date(b.contractYear1) - new Date(a.contractYear1)
                 }).map((player) => (
                   <TableRow hover>
                     <TableCell component="th" scope="row">
@@ -151,7 +151,7 @@ function Contracts() {
                     <TableCell align="center">
                       <PlayerValue playerValue={player.value} />
                     </TableCell>
-                    <TableCell  style={{textAlign: 'center'}} >
+                    <TableCell style={{ textAlign: 'center' }}>
                       <FreePlayer
                         player={player}
                         getMyTeam={getMyTeam}
@@ -162,12 +162,7 @@ function Contracts() {
                         myteamData={myteamData}
                       />
                     </TableCell>
-                    {renderTableCellsSalary(
-                      player.contractLeft,
-                      player.salary,
-                      player
-                    )}
-                    
+                    {renderTableCellsSalary(player)}
                   </TableRow>
                 ))}
 
@@ -181,9 +176,10 @@ function Contracts() {
                       color="primary"
                       icon={<MonetizationOnIcon />}
                       label={` ${
-                        myteamData.Players.filter(
-                          (player) => player.contractLeft > 0
-                        ).reduce((a, v) => (a = a + v.salary), 0) / 1000000
+                        myteamData.Players.reduce(
+                          (a, v) => (a = a + v.contractYear1),
+                          0
+                        ) / 1000000
                       } MM`}
                     />
                   </TableCell>
@@ -192,9 +188,10 @@ function Contracts() {
                       color="primary"
                       icon={<MonetizationOnIcon />}
                       label={` ${
-                        myteamData.Players.filter(
-                          (player) => player.contractLeft > 1
-                        ).reduce((a, v) => (a = a + v.salary), 0) / 1000000
+                        myteamData.Players.reduce(
+                          (a, v) => (a = a + v.contractYear2),
+                          0
+                        ) / 1000000
                       } MM`}
                     />
                   </TableCell>
@@ -203,9 +200,10 @@ function Contracts() {
                       color="primary"
                       icon={<MonetizationOnIcon />}
                       label={` ${
-                        myteamData.Players.filter(
-                          (player) => player.contractLeft > 2
-                        ).reduce((a, v) => (a = a + v.salary), 0) / 1000000
+                        myteamData.Players.reduce(
+                          (a, v) => (a = a + v.contractYear3),
+                          0
+                        ) / 1000000
                       } MM`}
                     />
                   </TableCell>
@@ -214,9 +212,10 @@ function Contracts() {
                       color="primary"
                       icon={<MonetizationOnIcon />}
                       label={` ${
-                        myteamData.Players.filter(
-                          (player) => player.contractLeft > 3
-                        ).reduce((a, v) => (a = a + v.salary), 0) / 1000000
+                        myteamData.Players.reduce(
+                          (a, v) => (a = a + v.contractYear4),
+                          0
+                        ) / 1000000
                       } MM`}
                     />
                   </TableCell>
