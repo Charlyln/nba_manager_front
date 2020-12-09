@@ -21,7 +21,7 @@ function HomeMessage({ handleCloseMessage, openMessage }) {
           <DialogTitle id="alert-dialog-title">{`Info`}</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              You must have at least 5 players in your line-up to play.
+              You must have 5 players in your line-up to play.
             </DialogContentText>
           </DialogContent>
           <DialogActions>
