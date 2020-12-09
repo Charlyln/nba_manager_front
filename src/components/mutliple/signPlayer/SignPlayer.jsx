@@ -78,7 +78,10 @@ function SignPlayer({
         contractYear4: duration >= 4 ? salary : 0,
         salary,
         contractLeft: duration,
-        isBench: nbrLineUp.length > 4 ? true : false
+        isBench:
+          nbrLineUp.length > 4 && player.TeamUuid !== myteamData.uuid
+            ? true
+            : false
       }
 
       await Axios.put(`${apiUrl}/players/${player.uuid}`, payload)
