@@ -1,11 +1,20 @@
 import { Box, CircularProgress, Typography } from '@material-ui/core'
-import React from 'react'
+import React, { useState } from 'react'
 
-function PlayerValue({ playerValue }) {
+function PlayerValue({ playerValue, changeBoxColor, playerTeamUuid }) {
+  const [TeamUuid] = useState(window.localStorage.getItem('TeamUuid'))
   return (
     <>
       <Box position="relative" display="inline-flex">
-        <CircularProgress variant="static" value={playerValue} />
+        <CircularProgress
+          color={
+            changeBoxColor && playerTeamUuid !== TeamUuid
+              ? 'secondary'
+              : 'primary'
+          }
+          variant="static"
+          value={playerValue}
+        />
         <Box
           top={0}
           left={0}
