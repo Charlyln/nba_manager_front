@@ -42,6 +42,7 @@ function OffSeasonDialog({
   const [UserUuid] = useState(window.localStorage.getItem('uuid'))
   const [openFreeAgencyMessage, setOpenFreeAgencyMessage] = useState(false)
   const [myPickChoice, setMyPickChoice] = useState('')
+  const [SeasonUuid] = useState(window.localStorage.getItem('SeasonUuid'))
 
   useEffect(() => {
     getPlayers()
@@ -73,17 +74,13 @@ function OffSeasonDialog({
       await Axios.post(`${apiUrl}/players/playerOptions/${TeamUuid}`)
       await Axios.post(`${apiUrl}/players/resign/${UserUuid}/${TeamUuid}`)
     } else if (step === 'Draft' && myPickChoice) {
-      await Axios.put(`${apiUrl}/players/${myPickChoice}`, {
-        TeamUuid: myteamData.uuid,
-        isBench: true,
-        isRookie: false,
-        contractLeft: 4,
-        salary: 5000000,
-        contractYear1: 5000000,
-        contractYear2: 5000000,
-        contractYear3: 5000000,
-        contractYear4: 5000000
-      })
+      await Axios.post(
+        `${apiUrl}/players/putRookies/${UserUuid}/${TeamUuid}`,
+        {
+          rookieUuid: myPickChoice,
+          SeasonUuid
+        }
+      )
     }
 
     if (step === 'Free agency') {
