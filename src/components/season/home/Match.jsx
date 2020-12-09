@@ -143,7 +143,7 @@ function Match({
             iOpenTrophySnackbar()
           }
           window.localStorage.setItem('trainingLeft', 2)
-          getAllData()
+          await getAllData()  
           setCountUp(true)
           setMatchLoading(false)
         }
