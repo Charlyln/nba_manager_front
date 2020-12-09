@@ -39,7 +39,7 @@ function OffSeasonDialog({
   myPick
 }) {
   const [open, setOpen] = React.useState(false)
-  const [userUuid] = useState(window.localStorage.getItem('uuid'))
+  const [UserUuid] = useState(window.localStorage.getItem('uuid'))
   const [openFreeAgencyMessage, setOpenFreeAgencyMessage] = useState(false)
   const [myPickChoice, setMyPickChoice] = useState('')
 
@@ -68,9 +68,10 @@ function OffSeasonDialog({
 
   const goNextStep = async () => {
     if (step === 'Retirements') {
-      await Axios.post(`${apiUrl}/players/retirements/${userUuid}`)
+      await Axios.post(`${apiUrl}/players/retirements/${UserUuid}`)
     } else if (step === 'Player options') {
       await Axios.post(`${apiUrl}/players/playerOptions/${TeamUuid}`)
+      await Axios.post(`${apiUrl}/players/resign/${UserUuid}/${TeamUuid}`)
     } else if (step === 'Draft' && myPickChoice) {
       await Axios.put(`${apiUrl}/players/${myPickChoice}`, {
         TeamUuid: myteamData.uuid,
@@ -86,7 +87,7 @@ function OffSeasonDialog({
     }
 
     if (step === 'Free agency') {
-      const res = await Axios.get(`${apiUrl}/teams/myteam/${userUuid}`)
+      const res = await Axios.get(`${apiUrl}/teams/myteam/${UserUuid}`)
       console.log(res.data.Players.length)
 
       if (res.data.Players.length > 4) {
