@@ -32,6 +32,7 @@ function SignPlayerDialog({
   const [tooLowMoney, setTooLowMoney] = useState(false)
 
   const proposeContract = () => {
+    console.log(myteamData.salaryCapLeft)
     if (interest <= 85) {
       if (interest >= 40) {
         setPlayerMood('declined')
@@ -39,10 +40,9 @@ function SignPlayerDialog({
         setPlayerMood('offended')
       }
       if (
-        (player.TeamUuid === TeamUuid &&
-          !player.contractLeft &&
-          myteamData.salaryCapLeft < salary) ||
-        (salary >= 2000000 && myteamData.salaryCapLeft < salary)
+        player.TeamUuid !== TeamUuid &&
+        salary >= 2000000 &&
+        myteamData.salaryCapLeft < salary
       ) {
         setTooLowMoney(true)
       }
@@ -53,15 +53,7 @@ function SignPlayerDialog({
         setPlayerMood('ok')
       }
       if (player.TeamUuid === TeamUuid) {
-        if (player.contractLeft) {
-          signContract()
-        } else {
-          if (myteamData.salaryCapLeft >= salary) {
-            signContract()
-          } else {
-            setTooLowMoney(true)
-          }
-        }
+        signContract()
       } else {
         if (salary < 2000000) {
           signContract()
