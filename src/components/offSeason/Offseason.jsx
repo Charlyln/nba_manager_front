@@ -151,6 +151,7 @@ function Offseason() {
       )
       window.localStorage.setItem('SeasonUuid', res.data.uuid)
       await postProgressValue(UserUuid, res.data.uuid)
+      await Axios.post(`${apiUrl}/players/updateStatsBeg/${UserUuid}`)
       window.localStorage.removeItem('offseason')
       setRedirect(true)
     } catch (err) {
