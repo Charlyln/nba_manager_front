@@ -23,6 +23,8 @@ import OffSeasonMessage from './OffSeasonMessage'
 import PlayerValue from '../mutliple/PlayerValue'
 import PlayerStatChip from '../mutliple/PlayerStatChip'
 import updateSalaryCapLeft from '../api calls/updateSalaryCapLeft'
+import DraftRecap from './DraftRecap'
+import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined'
 
 function OffSeasonDialog({
   goNext,
@@ -44,6 +46,8 @@ function OffSeasonDialog({
   const [openFreeAgencyMessage, setOpenFreeAgencyMessage] = useState(false)
   const [myPickChoice, setMyPickChoice] = useState('')
   const [SeasonUuid] = useState(window.localStorage.getItem('SeasonUuid'))
+  const [openDraftRecap, setOpenDraftRecap] = useState(false)
+  const [draftRecapData, setDraftRecapData] = useState([])
 
   useEffect(() => {
     getPlayers()
@@ -68,6 +72,14 @@ function OffSeasonDialog({
     setOpenFreeAgencyMessage(false)
   }
 
+  const handleClickOpenDraftRecap = () => {
+    setOpenDraftRecap(true)
+  }
+
+  const handleCloseDraftRecap = () => {
+    setOpenDraftRecap(false)
+  }
+
   const goNextStep = async () => {
     if (step === 'Retirements') {
       await Axios.post(`${apiUrl}/players/retirements/${UserUuid}`)
@@ -75,11 +87,16 @@ function OffSeasonDialog({
       await Axios.post(`${apiUrl}/players/playerOptions/${TeamUuid}`)
       await Axios.post(`${apiUrl}/players/resign/${UserUuid}/${TeamUuid}`)
     } else if (step === 'Draft' && myPickChoice) {
-      await Axios.post(`${apiUrl}/players/putRookies/${UserUuid}/${TeamUuid}`, {
-        rookieUuid: myPickChoice,
-        SeasonUuid
-      })
+      const res = await Axios.post(
+        `${apiUrl}/players/putRookies/${UserUuid}/${TeamUuid}`,
+        {
+          rookieUuid: myPickChoice,
+          SeasonUuid
+        }
+      )
+      setDraftRecapData(res.data.allDataSorted)
       await updateSalaryCapLeft(UserUuid, TeamUuid)
+      handleClickOpenDraftRecap()
     }
 
     if (step === 'Free agency') {
@@ -110,6 +127,11 @@ function OffSeasonDialog({
         handleCloseFreeAgencyMessage={handleCloseFreeAgencyMessage}
         openFreeAgencyMessage={openFreeAgencyMessage}
       />
+      <DraftRecap
+        handleCloseDraftRecap={handleCloseDraftRecap}
+        openDraftRecap={openDraftRecap}
+        draftRecapData={draftRecapData}
+      />
       <Button
         disabled={canGoNext}
         onClick={handleClickOpen}
@@ -122,6 +144,22 @@ function OffSeasonDialog({
         <DialogTitle>{step}</DialogTitle>
 
         <DialogContent>
+          {step === 'Draft' ? (
+            <Chip
+              style={{ margin: '0px 0px 20px 0px' }}
+              color="secondary"
+              avatar={
+                <InfoOutlinedIcon
+                  style={{
+                    backgroundColor: 'unset'
+                  }}
+                />
+              }
+              label={`Select the rookie you want to draft. You pick depends of your ranking this season. `}
+            />
+          ) : (
+            ''
+          )}
           <TableContainer component={Paper} style={{ width: '98%' }}>
             <Table aria-label="simple table">
               <TableHead>
