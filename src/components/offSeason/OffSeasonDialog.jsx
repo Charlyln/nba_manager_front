@@ -74,13 +74,10 @@ function OffSeasonDialog({
       await Axios.post(`${apiUrl}/players/playerOptions/${TeamUuid}`)
       await Axios.post(`${apiUrl}/players/resign/${UserUuid}/${TeamUuid}`)
     } else if (step === 'Draft' && myPickChoice) {
-      await Axios.post(
-        `${apiUrl}/players/putRookies/${UserUuid}/${TeamUuid}`,
-        {
-          rookieUuid: myPickChoice,
-          SeasonUuid
-        }
-      )
+      await Axios.post(`${apiUrl}/players/putRookies/${UserUuid}/${TeamUuid}`, {
+        rookieUuid: myPickChoice,
+        SeasonUuid
+      })
     }
 
     if (step === 'Free agency') {
@@ -254,7 +251,7 @@ function OffSeasonDialog({
                       : step === 'Free agency'
                       ? !player.TeamUuid && player.age <= 38 && !player.isRookie
                       : step === 'Draft'
-                      ? player.isRookie
+                      ? player.isRookie && player.age === 20
                       : ''
                   )
                   .map((player, i) => (
