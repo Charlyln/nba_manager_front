@@ -9,7 +9,8 @@ import {
   Paper,
   DialogTitle,
   Grid,
-  Tooltip
+  Tooltip,
+  Grow
 } from '@material-ui/core'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
@@ -86,7 +87,6 @@ function ChampionsDialog({ teamsData, SeasonUuid, UserUuid, TeamUuid }) {
           ) : (
             ''
           )}
-
           <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
             <>
               <TrophySnackbar
@@ -94,122 +94,138 @@ function ChampionsDialog({ teamsData, SeasonUuid, UserUuid, TeamUuid }) {
                 closeTrophySnackbar={closeTrophySnackbar}
                 trophyName={trophyName}
               />
+              <Grow in timeout={500}>
+                <DialogContent>
+                  <Grid container>
+                    <Grid item xs={6} sm={6}>
+                      <DialogTitle id="alert-dialog-title">{`Season awards`}</DialogTitle>
+                    </Grid>
 
-              <DialogContent>
-                <Grid container>
-                  <Grid item xs={6} sm={6}>
-                    <DialogTitle id="alert-dialog-title">{`Season awards`}</DialogTitle>
-                  </Grid>
+                    <Grid item xs={6} sm={6}>
+                      <Tooltip title="Most Valuable Player" arrow>
+                        <Button
+                          style={{ float: 'right' }}
+                          color="primary"
+                          variant="contained"
+                        >
+                          MVP
+                        </Button>
+                      </Tooltip>
+                    </Grid>
 
-                  <Grid item xs={6} sm={6}>
-                    <Tooltip title="Most Valuable Player" arrow>
-                      <Button
-                        style={{ float: 'right' }}
-                        color="primary"
-                        variant="contained"
-                      >
-                        MVP
-                      </Button>
-                    </Tooltip>
-                  </Grid>
+                    <Grid item xs={12}>
+                      <DialogTitle>
+                        <p
+                          className={styles.playerName}
+                        >{`${rewardsData[0].firstName} ${rewardsData[0].lastName}`}</p>
+                      </DialogTitle>
+                    </Grid>
 
-                  <Grid item xs={12}>
-                    <DialogTitle>
-                      <p
-                        className={styles.playerName}
-                      >{`${rewardsData[0].firstName} ${rewardsData[0].lastName}`}</p>
-                    </DialogTitle>
-                  </Grid>
+                    <Grid item xs={6} sm={6}>
+                      <Avatar
+                        style={{
+                          margin: 'auto',
+                          width: '150px',
+                          height: '150px'
+                        }}
+                        src={rewardsData[0].photo}
+                      />
+                    </Grid>
 
-                  <Grid item xs={6} sm={6}>
-                    <Avatar
-                      style={{
-                        margin: 'auto',
-                        width: '150px',
-                        height: '150px'
-                      }}
-                      src={rewardsData[0].photo}
-                    />
-                  </Grid>
-
-                  <Grid
-                    item
-                    xs={6}
-                    sm={6}
-                    style={{ width: '150px', textAlign: 'center' }}
-                  >
-                    <img
-                      alt="stephen curry"
-                      src={mvpLogo}
-                      style={{ width: '110px' }}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TableContainer
-                      elevation={10}
-                      component={Paper}
-                      style={{ margin: '20px 0px 10px 0px' }}
+                    <Grid
+                      item
+                      xs={6}
+                      sm={6}
+                      style={{ width: '150px', textAlign: 'center' }}
                     >
-                      <Table aria-label="simple table">
-                        <TableHead>
-                          <TableRow>
-                            <TableCell style={{ color: 'gray' }} align="center">
-                              Pts
-                            </TableCell>
-                            <TableCell style={{ color: 'gray' }} align="center">
-                              Reb
-                            </TableCell>
-                            <TableCell style={{ color: 'gray' }} align="center">
-                              Ast
-                            </TableCell>
-                            <TableCell style={{ color: 'gray' }} align="center">
-                              Blk
-                            </TableCell>
-                            <TableCell style={{ color: 'gray' }} align="center">
-                              Stl
-                            </TableCell>
-                          </TableRow>
-                        </TableHead>
-                        <TableBody>
-                          <TableRow>
-                            <TableCell align="center">{`${(
-                              rewardsData[0].PlayerStats.reduce(
-                                (a, v) => (a = a + v.pts),
-                                0
-                              ) / rewardsData[0].PlayerStats.length
-                            ).toFixed(1)}`}</TableCell>
+                      <img
+                        alt="stephen curry"
+                        src={mvpLogo}
+                        style={{ width: '110px' }}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TableContainer
+                        elevation={10}
+                        component={Paper}
+                        style={{ margin: '20px 0px 10px 0px' }}
+                      >
+                        <Table aria-label="simple table">
+                          <TableHead>
+                            <TableRow>
+                              <TableCell
+                                style={{ color: 'gray' }}
+                                align="center"
+                              >
+                                Pts
+                              </TableCell>
+                              <TableCell
+                                style={{ color: 'gray' }}
+                                align="center"
+                              >
+                                Reb
+                              </TableCell>
+                              <TableCell
+                                style={{ color: 'gray' }}
+                                align="center"
+                              >
+                                Ast
+                              </TableCell>
+                              <TableCell
+                                style={{ color: 'gray' }}
+                                align="center"
+                              >
+                                Blk
+                              </TableCell>
+                              <TableCell
+                                style={{ color: 'gray' }}
+                                align="center"
+                              >
+                                Stl
+                              </TableCell>
+                            </TableRow>
+                          </TableHead>
+                          <TableBody>
+                            <TableRow>
+                              <TableCell align="center">{`${(
+                                rewardsData[0].PlayerStats.reduce(
+                                  (a, v) => (a = a + v.pts),
+                                  0
+                                ) / rewardsData[0].PlayerStats.length
+                              ).toFixed(1)}`}</TableCell>
 
-                            <TableCell align="center">{`${(
-                              rewardsData[0].PlayerStats.reduce(
-                                (a, v) => (a = a + v.reb),
-                                0
-                              ) / rewardsData[0].PlayerStats.length
-                            ).toFixed(1)}`}</TableCell>
-                            <TableCell align="center">{`${(
-                              rewardsData[0].PlayerStats.reduce(
-                                (a, v) => (a = a + v.pas),
-                                0
-                              ) / rewardsData[0].PlayerStats.length
-                            ).toFixed(1)}`}</TableCell>
-                            <TableCell align="center">{`${(
-                              rewardsData[0].PlayerStats.reduce(
-                                (a, v) => (a = a + v.blk),
-                                0
-                              ) / rewardsData[0].PlayerStats.length
-                            ).toFixed(1)}`}</TableCell>
-                            <TableCell align="center">{`${(
-                              rewardsData[0].PlayerStats.reduce(
-                                (a, v) => (a = a + v.stl),
-                                0
-                              ) / rewardsData[0].PlayerStats.length
-                            ).toFixed(1)}`}</TableCell>
-                          </TableRow>
-                        </TableBody>
-                      </Table>
-                    </TableContainer>
+                              <TableCell align="center">{`${(
+                                rewardsData[0].PlayerStats.reduce(
+                                  (a, v) => (a = a + v.reb),
+                                  0
+                                ) / rewardsData[0].PlayerStats.length
+                              ).toFixed(1)}`}</TableCell>
+                              <TableCell align="center">{`${(
+                                rewardsData[0].PlayerStats.reduce(
+                                  (a, v) => (a = a + v.pas),
+                                  0
+                                ) / rewardsData[0].PlayerStats.length
+                              ).toFixed(1)}`}</TableCell>
+                              <TableCell align="center">{`${(
+                                rewardsData[0].PlayerStats.reduce(
+                                  (a, v) => (a = a + v.blk),
+                                  0
+                                ) / rewardsData[0].PlayerStats.length
+                              ).toFixed(1)}`}</TableCell>
+                              <TableCell align="center">{`${(
+                                rewardsData[0].PlayerStats.reduce(
+                                  (a, v) => (a = a + v.stl),
+                                  0
+                                ) / rewardsData[0].PlayerStats.length
+                              ).toFixed(1)}`}</TableCell>
+                            </TableRow>
+                          </TableBody>
+                        </Table>
+                      </TableContainer>
+                    </Grid>
                   </Grid>
-                </Grid>
-              </DialogContent>
+                </DialogContent>
+              </Grow>
               <DialogActions>
                 <Button variant="outlined" onClick={handleClose}>
                   close
