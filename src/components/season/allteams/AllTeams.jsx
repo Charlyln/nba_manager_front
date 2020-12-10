@@ -1,5 +1,4 @@
 import { Grid, Paper } from '@material-ui/core'
-import PropTypes from 'prop-types'
 import Axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { apiUrl } from '../../../apiUrl'
@@ -49,7 +48,7 @@ function AllTeams() {
   const [value, setValue] = useState(0)
 
   function TabPanel(props) {
-    const { children, value, index, ...other } = props
+    const { children, value, index } = props
 
     return (
       <div
@@ -57,28 +56,14 @@ function AllTeams() {
         hidden={value !== index}
         id={`scrollable-auto-tabpanel-${index}`}
         aria-labelledby={`scrollable-auto-tab-${index}`}
-        {...other}
       >
         {value === index && (
-          <Box p={3}>
+          <Box>
             <Typography>{children}</Typography>
           </Box>
         )}
       </div>
     )
-  }
-
-  TabPanel.propTypes = {
-    children: PropTypes.node,
-    index: PropTypes.any.isRequired,
-    value: PropTypes.any.isRequired
-  }
-
-  function a11yProps(index) {
-    return {
-      id: `scrollable-auto-tab-${index}`,
-      'aria-controls': `scrollable-auto-tabpanel-${index}`
-    }
   }
 
   const handleChange = (event, newValue) => {
@@ -131,7 +116,7 @@ function AllTeams() {
                 scrollButtons="on"
               >
                 {allTeamsData.map((team) => (
-                  <Tab label={team.name} {...a11yProps(value)} />
+                  <Tab label={team.name} />
                 ))}
               </Tabs>
 
