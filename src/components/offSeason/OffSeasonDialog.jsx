@@ -22,6 +22,7 @@ import SignPlayer from '../mutliple/signPlayer/SignPlayer'
 import OffSeasonMessage from './OffSeasonMessage'
 import PlayerValue from '../mutliple/PlayerValue'
 import PlayerStatChip from '../mutliple/PlayerStatChip'
+import updateSalaryCapLeft from '../api calls/updateSalaryCapLeft'
 
 function OffSeasonDialog({
   goNext,
@@ -78,6 +79,7 @@ function OffSeasonDialog({
         rookieUuid: myPickChoice,
         SeasonUuid
       })
+      await updateSalaryCapLeft(UserUuid, TeamUuid)
     }
 
     if (step === 'Free agency') {
