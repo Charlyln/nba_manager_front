@@ -40,22 +40,19 @@ function SignUp() {
         const res = await Axios.post(`${apiUrl}/users`, {
           pseudo
         })
+        setPseudo('')
         window.localStorage.setItem('uuid', res.data.uuid)
         console.log(uuid)
         setUuid(window.localStorage.getItem('uuid'))
         const dataUuid = window.localStorage.getItem('uuid')
         await Axios.post(`${apiUrl}/dataCreation/${dataUuid}`)
-        const timer = setTimeout(() => {
-          setPostLoading(false)
-        }, 1000)
+        setPostLoading(false)
         setPostSuccess(true)
-
-        const timer3 = setTimeout(() => {
-          setPostSuccess(false)
+        const timer = setTimeout(() => {
           setRedirect(true)
-        }, 3000)
+        }, 1000)
 
-        return () => clearTimeout(timer3, timer)
+        return () => clearTimeout(timer)
       }
     } catch (err) {
       console.log(err)
@@ -92,6 +89,7 @@ function SignUp() {
                 label="Pseudo"
                 variant="outlined"
                 autoFocus="autofocus"
+                value={pseudo}
                 onChange={(e) => setPseudo(e.target.value)}
               />
             </Grid>
