@@ -90,6 +90,7 @@ function MyTeam() {
                     Name
                   </TableCell>
                   <TableCell align="center">Value</TableCell>
+                  <TableCell align="center">Age</TableCell>
                   <TableCell align="center">Scoring</TableCell>
                   <TableCell align="center">Rebound</TableCell>
                   <TableCell align="center">Pass</TableCell>
@@ -111,6 +112,7 @@ function MyTeam() {
                         <TableCell align="center">
                           <PlayerValue playerValue={player.value} />
                         </TableCell>
+                        <TableCell align="center">{player.age}</TableCell>
                         <TableCell align="center">
                           <PlayerStatChip
                             statMin={player.ptsMin}
@@ -182,6 +184,7 @@ function MyTeam() {
                     Name
                   </TableCell>
                   <TableCell align="center">Value</TableCell>
+                  <TableCell align="center">Age</TableCell>
                   <TableCell align="center">Scoring</TableCell>
                   <TableCell align="center">Rebound</TableCell>
                   <TableCell align="center">Pass</TableCell>
@@ -203,6 +206,7 @@ function MyTeam() {
                         <TableCell align="center">
                           <PlayerValue playerValue={player.value} />
                         </TableCell>
+                        <TableCell align="center">{player.age}</TableCell>
                         <TableCell align="center">
                           <PlayerStatChip
                             statMin={player.ptsMin}

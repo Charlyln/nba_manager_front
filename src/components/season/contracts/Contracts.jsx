@@ -126,6 +126,7 @@ function Contracts() {
                   <TableCell>Photo</TableCell>
                   <TableCell align="center">Name</TableCell>
                   <TableCell align="center">Value</TableCell>
+                  <TableCell align="center">Age</TableCell>
                   <TableCell align="center">Fire player</TableCell>
                   <TableCell align="center">{`${mySeason.startYear} - ${mySeason.endYear}`}</TableCell>
                   <TableCell align="center">{`${mySeason.startYear + 1} - ${
@@ -151,6 +152,7 @@ function Contracts() {
                     <TableCell align="center">
                       <PlayerValue playerValue={player.value} />
                     </TableCell>
+                    <TableCell align="center">{player.age}</TableCell>
                     <TableCell style={{ textAlign: 'center' }}>
                       <FreePlayer
                         player={player}
@@ -169,6 +171,7 @@ function Contracts() {
                 <TableRow>
                   <TableCell></TableCell>
                   <TableCell>Total</TableCell>
+                  <TableCell></TableCell>
                   <TableCell></TableCell>
                   <TableCell></TableCell>
                   <TableCell align="center">
@@ -223,6 +226,7 @@ function Contracts() {
                 <TableRow>
                   <TableCell></TableCell>
                   <TableCell>Balance</TableCell>
+                  <TableCell></TableCell>
                   <TableCell></TableCell>
                   <TableCell></TableCell>
                   <TableCell align="center">
