@@ -8,12 +8,7 @@ import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
 
-import {
-  Grid,
-  Avatar,
-  ListItem,
-  ListItemText
-} from '@material-ui/core'
+import { Grid, Avatar, ListItem, ListItemText } from '@material-ui/core'
 import ProgressBall from '../../mutliple/ProgressBall'
 import { apiUrl } from '../../../apiUrl'
 import AccountVerify from '../../mutliple/AccountVerify'
@@ -36,7 +31,7 @@ function BestPlayers() {
       const res = await Axios.get(
         `${apiUrl}/players/bestPlayers/${UserUuid}/${SeasonUuid}`
       )
-      setPlayersData(res.data)
+      setPlayersData(res.data.bestPlayersSorted)
 
       const timer = setTimeout(() => {
         setIsLoading(false)

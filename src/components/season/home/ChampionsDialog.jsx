@@ -48,9 +48,10 @@ function ChampionsDialog({ teamsData, SeasonUuid, UserUuid, TeamUuid }) {
     await Axios.post(`${apiUrl}/progress/adjsutPlayerValue/${UserUuid}`)
     const res = await getSeasonRewards(UserUuid, SeasonUuid)
     setOpen(true)
-    setRewardsData(res.data)
+    setRewardsData(res.data.mvpFound)
+    console.log(res.data)
     const res2 = await getTrophy(UserUuid, trophyName)
-    if (!res2.data.earned && res.data[0].TeamUuid === TeamUuid) {
+    if (!res2.data.earned && res.data.mvpFound.TeamUuid === TeamUuid) {
       await Axios.post(`${apiUrl}/trophies/earned/${UserUuid}`, {
         name: trophyName
       })
@@ -117,7 +118,7 @@ function ChampionsDialog({ teamsData, SeasonUuid, UserUuid, TeamUuid }) {
                       <DialogTitle>
                         <p
                           className={styles.playerName}
-                        >{`${rewardsData[0].firstName} ${rewardsData[0].lastName}`}</p>
+                        >{`${rewardsData.firstName} ${rewardsData.lastName}`}</p>
                       </DialogTitle>
                     </Grid>
 
@@ -128,7 +129,7 @@ function ChampionsDialog({ teamsData, SeasonUuid, UserUuid, TeamUuid }) {
                           width: '150px',
                           height: '150px'
                         }}
-                        src={rewardsData[0].photo}
+                        src={rewardsData.photo}
                       />
                     </Grid>
 
@@ -188,35 +189,35 @@ function ChampionsDialog({ teamsData, SeasonUuid, UserUuid, TeamUuid }) {
                           <TableBody>
                             <TableRow>
                               <TableCell align="center">{`${(
-                                rewardsData[0].PlayerStats.reduce(
+                                rewardsData.PlayerStats.reduce(
                                   (a, v) => (a = a + v.pts),
                                   0
-                                ) / rewardsData[0].PlayerStats.length
+                                ) / rewardsData.PlayerStats.length
                               ).toFixed(1)}`}</TableCell>
 
                               <TableCell align="center">{`${(
-                                rewardsData[0].PlayerStats.reduce(
+                                rewardsData.PlayerStats.reduce(
                                   (a, v) => (a = a + v.reb),
                                   0
-                                ) / rewardsData[0].PlayerStats.length
+                                ) / rewardsData.PlayerStats.length
                               ).toFixed(1)}`}</TableCell>
                               <TableCell align="center">{`${(
-                                rewardsData[0].PlayerStats.reduce(
+                                rewardsData.PlayerStats.reduce(
                                   (a, v) => (a = a + v.pas),
                                   0
-                                ) / rewardsData[0].PlayerStats.length
+                                ) / rewardsData.PlayerStats.length
                               ).toFixed(1)}`}</TableCell>
                               <TableCell align="center">{`${(
-                                rewardsData[0].PlayerStats.reduce(
+                                rewardsData.PlayerStats.reduce(
                                   (a, v) => (a = a + v.blk),
                                   0
-                                ) / rewardsData[0].PlayerStats.length
+                                ) / rewardsData.PlayerStats.length
                               ).toFixed(1)}`}</TableCell>
                               <TableCell align="center">{`${(
-                                rewardsData[0].PlayerStats.reduce(
+                                rewardsData.PlayerStats.reduce(
                                   (a, v) => (a = a + v.stl),
                                   0
-                                ) / rewardsData[0].PlayerStats.length
+                                ) / rewardsData.PlayerStats.length
                               ).toFixed(1)}`}</TableCell>
                             </TableRow>
                           </TableBody>
