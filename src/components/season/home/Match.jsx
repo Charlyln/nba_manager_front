@@ -7,6 +7,7 @@ import { apiUrl } from '../../../apiUrl'
 import {
   Avatar,
   CircularProgress,
+  DialogActions,
   Divider,
   Grid,
   ListItemText,
@@ -20,6 +21,8 @@ import TableCell from '@material-ui/core/TableCell'
 import TableContainer from '@material-ui/core/TableContainer'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
+import { useDispatch, useSelector } from 'react-redux'
+import allActions from '../../../actions'
 
 function Match({
   team2,
@@ -48,6 +51,8 @@ function Match({
   const [SeasonUuid] = useState(window.localStorage.getItem('SeasonUuid'))
   const [countUp, setCountUp] = useState(false)
   const [canDisplayColor, setCanDisplayColor] = useState(false)
+  const dispatch = useDispatch()
+  const tutorial = useSelector((state) => state.tutorial)
 
   useEffect(() => {
     if (teamsData.find((game) => game.team1 && game.uuid === gameUuid)) {
@@ -58,10 +63,20 @@ function Match({
 
   const handleClickOpen = () => {
     setOpen(true)
+
+    if (tutorial && tutorial.is === 'on' && tutorial.step === 1) {
+      const timer = setTimeout(() => {
+        dispatch(allActions.tutorialActions.increment())
+      }, 100)
+      return () => clearTimeout(timer)
+    }
   }
 
   const handleClose = () => {
     setOpen(false)
+    if (tutorial && tutorial.is === 'on') {
+      dispatch(allActions.tutorialActions.increment())
+    }
   }
 
   const displayButton = (game) => {
@@ -140,12 +155,14 @@ function Match({
             await Axios.post(`${apiUrl}/trophies/earned/${UserUuid}`, {
               name: trophyName
             })
+
             iOpenTrophySnackbar()
           }
           window.localStorage.setItem('trainingLeft', 2)
-          await getAllData()  
+          await getAllData()
           setCountUp(true)
           setMatchLoading(false)
+          dispatch(allActions.tutorialActions.increment())
         }
       } catch (err) {
         console.log(err)
@@ -165,41 +182,49 @@ function Match({
             <CircularProgress size={22} />
           </Button>
         ) : game.PlayerStats.length === 0 || game.team1 === 0 ? (
-          <Button
-            variant={
-              previousItem.team1
-                ? 'contained'
-                : previousItem === 'first'
-                ? 'contained'
-                : 'outlined'
-            }
-            size="small"
-            color="primary"
-            onClick={() => matchit(game.uuid)}
-            endIcon={
-              previousItem.team1 ? (
-                <PlayArrowIcon />
-              ) : previousItem === 'first' ? (
-                <PlayArrowIcon />
-              ) : (
-                ''
-              )
-            }
-            disabled={
-              previousItem.team1
-                ? false
-                : previousItem === 'first'
-                ? false
-                : true
-            }
-          >
-            Simulate
-          </Button>
+          <>
+            <Button
+              variant={
+                previousItem.team1
+                  ? 'contained'
+                  : previousItem === 'first'
+                  ? 'contained'
+                  : 'outlined'
+              }
+              size="small"
+              color="primary"
+              className="simulateOneGame"
+              onClick={() => matchit(game.uuid)}
+              endIcon={
+                previousItem.team1 ? (
+                  <PlayArrowIcon />
+                ) : previousItem === 'first' ? (
+                  <PlayArrowIcon />
+                ) : (
+                  ''
+                )
+              }
+              disabled={
+                previousItem.team1
+                  ? false
+                  : previousItem === 'first'
+                  ? false
+                  : true
+              }
+            >
+              Simulate
+            </Button>
+          </>
         ) : (
           <>
             <>{displayButton(game)}</>
 
-            <Button variant="outlined" size="small" onClick={handleClickOpen}>
+            <Button
+              className="seeStats"
+              variant="outlined"
+              size="small"
+              onClick={handleClickOpen}
+            >
               Stats
             </Button>
           </>
@@ -207,13 +232,14 @@ function Match({
       </CardActions>
 
       <Dialog
-        onClose={handleClose}
+        onClose={tutorial && tutorial.is === 'on' ? '' : handleClose}
         aria-labelledby="simple-dialog-title"
         open={open}
         fullWidth
         maxWidth="md"
+        style={{ zIndex: tutorial && tutorial.is === 'on' ? 50 : 'unset' }}
       >
-        <Grid container>
+        <Grid container className="tutoGameStats">
           <Grid item xs={12}>
             <Grid container justify="center">
               <Grid item style={{ margin: 'auto' }}>
@@ -361,6 +387,11 @@ function Match({
               </Grid>
             </Grid>
           </Grid>
+          <DialogActions>
+            <Button variant="outlined" onClick={handleClose}>
+              close
+            </Button>
+          </DialogActions>
         </Grid>
       </Dialog>
     </>
