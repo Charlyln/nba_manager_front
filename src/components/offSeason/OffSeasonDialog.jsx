@@ -7,7 +7,8 @@ import {
   Avatar,
   Paper,
   Chip,
-  Checkbox
+  Checkbox,
+  Grid
 } from '@material-ui/core'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
@@ -145,18 +146,35 @@ function OffSeasonDialog({
 
         <DialogContent>
           {step === 'Draft' ? (
-            <Chip
-              style={{ margin: '0px 0px 20px 0px' }}
-              color="secondary"
-              avatar={
-                <InfoOutlinedIcon
-                  style={{
-                    backgroundColor: 'unset'
-                  }}
+            <Grid container>
+              <Grid item xs={12}>
+                <Chip
+                  style={{ margin: '0px 0px 10px 0px' }}
+                  avatar={
+                    <InfoOutlinedIcon
+                      style={{
+                        backgroundColor: 'unset'
+                      }}
+                    />
+                  }
+                  label={`Select the rookie you want to draft.`}
                 />
-              }
-              label={`Select the rookie you want to draft. You pick depends of your ranking this season. `}
-            />
+              </Grid>
+              <Grid item xs={12}>
+                <Chip
+                  style={{ margin: '0px 0px 10px 0px' }}
+                  color="secondary"
+                  avatar={
+                    <InfoOutlinedIcon
+                      style={{
+                        backgroundColor: 'unset'
+                      }}
+                    />
+                  }
+                  label={`My pick : ${myPick} (You pick depends of your ranking this season)`}
+                />
+              </Grid>
+            </Grid>
           ) : (
             ''
           )}
