@@ -13,6 +13,10 @@ import FastForwardIcon from '@material-ui/icons/FastForward'
 import AccountVerify from '../../mutliple/AccountVerify'
 import TrophySnackbar from '../../mutliple/TrophySnackbar'
 import ChampionsDialog from './ChampionsDialog'
+import HomeTutorial from '../../tutorial/HomeTutorial'
+import BeginningMessage from './BeginningMessage'
+import { useSelector } from 'react-redux'
+import FinishTutorial from './FinishTutorial'
 
 function Home() {
   const [isLoading, setIsLoading] = useState(true)
@@ -31,6 +35,7 @@ function Home() {
   const [openTrophySnackbar, setOpenTrophySnackbar] = useState(false)
   const [TrophyData, setTrophyData] = useState([])
   const [trophyName] = useState('Play a game')
+  const tutorial = useSelector((state) => state.tutorial)
 
   const iOpenTrophySnackbar = () => {
     setOpenTrophySnackbar(true)
@@ -158,6 +163,7 @@ function Home() {
         </>
       ) : (
         <>
+          <BeginningMessage />
           <HomeMessage
             handleCloseMessage={handleCloseMessage}
             openMessage={openMessage}
@@ -167,6 +173,8 @@ function Home() {
             closeTrophySnackbar={closeTrophySnackbar}
             trophyName={trophyName}
           />
+          <HomeTutorial />
+          <FinishTutorial />
           <div
             style={{
               display: 'flex',
@@ -270,7 +278,10 @@ function Home() {
                 <Button
                   variant="contained"
                   color="primary"
-                  onClick={matchAllGames}
+                  onClick={
+                    tutorial && tutorial.is === 'on' ? '' : matchAllGames
+                  }
+                  className="secondStep"
                   disabled={
                     !teamsData.find((game) => game.team1 === null) ||
                     allGameLoading
