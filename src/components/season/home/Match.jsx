@@ -174,7 +174,7 @@ function Match({
 
   return (
     <>
-      <CardActions>
+      <CardActions className="seeStats">
         {matchLoading ||
         (allGameLoading && game.PlayerStats.length < 1) ||
         (dataLoading && !isPlayed) ? (
@@ -220,7 +220,7 @@ function Match({
             <>{displayButton(game)}</>
 
             <Button
-              className="seeStats"
+              
               variant="outlined"
               size="small"
               onClick={handleClickOpen}

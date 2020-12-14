@@ -12,15 +12,17 @@ function HomeTutorial() {
     {
       target: '.simulateOneGame',
       content: (
-        <Typography>
-          You can simulate one game in the season here, try it !
-        </Typography>
+        <Typography>You can simulate one game, here, try it !</Typography>
       ),
       disableBeacon: true
     },
     {
       target: '.seeStats',
-      content: <Typography>You can open game stats after the game</Typography>,
+      content: (
+        <Typography>
+          You can see the result and open game stats after, open it !.
+        </Typography>
+      ),
       disableBeacon: true
     },
     {
@@ -28,7 +30,7 @@ function HomeTutorial() {
       content: (
         <>
           <Typography>
-            You can see all game stats (points, rebounds, assists etc..)
+            You can see all game stats (points, rebounds, assists etc..).
           </Typography>
           <Typography style={{ color: 'grey', fontSize: 'inherit' }}>
             Close it when you ready to continue
@@ -43,7 +45,7 @@ function HomeTutorial() {
         <>
           <Typography>You can simulate all game in the season here.</Typography>
           <Typography style={{ color: 'grey', fontSize: 'inherit' }}>
-            You will be able to do it after the tutorial. Go next for now
+            You will be able to do it after the tutorial, go next for now.
           </Typography>
         </>
       ),
