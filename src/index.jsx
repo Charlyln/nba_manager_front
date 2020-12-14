@@ -1,10 +1,15 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
+import './components/tutorial/allTutorials.css'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import { createMuiTheme } from '@material-ui/core/styles'
 import { ThemeProvider } from '@material-ui/styles'
 import { CssBaseline } from '@material-ui/core'
+
+import { Provider } from 'react-redux'
+import { createStore } from 'redux'
+import rootReducer from './reducers'
 
 import Home from './components/season/home/Home'
 import SignUp from './components/signup/Signup'
@@ -27,6 +32,7 @@ import BestPlayers from './components/season/bestplayers/BestPlayers'
 import Profil from './components/season/profil/Profil'
 import AllTeams from './components/season/allteams/AllTeams'
 import Charts from './components/season/charts/Charts'
+import TutorialInitial from './components/season/home/TutorialInitial'
 
 const darkTheme = createMuiTheme({
   palette: {
@@ -43,36 +49,44 @@ const darkTheme = createMuiTheme({
   }
 })
 
+const store = createStore(
+  rootReducer,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+)
+
 ReactDOM.render(
   <React.StrictMode>
-    <ThemeProvider theme={darkTheme}>
-      <CssBaseline />
-      <BrowserRouter>
-        <MyAppBar />
-        <Switch>
-          <Route exact path="/" component={Start} />
-          <Route exact path="/signup" component={SignUp} />
-          <Route exact path="/teamchoice" component={TeamChoice} />
-          <Route exact path="/home" component={Home} />
-          <Route exact path="/trade" component={Trade} />
-          <Route exact path="/myteam" component={MyTeam} />
-          <Route exact path="/training" component={Training} />
-          <Route exact path="/playerfinder" component={PlayerFinder} />
-          <Route exact path="/stats" component={Stats} />
-          <Route exact path="/contracts" component={Contracts} />
-          <Route exact path="/freeagents" component={FreeAgent} />
-          <Route exact path="/extension" component={Extensions} />
-          <Route exact path="/help" component={Help} />
-          <Route exact path="/offseason" component={Offseason} />
-          <Route exact path="/ranking" component={Ranking} />
-          <Route exact path="/history" component={StatsHistory} />
-          <Route exact path="/standings" component={BestPlayers} />
-          <Route exact path="/profil" component={Profil} />
-          <Route exact path="/allteams" component={AllTeams} />
-          <Route exact path="/charts" component={Charts} />
-        </Switch>
-      </BrowserRouter>
-    </ThemeProvider>
+    <Provider store={store}>
+      <ThemeProvider theme={darkTheme}>
+        <CssBaseline />
+        <BrowserRouter>
+          <MyAppBar />
+          <TutorialInitial />
+          <Switch>
+            <Route exact path="/" component={Start} />
+            <Route exact path="/signup" component={SignUp} />
+            <Route exact path="/teamchoice" component={TeamChoice} />
+            <Route exact path="/home" component={Home} />
+            <Route exact path="/trade" component={Trade} />
+            <Route exact path="/myteam" component={MyTeam} />
+            <Route exact path="/training" component={Training} />
+            <Route exact path="/playerfinder" component={PlayerFinder} />
+            <Route exact path="/stats" component={Stats} />
+            <Route exact path="/contracts" component={Contracts} />
+            <Route exact path="/freeagents" component={FreeAgent} />
+            <Route exact path="/extension" component={Extensions} />
+            <Route exact path="/help" component={Help} />
+            <Route exact path="/offseason" component={Offseason} />
+            <Route exact path="/ranking" component={Ranking} />
+            <Route exact path="/history" component={StatsHistory} />
+            <Route exact path="/standings" component={BestPlayers} />
+            <Route exact path="/profil" component={Profil} />
+            <Route exact path="/allteams" component={AllTeams} />
+            <Route exact path="/charts" component={Charts} />
+          </Switch>
+        </BrowserRouter>
+      </ThemeProvider>
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 )
