@@ -32,6 +32,8 @@ import trophyIcon from './images/trophyIconDark.png'
 import trophyIconLight from './images/trophyIconLight.png'
 import TocIcon from '@material-ui/icons/Toc'
 import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered'
+import allActions from './actions'
+import { useDispatch, useSelector } from 'react-redux'
 
 const useStyles = makeStyles({
   list: {
@@ -44,6 +46,8 @@ const useStyles = makeStyles({
 
 function MyAppBar() {
   const classes = useStyles()
+  const dispatch = useDispatch()
+  const tutorial = useSelector((state) => state.tutorial)
   const [open, setOpen] = useState(false)
   const [trophyIsSelected, setTrophyIsSelected] = useState(false)
   let location = useLocation()
@@ -147,10 +151,22 @@ function MyAppBar() {
 
   const handleClickOpen = () => {
     setOpen(true)
+    if (tutorial && tutorial.step === 4) {
+      const timer = setTimeout(() => {
+        dispatch(allActions.tutorialActions.increment())
+      }, 100)
+      return () => clearTimeout(timer)
+    }
   }
 
   const handleClose = () => {
     setOpen(false)
+    if (tutorial && tutorial.step === 5) {
+      const timer = setTimeout(() => {
+        dispatch(allActions.tutorialActions.increment())
+      }, 100)
+      return () => clearTimeout(timer)
+    }
   }
 
   const getPageName = () => {
@@ -169,6 +185,7 @@ function MyAppBar() {
         {links.map((link) => (
           <>
             <Link
+              className="tutoSideBar"
               to={link.to}
               style={{ textDecoration: 'none', color: 'white' }}
               onMouseEnter={link.name === 'Trophies' ? putRightTrophyIcon : ''}
@@ -197,15 +214,17 @@ function MyAppBar() {
     <>
       <AppBar className="appBar">
         <Toolbar>
-          <IconButton aria-label="menu" edge="start" onClick={handleClickOpen}>
+          <IconButton
+            aria-label="menu"
+            edge="start"
+            disabled={tutorial && tutorial.step < 4}
+            onClick={handleClickOpen}
+            className="tutoAppBar"
+          >
             <MenuIcon style={{ color: '#2F2E2C' }} />
           </IconButton>
 
-          <Typography
-            style={{ color: '#2F2E2C' }}
-            variant="h6"
-            component="h6"
-          >
+          <Typography style={{ color: '#2F2E2C' }} variant="h6" component="h6">
             {getPageName()}
           </Typography>
         </Toolbar>
