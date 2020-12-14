@@ -2,21 +2,32 @@ import { Fab, Grid, Snackbar, Typography } from '@material-ui/core'
 import React from 'react'
 import trophy from '../../images/trophy.png'
 import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 function TrophySnackbar({
   openTrophySnackbar,
   closeTrophySnackbar,
   trophyName
 }) {
+  const tutorial = useSelector((state) => state.tutorial)
+
+  // const handleClose = () => {
+  //   if (tutorial.step === 1) {
+  //     dispatch(allActions.tutorialActions.increment())
+  //   }
+  // }
+
   return (
     <>
-      <Link to="/profil">
+      <Link to={tutorial && tutorial.is === 'on' ? false : '/profil'}>
         <Snackbar
+          // className="trophy"
           open={openTrophySnackbar}
           autoHideDuration={7000}
           onClose={closeTrophySnackbar}
           message="Note archived"
           anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+          // onClose={handleClose}
         >
           <Fab variant="extended" style={{ backgroundColor: '#4CAF50' }}>
             <img
