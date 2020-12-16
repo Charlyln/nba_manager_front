@@ -114,7 +114,7 @@ function Profil() {
   }
 
   const displayItem = (thisTrophy) => {
-    const rightDateFormat = new Date(thisTrophy.updatedAt)
+    const rightDateFormat = new Date(thisTrophy.earnedAt)
     const date = rightDateFormat.toString().slice(4, 15)
     const hour = rightDateFormat.toString().slice(15, 21).replace(':', 'h')
     const newDate = new Date()
