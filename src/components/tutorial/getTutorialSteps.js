@@ -353,6 +353,23 @@ const homehasViewed = [
   }
 ]
 
+const playerFinder = [
+  {
+    target: '.tutoPlayerFinder1',
+    content: (
+      <div>
+        All players are display here. You have their stats, age, value etc...
+      </div>
+    ),
+    disableBeacon: true
+  },
+  {
+    target: '.tutoPlayerFinder2',
+    content: <div>You can filter them by name.</div>,
+    disableBeacon: true
+  }
+]
+
 function getTutorialSteps(location, tutorial) {
   switch (location) {
     case '/myteam':
@@ -370,6 +387,9 @@ function getTutorialSteps(location, tutorial) {
       } else {
         return homehasViewed
       }
+
+    case '/playerfinder':
+      return playerFinder
 
     default:
       return []
