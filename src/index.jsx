@@ -33,6 +33,7 @@ import Profil from './components/season/profil/Profil'
 import AllTeams from './components/season/allteams/AllTeams'
 import Charts from './components/season/charts/Charts'
 import TutorialInitial from './components/season/home/TutorialInitial'
+import Tutorials from './components/tutorial/Tutorials'
 
 const darkTheme = createMuiTheme({
   palette: {
@@ -62,6 +63,7 @@ ReactDOM.render(
         <BrowserRouter>
           <MyAppBar />
           <TutorialInitial />
+          <Tutorials />
           <Switch>
             <Route exact path="/" component={Start} />
             <Route exact path="/signup" component={SignUp} />
