@@ -16,7 +16,6 @@ import ChampionsDialog from './ChampionsDialog'
 import HomeTutorial from '../../tutorial/HomeTutorial'
 import BeginningMessage from './BeginningMessage'
 import { useSelector } from 'react-redux'
-import FinishTutorial from './FinishTutorial'
 
 function Home() {
   const [isLoading, setIsLoading] = useState(true)
@@ -174,7 +173,6 @@ function Home() {
             trophyName={trophyName}
           />
           <HomeTutorial />
-          <FinishTutorial />
           <div
             style={{
               display: 'flex',
@@ -281,7 +279,7 @@ function Home() {
                   onClick={
                     tutorial && tutorial.is === 'on' ? '' : matchAllGames
                   }
-                  className="secondStep"
+                  className="tutoSimulateAll"
                   disabled={
                     !teamsData.find((game) => game.team1 === null) ||
                     allGameLoading
