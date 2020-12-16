@@ -10,14 +10,14 @@ function HomeTutorial() {
   // const [stepIndex, setStepIndex] = useState(0)
   const [steps] = useState([
     {
-      target: '.simulateOneGame',
+      target: '.tutoSimulateOne',
       content: (
         <Typography>You can simulate one game, here, try it !</Typography>
       ),
       disableBeacon: true
     },
     {
-      target: '.seeStats',
+      target: '.tutoSeeStats',
       content: (
         <Typography>
           You can see the result and open game stats after, open it !.
@@ -37,10 +37,15 @@ function HomeTutorial() {
           </Typography>
         </>
       ),
-      disableBeacon: true
+      disableBeacon: true,
+      // styles: {
+      //   options: {
+      //     marginTop: '100px'
+      //   }
+      // }
     },
     {
-      target: '.secondStep',
+      target: '.tutoSimulateAll',
       content: (
         <>
           <Typography>You can simulate all game in the season here.</Typography>
@@ -76,24 +81,37 @@ function HomeTutorial() {
           zIndex: 10000
         }
       }
+    },
+    {
+      target: '.tutoSwitch',
+      content: (
+        <div style={{ width: '300px' }}>
+          <Typography>
+            Congrats ! You have finished the first step of the tutorial.
+          </Typography>
+          <Typography>
+            If you want to learn other things, turn on this and you will see
+            others tutorials in any page you visit. Enjoy !
+          </Typography>
+        </div>
+      ),
+      disableBeacon: true,
+      styles: {
+        options: {
+          zIndex: 9999
+        }
+      }
     }
   ])
   const dispatch = useDispatch()
 
-  // const handleJoyrideCallback = (CallBackProps) => {
-  //   const { action, status, type, index } = CallBackProps
-
-  //   if (action === 'next' && type === 'step:after') {
-  //     console.log('after', action, status, type, CallBackProps)
-  //     // dispatch(allActions.tutorialActions.increment())
-  //   } else {
-  //     console.log(action, status, type, CallBackProps)
-  //   }
-  // }
-
   const incrementTuto = () => {
     dispatch(allActions.tutorialActions.increment())
   }
+
+  // const finishFirstTuto = () => {
+  //   dispatch(allActions.tutorialActions.finishFirstTuto())
+  // }
 
   const Tooltip = ({
     continuous,
@@ -117,7 +135,7 @@ function HomeTutorial() {
       >
         {step.content}
 
-        {index === 3 && (
+        {step.target === '.tutoSimulateAll' ? (
           <div style={{ marginTop: '15px', textAlign: 'right' }}>
             <Button
               {...backProps}
@@ -129,6 +147,20 @@ function HomeTutorial() {
               Next
             </Button>
           </div>
+        ) : step.target === '.tutoSimulateAll' ? (
+          <div style={{ marginTop: '15px', textAlign: 'right' }}>
+            <Button
+              {...backProps}
+              // onClick={finishFirstTuto}
+              variant="contained"
+              color="secondary"
+              endIcon={<ForwardSharpIcon />}
+            >
+              end
+            </Button>
+          </div>
+        ) : (
+          ''
         )}
       </Paper>
     )
