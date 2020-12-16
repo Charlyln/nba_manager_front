@@ -88,6 +88,11 @@ function TeamChoice() {
 
       dispatch(allActions.tutorialActions.setGeneralTutoOn())
 
+      window.localStorage.setItem(
+        'tutorial',
+        JSON.stringify({ generalTutoIs: 'on', generalStep: 0 })
+      )
+
       setRedirect(true)
     } catch (err) {
       console.log(err)
