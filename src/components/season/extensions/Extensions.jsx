@@ -97,11 +97,11 @@ function Extensions() {
             style={{ width: '90%', margin: '100px auto ' }}
           >
             <Table aria-label="simple table" className="tutoExtensions1">
-              <TableHead >
+              <TableHead>
                 <TableRow>
                   <TableCell>Photo</TableCell>
-                  <TableCell align="right">Name</TableCell>
-                  <TableCell align="right">Value</TableCell>
+                  <TableCell align="left">Name</TableCell>
+                  <TableCell align="center">Value</TableCell>
                   <TableCell align="center">Years contract left</TableCell>
                   {/* <TableCell align="center">Salary expectations</TableCell> */}
                   <TableCell align="center">Propose extension</TableCell>
@@ -117,8 +117,8 @@ function Extensions() {
                       <TableCell component="th" scope="row">
                         <Avatar src={player.photo} />
                       </TableCell>
-                      <TableCell align="right">{`${player.firstName} ${player.lastName}`}</TableCell>
-                      <TableCell align="right">
+                      <TableCell align="left">{`${player.firstName} ${player.lastName}`}</TableCell>
+                      <TableCell align="center">
                         <PlayerValue playerValue={player.value} />
                       </TableCell>
                       <TableCell align="center">
