@@ -69,15 +69,14 @@ function SignPlayerDialog({
         }
       }
     }
+
+    setOpen(true)
     if (tutorial.generalTutoIs === 'on') {
-      setOpen(true)
       const timer = setTimeout(() => {
         dispatch(allActions.tutorialActions.incrementGeneral())
       }, 100)
       return () => clearTimeout(timer)
     }
-
-    setOpen(true)
   }
 
   const handleClose = async () => {
@@ -110,11 +109,11 @@ function SignPlayerDialog({
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogContent>
+        <DialogContent className="tutoExtensions7">
           <DialogTitle>Info</DialogTitle>
           {!hasSign ? (
             <>
-              <List className="tutoExtensions7">
+              <List>
                 <ListSubheader component="div">
                   {`The contract could not be completed. Here's why: `}
                 </ListSubheader>
