@@ -6,7 +6,7 @@ function PlayerStatChip({ statMin, statBeg, statMax, divisor }) {
   return (
     <>
       <Chip
-        className={statMin > statBeg ? 'tutoMyRoster5' : ''}
+        className={statMin > statBeg ? 'tutoMyRoster5' : 'tutoMyRoster5'}
         avatar={
           statMin > statBeg ? (
             <>
