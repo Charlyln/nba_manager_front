@@ -29,10 +29,45 @@ const increment = () => {
   }
 }
 
+const setGeneralTutoOn = () => {
+  return {
+    type: 'SETGENERALTUTOON'
+  }
+}
+
+const setGeneralTutoOff = () => {
+  return {
+    type: 'SETGENERALTUTOOFF'
+  }
+}
+
+const incrementGeneral = () => {
+  return {
+    type: 'INCREMENTGENERAL'
+  }
+}
+
+const decrementGeneral = () => {
+  return {
+    type: 'DECREMENTGENERAL'
+  }
+}
+
+const setGeneralStepZero = () => {
+  return {
+    type: 'SETGENERALSTEPZERO'
+  }
+}
+
 export default {
   setTutorial,
   setOff,
   setOn,
   increment,
-  start
+  start,
+  setGeneralTutoOn,
+  setGeneralTutoOff,
+  incrementGeneral,
+  setGeneralStepZero,
+  decrementGeneral
 }
