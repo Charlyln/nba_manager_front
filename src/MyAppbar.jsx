@@ -10,7 +10,9 @@ import {
   ListItemIcon,
   ListItemText,
   makeStyles,
-  Divider
+  Divider,
+  FormControlLabel,
+  Switch
 } from '@material-ui/core'
 import { Link, useLocation } from 'react-router-dom'
 import TodayIcon from '@material-ui/icons/Today'
@@ -23,7 +25,6 @@ import DescriptionIcon from '@material-ui/icons/Description'
 import SearchIcon from '@material-ui/icons/Search'
 import GroupAddIcon from '@material-ui/icons/GroupAdd'
 import HistoryIcon from '@material-ui/icons/History'
-import StarsIcon from '@material-ui/icons/Stars'
 import PostAddIcon from '@material-ui/icons/PostAdd'
 import HelpIcon from '@material-ui/icons/Help'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
@@ -32,6 +33,7 @@ import trophyIcon from './images/trophyIconDark.png'
 import trophyIconLight from './images/trophyIconLight.png'
 import TocIcon from '@material-ui/icons/Toc'
 import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered'
+import WhatshotIcon from '@material-ui/icons/Whatshot'
 import allActions from './actions'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -111,7 +113,7 @@ function MyAppBar() {
     {
       to: '/standings',
       name: 'Best players',
-      icon: <StarsIcon />
+      icon: <WhatshotIcon />
     },
     {
       to: '/stats',
@@ -164,8 +166,39 @@ function MyAppBar() {
     if (tutorial && tutorial.step === 5) {
       const timer = setTimeout(() => {
         dispatch(allActions.tutorialActions.increment())
+        dispatch(allActions.tutorialActions.setGeneralTutoOn())
       }, 100)
       return () => clearTimeout(timer)
+    }
+  }
+
+  const handleChange = () => {
+    if (tutorial && tutorial.is === 'on' && tutorial.step === 6) {
+      dispatch(allActions.tutorialActions.increment())
+      dispatch(allActions.tutorialActions.setOff())
+      dispatch(allActions.tutorialActions.setGeneralTutoOff())
+      window.localStorage.setItem(
+        'tutorial',
+        JSON.stringify({
+          ...tutorial,
+          step: 7,
+          is: 'off',
+          generalTutoIs: 'off',
+          generalStep: 0
+        })
+      )
+    } else if (tutorial && tutorial.generalTutoIs === 'on') {
+      dispatch(allActions.tutorialActions.setGeneralTutoOff())
+      window.localStorage.setItem(
+        'tutorial',
+        JSON.stringify({ ...tutorial, generalTutoIs: 'off', generalStep: 0 })
+      )
+    } else if (tutorial && tutorial.generalTutoIs === 'off') {
+      dispatch(allActions.tutorialActions.setGeneralTutoOn())
+      window.localStorage.setItem(
+        'tutorial',
+        JSON.stringify({ ...tutorial, generalTutoIs: 'on', generalStep: 0 })
+      )
     }
   }
 
@@ -227,6 +260,39 @@ function MyAppBar() {
           <Typography style={{ color: '#2F2E2C' }} variant="h6" component="h6">
             {getPageName()}
           </Typography>
+
+          {tutorial && tutorial.step < 6 ? (
+            ''
+          ) : (
+            <FormControlLabel
+              className="tutoSwitch"
+              style={{ marginLeft: 'auto' }}
+              control={
+                <Switch
+                  checked={tutorial && tutorial.generalTutoIs === 'on'}
+                  onChange={handleChange}
+                  name="Tutorial"
+                />
+              }
+              label={
+                <HelpIcon
+                  style={{
+                    color:
+                      tutorial && tutorial.generalTutoIs === 'on'
+                        ? ''
+                        : '#bdbdbd',
+                    marginTop: '5px'
+                  }}
+                  color={
+                    tutorial && tutorial.generalTutoIs === 'on'
+                      ? 'secondary'
+                      : ''
+                  }
+                />
+              }
+              labelPlacement="start"
+            />
+          )}
         </Toolbar>
       </AppBar>
 
