@@ -14,6 +14,8 @@ import ProgressBall from '../../mutliple/ProgressBall'
 import AccountVerify from '../../mutliple/AccountVerify'
 import TrophySnackbar from '../../mutliple/TrophySnackbar'
 import PlayerValue from '../../mutliple/PlayerValue'
+import allActions from '../../../actions'
+import { useDispatch } from 'react-redux'
 
 function Extensions() {
   const [myteamData, setMyTeamData] = useState({})
@@ -23,6 +25,7 @@ function Extensions() {
   const [TrophyData, setTrophyData] = useState([])
   const [trophyName] = useState('Sign a extention')
   const [TeamUuid] = useState(window.localStorage.getItem('TeamUuid'))
+  const dispatch = useDispatch()
 
   const iOpenTrophySnackbar = () => {
     setOpenTrophySnackbar(true)
@@ -54,12 +57,12 @@ function Extensions() {
 
   const getAllData = async () => {
     try {
+      dispatch(allActions.loadingActions.setLoadingTrue())
+      dispatch(allActions.tutorialActions.setGeneralStepZero())
       await getMyTeam()
       await getTrophy()
-      const timer = setTimeout(() => {
-        setIsLoading(false)
-      }, 500)
-      return () => clearTimeout(timer)
+      setIsLoading(false)
+      dispatch(allActions.loadingActions.setLoadingFalse())
     } catch (error) {
       console.log(error)
     }
@@ -93,8 +96,8 @@ function Extensions() {
             component={Paper}
             style={{ width: '90%', margin: '100px auto ' }}
           >
-            <Table aria-label="simple table">
-              <TableHead>
+            <Table aria-label="simple table" className="tutoExtensions1">
+              <TableHead >
                 <TableRow>
                   <TableCell>Photo</TableCell>
                   <TableCell align="right">Name</TableCell>

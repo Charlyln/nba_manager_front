@@ -16,16 +16,23 @@ import PlayerStatChip from '../../mutliple/PlayerStatChip'
 import SportsBasketballIcon from '@material-ui/icons/SportsBasketball'
 import ForwardIcon from '@material-ui/icons/Forward'
 import EventSeatIcon from '@material-ui/icons/EventSeat'
+import { useDispatch, useSelector } from 'react-redux'
+import allActions from '../../../actions'
 
 function MyTeam() {
   const [myteamData, setMyTeamData] = useState({})
   const [UserUuid] = useState(window.localStorage.getItem('uuid'))
   const [isLoading, setIsLoading] = useState(true)
+  const dispatch = useDispatch()
+  const tutorial = useSelector((state) => state.tutorial)
 
   const getAllData = async () => {
     try {
+      dispatch(allActions.loadingActions.setLoadingTrue())
+      dispatch(allActions.tutorialActions.setGeneralStepZero())
       await getMyTeam()
       setIsLoading(false)
+      dispatch(allActions.loadingActions.setLoadingFalse())
     } catch (error) {
       console.log(error)
     }
@@ -52,12 +59,19 @@ function MyTeam() {
       isBench: false
     })
     await getMyTeam()
+    if (tutorial.generalTutoIs === 'on') {
+      dispatch(allActions.tutorialActions.incrementGeneral())
+    }
   }
   const putOutLineUp = async (playerUuid) => {
     await Axios.put(`${apiUrl}/players/${playerUuid}`, {
       isBench: true
     })
     await getMyTeam()
+
+    if (tutorial.generalTutoIs === 'on') {
+      dispatch(allActions.tutorialActions.incrementGeneral())
+    }
   }
 
   return (
@@ -75,6 +89,7 @@ function MyTeam() {
             style={{ width: '90%', margin: '100px auto 0px' }}
           >
             <Button
+              className="tutoMyRoster1"
               style={{ margin: '10px 0px 0px 10px ' }}
               endIcon={<SportsBasketballIcon />}
               variant="contained"
@@ -139,6 +154,7 @@ function MyTeam() {
                         </TableCell>
                         <TableCell align="center">
                           <Button
+                            className="tutoMyRoster3"
                             variant="contained"
                             style={{
                               backgroundColor: 'rgb(217, 48, 33)'
@@ -172,6 +188,7 @@ function MyTeam() {
               endIcon={<EventSeatIcon />}
               variant="contained"
               color="secondary"
+              className="tutoMyRoster2"
             >
               bench
             </Button>
@@ -180,9 +197,7 @@ function MyTeam() {
               <TableHead>
                 <TableRow>
                   <TableCell>Photo</TableCell>
-                  <TableCell width="25%" align="center">
-                    Name
-                  </TableCell>
+                  <TableCell align="center">Name</TableCell>
                   <TableCell align="center">Value</TableCell>
                   <TableCell align="center">Age</TableCell>
                   <TableCell align="center">Scoring</TableCell>
@@ -233,6 +248,7 @@ function MyTeam() {
                         </TableCell>
                         <TableCell align="center">
                           <Button
+                            className="tutoMyRoster4"
                             variant="contained"
                             style={{
                               backgroundColor: 'rgb(76, 175, 80)'

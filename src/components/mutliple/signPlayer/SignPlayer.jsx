@@ -20,6 +20,8 @@ import SignPlayerDialog from './SignPlayerDialog'
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn'
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined'
 import getPlayerInterest from './getPlayerInterest'
+import allActions from '../../../actions'
+import { useDispatch, useSelector } from 'react-redux'
 
 function SignPlayer({
   player,
@@ -42,6 +44,8 @@ function SignPlayer({
     getPlayerInterest(player.value, initialSalary)
   )
   const [hasSign, setHasSign] = useState(false)
+  const tutorial = useSelector((state) => state.tutorial)
+  const dispatch = useDispatch()
 
   const signContract = async () => {
     if (contractLeft) {
@@ -119,6 +123,13 @@ function SignPlayer({
 
   const handleClickOpen = () => {
     setOpen(true)
+
+    if (tutorial.generalTutoIs === 'on') {
+      const timer = setTimeout(() => {
+        dispatch(allActions.tutorialActions.incrementGeneral())
+      }, 100)
+      return () => clearTimeout(timer)
+    }
   }
 
   const handleClose = () => {
@@ -260,6 +271,7 @@ function SignPlayer({
   return (
     <>
       <Button
+        className="tutoExtensions2"
         onClick={handleClickOpen}
         color="primary"
         size="small"
@@ -293,7 +305,10 @@ function SignPlayer({
                     }}
                     src={player.photo}
                   />
-                  <div style={{ padding: '20px 30px' }}>
+                  <div
+                    style={{ padding: '20px 30px' }}
+                    className="tutoExtensions4"
+                  >
                     <Typography
                       id="discrete-slider"
                       gutterBottom
@@ -353,6 +368,7 @@ function SignPlayer({
                       Salary
                     </Typography>
                     <Slider
+                      className="tutoExtensions3"
                       aria-labelledby="discrete-slider"
                       marks={marks}
                       defaultValue={7}
@@ -371,6 +387,7 @@ function SignPlayer({
                     </Typography>
                     <Slider
                       defaultValue={3}
+                      className="tutoExtensions5"
                       aria-labelledby="discrete-slider"
                       valueLabelDisplay="on"
                       step={1}
