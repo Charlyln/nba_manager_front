@@ -59,8 +59,15 @@ function Offseason() {
       } else if (step === 'Free agency') {
         trophyNameReq = 'Sign a free agent'
         setTrophyName('Sign a free agent')
+      } else if (step === 'Training Camps') {
+        trophyNameReq = 'Use a training camp'
+        setTrophyName('Use a training camp')
       }
-      if (step === 'Player options' || step === 'Free agency') {
+      if (
+        step === 'Player options' ||
+        step === 'Free agency' ||
+        step === 'Training Camps'
+      ) {
         const res = await Axios.get(
           `${apiUrl}/trophies/${trophyNameReq}/${UserUuid}`
         )
@@ -76,6 +83,7 @@ function Offseason() {
     'Draft',
     'Player options',
     'Free agency',
+    'Training Camps',
     'Player progress'
   ]
 

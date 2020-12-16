@@ -26,6 +26,7 @@ import PlayerStatChip from '../mutliple/PlayerStatChip'
 import updateSalaryCapLeft from '../api calls/updateSalaryCapLeft'
 import DraftRecap from './DraftRecap'
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined'
+import Training from '../season/training/Training'
 
 function OffSeasonDialog({
   goNext,
@@ -144,302 +145,323 @@ function OffSeasonDialog({
       <Dialog fullWidth maxWidth="md" open={open} onClose={handleClose}>
         <DialogTitle>{step}</DialogTitle>
 
-        <DialogContent>
-          {step === 'Draft' ? (
-            <Grid container>
-              <Grid item xs={12}>
-                <Chip
-                  style={{ margin: '0px 0px 10px 0px' }}
-                  avatar={
-                    <InfoOutlinedIcon
-                      style={{
-                        backgroundColor: 'unset'
-                      }}
-                    />
-                  }
-                  label={`Select the rookie you want to draft.`}
-                />
+        {step === 'Training Camps' ? (
+          <Training
+            myteamData={myteamData}
+            getMyTeam={getMyTeam}
+            TrophyData={TrophyData}
+            iOpenTrophySnackbar={iOpenTrophySnackbar}
+            trophyName={trophyName}
+            getTrophy={getTrophy}
+            step={step}
+          />
+        ) : (
+          <DialogContent>
+            {step === 'Draft' ? (
+              <Grid container>
+                <Grid item xs={12}>
+                  <Chip
+                    style={{ margin: '0px 0px 10px 0px' }}
+                    avatar={
+                      <InfoOutlinedIcon
+                        style={{
+                          backgroundColor: 'unset'
+                        }}
+                      />
+                    }
+                    label={`Select the rookie you want to draft.`}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Chip
+                    style={{ margin: '0px 0px 10px 0px' }}
+                    color="secondary"
+                    avatar={
+                      <InfoOutlinedIcon
+                        style={{
+                          backgroundColor: 'unset'
+                        }}
+                      />
+                    }
+                    label={`My pick : ${myPick} (You pick depends of your ranking this season)`}
+                  />
+                </Grid>
               </Grid>
-              <Grid item xs={12}>
-                <Chip
-                  style={{ margin: '0px 0px 10px 0px' }}
-                  color="secondary"
-                  avatar={
-                    <InfoOutlinedIcon
-                      style={{
-                        backgroundColor: 'unset'
-                      }}
-                    />
-                  }
-                  label={`My pick : ${myPick} (You pick depends of your ranking this season)`}
-                />
-              </Grid>
-            </Grid>
-          ) : (
-            ''
-          )}
-          <TableContainer component={Paper} style={{ width: '98%' }}>
-            <Table aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell align="center">Photo</TableCell>
-                  <TableCell align="left">Name</TableCell>
-                  <TableCell align="center">Value</TableCell>
-                  <TableCell align="center">Age</TableCell>
+            ) : (
+              ''
+            )}
+            <TableContainer
+              component={Paper}
+              style={{ width: '98%', margin: 'auto' }}
+            >
+              <Table aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell align="center">Photo</TableCell>
+                    <TableCell align="left">Name</TableCell>
+                    <TableCell align="center">Value</TableCell>
+                    <TableCell align="center">Age</TableCell>
 
-                  {step === 'Player progress' ? (
-                    <>
-                      <TableCell align="center">Scoring</TableCell>
-                      <TableCell align="center">Rebound</TableCell>
-                      <TableCell align="center">Pass</TableCell>
-                    </>
-                  ) : step === 'Player options' ? (
-                    <>
-                      <TableCell align="center">Years contract left</TableCell>
+                    {step === 'Player progress' ? (
+                      <>
+                        <TableCell align="center">Scoring</TableCell>
+                        <TableCell align="center">Rebound</TableCell>
+                        <TableCell align="center">Pass</TableCell>
+                      </>
+                    ) : step === 'Player options' ? (
+                      <>
+                        <TableCell align="center">
+                          Years contract left
+                        </TableCell>
 
-                      <TableCell align="center">Propose new contract</TableCell>
-                    </>
-                  ) : step === 'Free agency' ? (
-                    <>
-                      <TableCell align="center">Scoring</TableCell>
-                      <TableCell align="center">Rebound</TableCell>
-                      <TableCell align="center">Pass</TableCell>
-                      <TableCell align="center">Sign</TableCell>
-                    </>
-                  ) : step === 'Draft' ? (
-                    <>
-                      <TableCell align="center">Scoring</TableCell>
-                      <TableCell align="center">Rebound</TableCell>
-                      <TableCell align="center">Pass</TableCell>
-                      <TableCell align="center">Choose</TableCell>
-                    </>
-                  ) : (
-                    ''
-                  )}
-                </TableRow>
-              </TableHead>
+                        <TableCell align="center">
+                          Propose new contract
+                        </TableCell>
+                      </>
+                    ) : step === 'Free agency' ? (
+                      <>
+                        <TableCell align="center">Scoring</TableCell>
+                        <TableCell align="center">Rebound</TableCell>
+                        <TableCell align="center">Pass</TableCell>
+                        <TableCell align="center">Sign</TableCell>
+                      </>
+                    ) : step === 'Draft' ? (
+                      <>
+                        <TableCell align="center">Scoring</TableCell>
+                        <TableCell align="center">Rebound</TableCell>
+                        <TableCell align="center">Pass</TableCell>
+                        <TableCell align="center">Choose</TableCell>
+                      </>
+                    ) : (
+                      ''
+                    )}
+                  </TableRow>
+                </TableHead>
 
-              <TableBody>
-                {myteamData.Players.sort(function (a, b) {
-                  return new Date(b.value) - new Date(a.value)
-                })
-                  .filter((player) =>
-                    step === 'Player progress'
-                      ? player
-                      : step === 'Player options'
-                      ? player.contractLeft === 0
-                      : ''
-                  )
-                  .map((player) => (
-                    <TableRow>
-                      <TableCell component="th" scope="row">
-                        <Avatar src={player.photo} />
-                      </TableCell>
-                      <TableCell align="right">{`${player.firstName} ${player.lastName}`}</TableCell>
-                      <TableCell align="right">
-                        <PlayerValue playerValue={player.value} />
-                      </TableCell>
-
-                      {step === 'Player progress' ? (
-                        <>
-                          <TableCell align="center">{`${player.age}`}</TableCell>
-                          <TableCell align="right">
-                            <PlayerStatChip
-                              statMin={player.ptsMin}
-                              statBeg={player.ptsBeg}
-                              statMax={player.ptsMax}
-                              divisor={35}
-                            />
-                          </TableCell>
-                          <TableCell align="right">
-                            <PlayerStatChip
-                              statMin={player.rebMin}
-                              statBeg={player.rebBeg}
-                              statMax={player.rebMax}
-                              divisor={13}
-                            />
-                          </TableCell>
-                          <TableCell align="right">
-                            <PlayerStatChip
-                              statMin={player.pasMin}
-                              statBeg={player.pasBeg}
-                              statMax={player.pasMax}
-                              divisor={11}
-                            />
-                          </TableCell>
-                        </>
-                      ) : step === 'Player options' ? (
-                        <>
-                          <TableCell align="center">{`${player.age}`}</TableCell>
-                          <TableCell align="center">
-                            {`${player.contractLeft}`}
-                          </TableCell>
-
-                          <TableCell align="center">
-                            <SignPlayer
-                              player={player}
-                              contractLeft={player.contractLeft}
-                              getMyTeamInDialog={getMyTeam}
-                              TrophyData={TrophyData}
-                              iOpenTrophySnackbar={iOpenTrophySnackbar}
-                              trophyName={trophyName}
-                              TeamUuid={TeamUuid}
-                              getTrophy={getTrophy}
-                              step={step}
-                              myteamData={myteamData}
-                              getMyTeam={getMyTeam}
-                            />
-                          </TableCell>
-                        </>
-                      ) : (
-                        ''
-                      )}
-                    </TableRow>
-                  ))}
-              </TableBody>
-
-              <TableBody>
-                {playersData
-                  .sort(function (a, b) {
+                <TableBody>
+                  {myteamData.Players.sort(function (a, b) {
                     return new Date(b.value) - new Date(a.value)
                   })
-                  .filter((player) =>
-                    step === 'Retirements'
-                      ? player.age > 38
-                      : step === 'Free agency'
-                      ? !player.TeamUuid && player.age <= 38 && !player.isRookie
-                      : step === 'Draft'
-                      ? player.isRookie && player.age === 20
-                      : ''
-                  )
-                  .map((player, i) => (
-                    <TableRow>
-                      <TableCell align="center" component="th" scope="row">
-                        <Avatar
-                          style={{
-                            margin: 'auto',
-                            width: '50px',
-                            height: '50px'
-                          }}
-                          src={player.photo}
-                        />
-                      </TableCell>
-                      <TableCell align="left">{`${player.firstName} ${player.lastName}`}</TableCell>
-                      <TableCell align="center">
-                        {step === 'Draft' ? (
-                          <Chip
-                            label={`${Math.round(player.value) - 5} - ${
-                              Math.round(player.value) + 5
-                            }`}
-                          />
-                        ) : (
+                    .filter((player) =>
+                      step === 'Player progress'
+                        ? player
+                        : step === 'Player options'
+                        ? player.contractLeft === 0
+                        : ''
+                    )
+                    .map((player) => (
+                      <TableRow>
+                        <TableCell component="th" scope="row">
+                          <Avatar src={player.photo} />
+                        </TableCell>
+                        <TableCell align="right">{`${player.firstName} ${player.lastName}`}</TableCell>
+                        <TableCell align="right">
                           <PlayerValue playerValue={player.value} />
+                        </TableCell>
+
+                        {step === 'Player progress' ? (
+                          <>
+                            <TableCell align="center">{`${player.age}`}</TableCell>
+                            <TableCell align="right">
+                              <PlayerStatChip
+                                statMin={player.ptsMin}
+                                statBeg={player.ptsBeg}
+                                statMax={player.ptsMax}
+                                divisor={35}
+                              />
+                            </TableCell>
+                            <TableCell align="right">
+                              <PlayerStatChip
+                                statMin={player.rebMin}
+                                statBeg={player.rebBeg}
+                                statMax={player.rebMax}
+                                divisor={13}
+                              />
+                            </TableCell>
+                            <TableCell align="right">
+                              <PlayerStatChip
+                                statMin={player.pasMin}
+                                statBeg={player.pasBeg}
+                                statMax={player.pasMax}
+                                divisor={11}
+                              />
+                            </TableCell>
+                          </>
+                        ) : step === 'Player options' ? (
+                          <>
+                            <TableCell align="center">{`${player.age}`}</TableCell>
+                            <TableCell align="center">
+                              {`${player.contractLeft}`}
+                            </TableCell>
+
+                            <TableCell align="center">
+                              <SignPlayer
+                                player={player}
+                                contractLeft={player.contractLeft}
+                                getMyTeamInDialog={getMyTeam}
+                                TrophyData={TrophyData}
+                                iOpenTrophySnackbar={iOpenTrophySnackbar}
+                                trophyName={trophyName}
+                                TeamUuid={TeamUuid}
+                                getTrophy={getTrophy}
+                                step={step}
+                                myteamData={myteamData}
+                                getMyTeam={getMyTeam}
+                              />
+                            </TableCell>
+                          </>
+                        ) : (
+                          ''
                         )}
-                      </TableCell>
-                      <TableCell align="center">{player.age}</TableCell>
+                      </TableRow>
+                    ))}
+                </TableBody>
 
-                      {step === 'Free agency' ? (
-                        <>
-                          <TableCell align="center">
-                            {Math.round(
-                              ((player.ptsMin + player.ptsMax) / 2 / 35) * 100
-                            )}
-                          </TableCell>
-                          <TableCell align="center">
-                            {Math.round(
-                              ((player.rebMin + player.rebMax) / 2 / 13) * 100
-                            )}
-                          </TableCell>
-                          <TableCell align="center">
-                            {Math.round(
-                              ((player.pasMin + player.pasMax) / 2 / 11) * 100
-                            )}
-                          </TableCell>
-                          <TableCell align="center">
-                            <SignPlayer
-                              player={player}
-                              getPlayers={getPlayers}
-                              TrophyData={TrophyData}
-                              iOpenTrophySnackbar={iOpenTrophySnackbar}
-                              trophyName={trophyName}
-                              TeamUuid={TeamUuid}
-                              getTrophy={getTrophy}
-                              step={step}
-                              myteamData={myteamData}
-                              getMyTeam={getMyTeam}
+                <TableBody>
+                  {playersData
+                    .sort(function (a, b) {
+                      return new Date(b.value) - new Date(a.value)
+                    })
+                    .filter((player) =>
+                      step === 'Retirements'
+                        ? player.age > 38
+                        : step === 'Free agency'
+                        ? !player.TeamUuid &&
+                          player.age <= 38 &&
+                          !player.isRookie
+                        : step === 'Draft'
+                        ? player.isRookie && player.age === 20
+                        : ''
+                    )
+                    .map((player, i) => (
+                      <TableRow>
+                        <TableCell align="center" component="th" scope="row">
+                          <Avatar
+                            style={{
+                              margin: 'auto',
+                              width: '50px',
+                              height: '50px'
+                            }}
+                            src={player.photo}
+                          />
+                        </TableCell>
+                        <TableCell align="left">{`${player.firstName} ${player.lastName}`}</TableCell>
+                        <TableCell align="center">
+                          {step === 'Draft' ? (
+                            <Chip
+                              label={`${Math.round(player.value) - 5} - ${
+                                Math.round(player.value) + 5
+                              }`}
                             />
-                          </TableCell>
-                        </>
-                      ) : (
-                        ''
-                      )}
+                          ) : (
+                            <PlayerValue playerValue={player.value} />
+                          )}
+                        </TableCell>
+                        <TableCell align="center">{player.age}</TableCell>
 
-                      {step === 'Draft' ? (
-                        <>
-                          <TableCell align="center">
-                            <Chip
-                              label={`${
-                                Math.round(
-                                  ((player.ptsMin + player.ptsMax) / 2 / 35) *
-                                    100
-                                ) - 5
-                              } - ${
-                                Math.round(
-                                  ((player.ptsMin + player.ptsMax) / 2 / 35) *
-                                    100
-                                ) + 5
-                              }`}
-                            />
-                          </TableCell>
-                          <TableCell align="center">
-                            <Chip
-                              label={`${
-                                Math.round(
-                                  ((player.rebMin + player.rebMax) / 2 / 13) *
-                                    100
-                                ) - 5
-                              } - ${
-                                Math.round(
-                                  ((player.rebMin + player.rebMax) / 2 / 13) *
-                                    100
-                                ) + 5
-                              }`}
-                            />
-                          </TableCell>
-                          <TableCell align="center">
-                            <Chip
-                              label={`${
-                                Math.round(
-                                  ((player.pasMin + player.pasMax) / 2 / 11) *
-                                    100
-                                ) - 5
-                              } - ${
-                                Math.round(
-                                  ((player.pasMin + player.pasMax) / 2 / 11) *
-                                    100
-                                ) + 5
-                              }`}
-                            />
-                          </TableCell>
-                          <TableCell align="center">
-                            <Checkbox
-                              disabled={i + 1 < myPick}
-                              checked={
-                                i + 1 < myPick || myPickChoice === player.uuid
-                              }
-                              onChange={() => setMyPickChoice(player.uuid)}
-                            />
-                          </TableCell>
-                        </>
-                      ) : (
-                        ''
-                      )}
-                    </TableRow>
-                  ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </DialogContent>
+                        {step === 'Free agency' ? (
+                          <>
+                            <TableCell align="center">
+                              {Math.round(
+                                ((player.ptsMin + player.ptsMax) / 2 / 35) * 100
+                              )}
+                            </TableCell>
+                            <TableCell align="center">
+                              {Math.round(
+                                ((player.rebMin + player.rebMax) / 2 / 13) * 100
+                              )}
+                            </TableCell>
+                            <TableCell align="center">
+                              {Math.round(
+                                ((player.pasMin + player.pasMax) / 2 / 11) * 100
+                              )}
+                            </TableCell>
+                            <TableCell align="center">
+                              <SignPlayer
+                                player={player}
+                                getPlayers={getPlayers}
+                                TrophyData={TrophyData}
+                                iOpenTrophySnackbar={iOpenTrophySnackbar}
+                                trophyName={trophyName}
+                                TeamUuid={TeamUuid}
+                                getTrophy={getTrophy}
+                                step={step}
+                                myteamData={myteamData}
+                                getMyTeam={getMyTeam}
+                              />
+                            </TableCell>
+                          </>
+                        ) : (
+                          ''
+                        )}
+
+                        {step === 'Draft' ? (
+                          <>
+                            <TableCell align="center">
+                              <Chip
+                                label={`${
+                                  Math.round(
+                                    ((player.ptsMin + player.ptsMax) / 2 / 35) *
+                                      100
+                                  ) - 5
+                                } - ${
+                                  Math.round(
+                                    ((player.ptsMin + player.ptsMax) / 2 / 35) *
+                                      100
+                                  ) + 5
+                                }`}
+                              />
+                            </TableCell>
+                            <TableCell align="center">
+                              <Chip
+                                label={`${
+                                  Math.round(
+                                    ((player.rebMin + player.rebMax) / 2 / 13) *
+                                      100
+                                  ) - 5
+                                } - ${
+                                  Math.round(
+                                    ((player.rebMin + player.rebMax) / 2 / 13) *
+                                      100
+                                  ) + 5
+                                }`}
+                              />
+                            </TableCell>
+                            <TableCell align="center">
+                              <Chip
+                                label={`${
+                                  Math.round(
+                                    ((player.pasMin + player.pasMax) / 2 / 11) *
+                                      100
+                                  ) - 5
+                                } - ${
+                                  Math.round(
+                                    ((player.pasMin + player.pasMax) / 2 / 11) *
+                                      100
+                                  ) + 5
+                                }`}
+                              />
+                            </TableCell>
+                            <TableCell align="center">
+                              <Checkbox
+                                disabled={i + 1 < myPick}
+                                checked={
+                                  i + 1 < myPick || myPickChoice === player.uuid
+                                }
+                                onChange={() => setMyPickChoice(player.uuid)}
+                              />
+                            </TableCell>
+                          </>
+                        ) : (
+                          ''
+                        )}
+                      </TableRow>
+                    ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </DialogContent>
+        )}
 
         <DialogActions>
           <Button onClick={handleClose} color="primary">
