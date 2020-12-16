@@ -11,12 +11,6 @@ function TrophySnackbar({
 }) {
   const tutorial = useSelector((state) => state.tutorial)
 
-  // const handleClose = () => {
-  //   if (tutorial.step === 1) {
-  //     dispatch(allActions.tutorialActions.increment())
-  //   }
-  // }
-
   return (
     <>
       <Link to={tutorial && tutorial.is === 'on' ? false : '/profil'}>
