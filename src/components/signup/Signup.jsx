@@ -83,6 +83,7 @@ function SignUp() {
           <Grid item xs={12} style={{ marginTop: '250px' }}>
             <Grid container alignItems="center" justify="center">
               <TextField
+                disabled={postLoading}
                 required
                 style={{ margin: '20px' }}
                 id="message"
