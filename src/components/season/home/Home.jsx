@@ -13,9 +13,9 @@ import FastForwardIcon from '@material-ui/icons/FastForward'
 import AccountVerify from '../../mutliple/AccountVerify'
 import TrophySnackbar from '../../mutliple/TrophySnackbar'
 import ChampionsDialog from './ChampionsDialog'
-import HomeTutorial from '../../tutorial/HomeTutorial'
-import BeginningMessage from './BeginningMessage'
 import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
+import allActions from '../../../actions'
 
 function Home() {
   const [isLoading, setIsLoading] = useState(true)
@@ -35,6 +35,7 @@ function Home() {
   const [TrophyData, setTrophyData] = useState([])
   const [trophyName] = useState('Play a game')
   const tutorial = useSelector((state) => state.tutorial)
+  const dispatch = useDispatch()
 
   const iOpenTrophySnackbar = () => {
     setOpenTrophySnackbar(true)
@@ -65,9 +66,13 @@ function Home() {
 
   const getAllData = async () => {
     try {
+      dispatch(allActions.loadingActions.setLoadingTrue())
+      dispatch(allActions.tutorialActions.setGeneralStepZero())
+
       await getGames()
       await getTrophy()
       setIsLoading(false)
+      dispatch(allActions.loadingActions.setLoadingFalse())
     } catch (error) {
       console.log(error)
     }
@@ -162,7 +167,6 @@ function Home() {
         </>
       ) : (
         <>
-          <BeginningMessage />
           <HomeMessage
             handleCloseMessage={handleCloseMessage}
             openMessage={openMessage}
@@ -172,7 +176,7 @@ function Home() {
             closeTrophySnackbar={closeTrophySnackbar}
             trophyName={trophyName}
           />
-          <HomeTutorial />
+
           <div
             style={{
               display: 'flex',
@@ -193,6 +197,7 @@ function Home() {
                 })
                 .map((team, i, arr) => {
                   let previousItem = arr[i - 1]
+                  let nextItem = arr[i + 1]
                   return (
                     <Paper
                       elevation={10}
@@ -244,6 +249,7 @@ function Home() {
                         getGames={getGames}
                         game={team}
                         previousItem={previousItem || 'first'}
+                        nextItem={nextItem}
                         allGames={allGames}
                         i={i}
                         simulateAllGames={simulateAllGames}
@@ -277,9 +283,11 @@ function Home() {
                   variant="contained"
                   color="primary"
                   onClick={
-                    tutorial && tutorial.is === 'on' ? '' : matchAllGames
+                    tutorial && tutorial.generalTutoIs === 'on'
+                      ? ''
+                      : matchAllGames
                   }
-                  className="tutoSimulateAll"
+                  className="tutoHome4"
                   disabled={
                     !teamsData.find((game) => game.team1 === null) ||
                     allGameLoading
