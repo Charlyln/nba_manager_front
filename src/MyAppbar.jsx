@@ -153,9 +153,9 @@ function MyAppBar() {
 
   const handleClickOpen = () => {
     setOpen(true)
-    if (tutorial && tutorial.step === 4) {
+    if (tutorial && tutorial.generalTutoIs === 'on') {
       const timer = setTimeout(() => {
-        dispatch(allActions.tutorialActions.increment())
+        dispatch(allActions.tutorialActions.incrementGeneral())
       }, 100)
       return () => clearTimeout(timer)
     }
@@ -165,7 +165,7 @@ function MyAppBar() {
     setOpen(false)
     if (tutorial && tutorial.step === 5) {
       const timer = setTimeout(() => {
-        dispatch(allActions.tutorialActions.increment())
+        dispatch(allActions.tutorialActions.incrementGeneral())
         dispatch(allActions.tutorialActions.setGeneralTutoOn())
       }, 100)
       return () => clearTimeout(timer)
@@ -173,27 +173,17 @@ function MyAppBar() {
   }
 
   const handleChange = () => {
-    if (tutorial && tutorial.is === 'on' && tutorial.step === 6) {
-      dispatch(allActions.tutorialActions.increment())
-      dispatch(allActions.tutorialActions.setOff())
-      dispatch(allActions.tutorialActions.setGeneralTutoOff())
-      window.localStorage.setItem(
-        'tutorial',
-        JSON.stringify({
-          ...tutorial,
-          step: 7,
-          is: 'off',
-          generalTutoIs: 'off',
-          generalStep: 0
-        })
-      )
-    } else if (tutorial && tutorial.generalTutoIs === 'on') {
+    if (tutorial && tutorial.generalTutoIs === 'on' && tutorial.hasViewed) {
       dispatch(allActions.tutorialActions.setGeneralTutoOff())
       window.localStorage.setItem(
         'tutorial',
         JSON.stringify({ ...tutorial, generalTutoIs: 'off', generalStep: 0 })
       )
-    } else if (tutorial && tutorial.generalTutoIs === 'off') {
+    } else if (
+      tutorial &&
+      tutorial.generalTutoIs === 'off' &&
+      tutorial.hasViewed
+    ) {
       dispatch(allActions.tutorialActions.setGeneralTutoOn())
       window.localStorage.setItem(
         'tutorial',
@@ -215,10 +205,10 @@ function MyAppBar() {
   const list = () => (
     <div role="presentation" className={classes.list}>
       <List>
-        {links.map((link) => (
+        {links.map((link, i) => (
           <>
             <Link
-              className="tutoSideBar"
+              className={i === 1 ? 'tutoHome6' : ''}
               to={link.to}
               style={{ textDecoration: 'none', color: 'white' }}
               onMouseEnter={link.name === 'Trophies' ? putRightTrophyIcon : ''}
@@ -250,9 +240,9 @@ function MyAppBar() {
           <IconButton
             aria-label="menu"
             edge="start"
-            disabled={tutorial && tutorial.step < 4}
+            disabled={tutorial && !tutorial.hasViewed}
             onClick={handleClickOpen}
-            className="tutoAppBar"
+            className="tutoHome5"
           >
             <MenuIcon style={{ color: '#2F2E2C' }} />
           </IconButton>
@@ -261,38 +251,36 @@ function MyAppBar() {
             {getPageName()}
           </Typography>
 
-          {tutorial && tutorial.step < 6 ? (
-            ''
-          ) : (
-            <FormControlLabel
-              className="tutoSwitch"
-              style={{ marginLeft: 'auto' }}
-              control={
-                <Switch
-                  checked={tutorial && tutorial.generalTutoIs === 'on'}
-                  onChange={handleChange}
-                  name="Tutorial"
-                />
-              }
-              label={
-                <HelpIcon
-                  style={{
-                    color:
-                      tutorial && tutorial.generalTutoIs === 'on'
-                        ? ''
-                        : '#bdbdbd',
-                    marginTop: '5px'
-                  }}
-                  color={
-                    tutorial && tutorial.generalTutoIs === 'on'
-                      ? 'secondary'
-                      : ''
-                  }
-                />
-              }
-              labelPlacement="start"
-            />
-          )}
+          <FormControlLabel
+            className="tutoSwitch"
+            style={{ marginLeft: 'auto' }}
+            control={
+              <Switch
+                checked={
+                  (tutorial && tutorial.generalTutoIs === 'on') || !tutorial
+                }
+                onChange={handleChange}
+                name="Tutorial"
+              />
+            }
+            label={
+              <HelpIcon
+                style={{
+                  color:
+                    (tutorial && tutorial.generalTutoIs === 'on') || !tutorial
+                      ? ''
+                      : '#bdbdbd',
+                  marginTop: '5px'
+                }}
+                color={
+                  (tutorial && tutorial.generalTutoIs === 'on') || !tutorial
+                    ? 'secondary'
+                    : ''
+                }
+              />
+            }
+            labelPlacement="start"
+          />
         </Toolbar>
       </AppBar>
 
