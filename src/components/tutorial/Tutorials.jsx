@@ -3,34 +3,18 @@ import React from 'react'
 import Joyride from 'react-joyride'
 import { useDispatch, useSelector } from 'react-redux'
 import allActions from '../../actions'
-import { myRoster, contracts, extensions } from './steps'
+import getTutorialSteps from './getTutorialSteps'
 import { useLocation } from 'react-router-dom'
 import SkipNextIcon from '@material-ui/icons/SkipNext'
 import SkipPreviousIcon from '@material-ui/icons/SkipPrevious'
 import StopIcon from '@material-ui/icons/Stop'
+import ThumbUpAltSharpIcon from '@material-ui/icons/ThumbUpAltSharp'
 
 function Tutorials() {
   const tutorial = useSelector((state) => state.tutorial)
   const loading = useSelector((state) => state.loading)
-  const generalStep = useSelector((state) => state.tutorial.generalStep)
   const location = useLocation()
   const dispatch = useDispatch()
-
-  const getSteps = () => {
-    switch (location.pathname) {
-      case '/myteam':
-        return myRoster
-
-      case '/contracts':
-        return contracts
-
-      case '/extension':
-        return extensions
-
-      default:
-        break
-    }
-  }
 
   const incrementGeneral = () => {
     dispatch(allActions.tutorialActions.incrementGeneral())
@@ -43,6 +27,15 @@ function Tutorials() {
   const stopTutorial = () => {
     dispatch(allActions.tutorialActions.setGeneralStepZero())
     dispatch(allActions.tutorialActions.setGeneralTutoOff())
+  }
+
+  const setIsViewedTrue = () => {
+    dispatch(allActions.tutorialActions.setHasViewed())
+    dispatch(allActions.tutorialActions.setGeneralTutoOff())
+    window.localStorage.setItem(
+      'tutorial',
+      JSON.stringify({ ...tutorial, generalTutoIs: 'off', hasViewed: true })
+    )
   }
 
   const Tooltip = ({
@@ -58,8 +51,25 @@ function Tutorials() {
     const mustHideNextButton =
       (location.pathname === '/extension' && tutorial.generalStep === 1) ||
       (location.pathname === '/extension' && tutorial.generalStep === 5) ||
-      (location.pathname === '/myteam' && tutorial.generalStep === 2)
+      (location.pathname === '/myteam' && tutorial.generalStep === 2) ||
+      (location.pathname === '/myteam' && tutorial.generalStep === 3) ||
+      (location.pathname === '/home' &&
+        tutorial.generalStep === 0 &&
+        tutorial.hasViewed) ||
+      (location.pathname === '/home' && tutorial.generalStep === 1) ||
+      (location.pathname === '/home' && tutorial.generalStep === 2) ||
+      (location.pathname === '/home' && tutorial.generalStep === 4) ||
+      (location.pathname === '/home' && tutorial.generalStep === 5)
 
+    const mustHideBackButton =
+      (location.pathname === '/home' && tutorial.generalStep === 1) ||
+      (location.pathname === '/home' && tutorial.generalStep === 2) ||
+      (location.pathname === '/home' && tutorial.generalStep === 3) ||
+      (location.pathname === '/home' && tutorial.generalStep === 4) ||
+      (location.pathname === '/home' && tutorial.generalStep === 5)
+
+    const mustPutRightNextButton =
+      location.pathname === '/home' && tutorial.generalStep === 3
     return (
       <Paper
         style={{
@@ -73,27 +83,37 @@ function Tutorials() {
         <div style={{ width: '300px' }}>{step.content}</div>
 
         <Grid container style={{ marginTop: '20px' }}>
-          {index > 0 ? (
-            <Grid item xs={6}>
-              <Button
-                size="small"
-                {...backProps}
-                variant="contained"
-                color="secondary"
-                endIcon={<SkipPreviousIcon />}
-                onClick={decrementGeneral}
-              >
-                prev
-              </Button>
-            </Grid>
-          ) : (
+          {mustHideBackButton ? (
             ''
+          ) : (
+            <>
+              {index > 0 ? (
+                <Grid item xs={6}>
+                  <Button
+                    size="small"
+                    {...backProps}
+                    variant="contained"
+                    color="secondary"
+                    endIcon={<SkipPreviousIcon />}
+                    onClick={decrementGeneral}
+                  >
+                    prev
+                  </Button>
+                </Grid>
+              ) : (
+                ''
+              )}
+            </>
           )}
 
           {mustHideNextButton ? (
             ''
           ) : !isLastStep ? (
-            <Grid item xs={index > 0 ? 6 : 12} style={{ textAlign: 'end' }}>
+            <Grid
+              item
+              xs={index > 0 && !mustPutRightNextButton ? 6 : 12}
+              style={{ textAlign: 'end' }}
+            >
               <Button
                 size="small"
                 {...primaryProps}
@@ -105,7 +125,7 @@ function Tutorials() {
                 next
               </Button>
             </Grid>
-          ) : (
+          ) : isLastStep && tutorial.hasViewed ? (
             <Grid item xs={6} style={{ textAlign: 'end' }}>
               <Button
                 size="small"
@@ -118,6 +138,19 @@ function Tutorials() {
                 end
               </Button>
             </Grid>
+          ) : (
+            <Grid item xs={12} style={{ textAlign: 'end' }}>
+              <Button
+                size="small"
+                {...isLastStep}
+                variant="contained"
+                color="secondary"
+                endIcon={<ThumbUpAltSharpIcon />}
+                onClick={setIsViewedTrue}
+              >
+                got it
+              </Button>
+            </Grid>
           )}
         </Grid>
       </Paper>
@@ -128,7 +161,7 @@ function Tutorials() {
     <>
       {tutorial && tutorial.generalTutoIs === 'on' && loading === false ? (
         <Joyride
-          steps={getSteps()}
+          steps={getTutorialSteps(location.pathname, tutorial)}
           run={tutorial && tutorial.generalTutoIs === 'on' && loading === false}
           continuous={true}
           showProgress={true}
@@ -137,12 +170,7 @@ function Tutorials() {
           disableOverlayClose={true}
           spotlightClicks={true}
           tooltipComponent={Tooltip}
-          stepIndex={generalStep}
-          // styles={{
-          //   options: {
-          //     arrowColor: '#fff'
-          //   }
-          // }}
+          stepIndex={tutorial.generalStep}
         />
       ) : (
         ''
