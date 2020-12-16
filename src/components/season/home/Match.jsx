@@ -68,6 +68,10 @@ function Match({
       const timer = setTimeout(() => {
         dispatch(allActions.tutorialActions.increment())
       }, 100)
+      window.localStorage.setItem(
+        'tutorial',
+        JSON.stringify({ ...tutorial, step: 3 })
+      )
       return () => clearTimeout(timer)
     }
   }
@@ -174,7 +178,7 @@ function Match({
 
   return (
     <>
-      <CardActions className="seeStats">
+      <CardActions className="tutoSeeStats">
         {matchLoading ||
         (allGameLoading && game.PlayerStats.length < 1) ||
         (dataLoading && !isPlayed) ? (
@@ -193,7 +197,7 @@ function Match({
               }
               size="small"
               color="primary"
-              className="simulateOneGame"
+              className="tutoSimulateOne"
               onClick={() => matchit(game.uuid)}
               endIcon={
                 previousItem.team1 ? (
@@ -219,12 +223,7 @@ function Match({
           <>
             <>{displayButton(game)}</>
 
-            <Button
-              
-              variant="outlined"
-              size="small"
-              onClick={handleClickOpen}
-            >
+            <Button variant="outlined" size="small" onClick={handleClickOpen}>
               Stats
             </Button>
           </>
@@ -232,6 +231,7 @@ function Match({
       </CardActions>
 
       <Dialog
+        
         onClose={tutorial && tutorial.is === 'on' ? '' : handleClose}
         aria-labelledby="simple-dialog-title"
         open={open}
