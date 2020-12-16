@@ -60,9 +60,13 @@ function MyTeam() {
     })
     await getMyTeam()
     if (tutorial.generalTutoIs === 'on') {
-      dispatch(allActions.tutorialActions.incrementGeneral())
+      const timer = setTimeout(() => {
+        dispatch(allActions.tutorialActions.incrementGeneral())
+      }, 100)
+      return () => clearTimeout(timer)
     }
   }
+
   const putOutLineUp = async (playerUuid) => {
     await Axios.put(`${apiUrl}/players/${playerUuid}`, {
       isBench: true
@@ -70,7 +74,10 @@ function MyTeam() {
     await getMyTeam()
 
     if (tutorial.generalTutoIs === 'on') {
-      dispatch(allActions.tutorialActions.incrementGeneral())
+      const timer = setTimeout(() => {
+        dispatch(allActions.tutorialActions.incrementGeneral())
+      }, 100)
+      return () => clearTimeout(timer)
     }
   }
 
@@ -101,9 +108,7 @@ function MyTeam() {
               <TableHead>
                 <TableRow>
                   <TableCell>Photo</TableCell>
-                  <TableCell width="25%" align="center">
-                    Name
-                  </TableCell>
+                  <TableCell width="20%" align="center">Name</TableCell>
                   <TableCell align="center">Value</TableCell>
                   <TableCell align="center">Age</TableCell>
                   <TableCell align="center">Scoring</TableCell>
@@ -197,7 +202,7 @@ function MyTeam() {
               <TableHead>
                 <TableRow>
                   <TableCell>Photo</TableCell>
-                  <TableCell align="center">Name</TableCell>
+                  <TableCell width="20%" align="center">Name</TableCell>
                   <TableCell align="center">Value</TableCell>
                   <TableCell align="center">Age</TableCell>
                   <TableCell align="center">Scoring</TableCell>
