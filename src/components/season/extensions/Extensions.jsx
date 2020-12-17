@@ -14,6 +14,8 @@ import ProgressBall from '../../mutliple/ProgressBall'
 import AccountVerify from '../../mutliple/AccountVerify'
 import TrophySnackbar from '../../mutliple/TrophySnackbar'
 import PlayerValue from '../../mutliple/PlayerValue'
+import allActions from '../../../actions'
+import { useDispatch } from 'react-redux'
 
 function Extensions() {
   const [myteamData, setMyTeamData] = useState({})
@@ -23,6 +25,7 @@ function Extensions() {
   const [TrophyData, setTrophyData] = useState([])
   const [trophyName] = useState('Sign a extention')
   const [TeamUuid] = useState(window.localStorage.getItem('TeamUuid'))
+  const dispatch = useDispatch()
 
   const iOpenTrophySnackbar = () => {
     setOpenTrophySnackbar(true)
@@ -54,12 +57,12 @@ function Extensions() {
 
   const getAllData = async () => {
     try {
+      dispatch(allActions.loadingActions.setLoadingTrue())
+      dispatch(allActions.tutorialActions.setGeneralStepZero())
       await getMyTeam()
       await getTrophy()
-      const timer = setTimeout(() => {
-        setIsLoading(false)
-      }, 500)
-      return () => clearTimeout(timer)
+      setIsLoading(false)
+      dispatch(allActions.loadingActions.setLoadingFalse())
     } catch (error) {
       console.log(error)
     }
@@ -93,12 +96,12 @@ function Extensions() {
             component={Paper}
             style={{ width: '90%', margin: '100px auto ' }}
           >
-            <Table aria-label="simple table">
+            <Table aria-label="simple table" className="tutoExtensions1">
               <TableHead>
                 <TableRow>
                   <TableCell>Photo</TableCell>
-                  <TableCell align="right">Name</TableCell>
-                  <TableCell align="right">Value</TableCell>
+                  <TableCell align="left">Name</TableCell>
+                  <TableCell align="center">Value</TableCell>
                   <TableCell align="center">Years contract left</TableCell>
                   {/* <TableCell align="center">Salary expectations</TableCell> */}
                   <TableCell align="center">Propose extension</TableCell>
@@ -114,8 +117,8 @@ function Extensions() {
                       <TableCell component="th" scope="row">
                         <Avatar src={player.photo} />
                       </TableCell>
-                      <TableCell align="right">{`${player.firstName} ${player.lastName}`}</TableCell>
-                      <TableCell align="right">
+                      <TableCell align="left">{`${player.firstName} ${player.lastName}`}</TableCell>
+                      <TableCell align="center">
                         <PlayerValue playerValue={player.value} />
                       </TableCell>
                       <TableCell align="center">

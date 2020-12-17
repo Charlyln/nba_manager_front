@@ -5,34 +5,55 @@ const setTutorial = (tutorialState) => {
   }
 }
 
-const setOff = () => {
-  return {
-    type: 'SETOFF'
-  }
-}
-
-const setOn = () => {
-  return {
-    type: 'SETON'
-  }
-}
-
 const start = () => {
   return {
     type: 'START'
   }
 }
 
-const increment = () => {
+const setGeneralTutoOn = () => {
   return {
-    type: 'INCREMENT'
+    type: 'SETGENERALTUTOON'
+  }
+}
+
+const setGeneralTutoOff = () => {
+  return {
+    type: 'SETGENERALTUTOOFF'
+  }
+}
+
+const incrementGeneral = () => {
+  return {
+    type: 'INCREMENTGENERAL'
+  }
+}
+
+const decrementGeneral = () => {
+  return {
+    type: 'DECREMENTGENERAL'
+  }
+}
+
+const setGeneralStepZero = () => {
+  return {
+    type: 'SETGENERALSTEPZERO'
+  }
+}
+
+const setHasViewed = () => {
+  return {
+    type: 'HASVIEWED'
   }
 }
 
 export default {
   setTutorial,
-  setOff,
-  setOn,
-  increment,
-  start
+  start,
+  setGeneralTutoOn,
+  setGeneralTutoOff,
+  incrementGeneral,
+  setGeneralStepZero,
+  decrementGeneral,
+  setHasViewed
 }

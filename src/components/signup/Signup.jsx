@@ -33,6 +33,7 @@ function SignUp() {
     window.localStorage.removeItem('SeasonUuid')
     window.localStorage.removeItem('trainingLeft')
     window.localStorage.removeItem('canPlay')
+    window.localStorage.removeItem('tutorial')
 
     try {
       if (pseudo) {
@@ -83,6 +84,7 @@ function SignUp() {
           <Grid item xs={12} style={{ marginTop: '250px' }}>
             <Grid container alignItems="center" justify="center">
               <TextField
+                disabled={postLoading}
                 required
                 style={{ margin: '20px' }}
                 id="message"

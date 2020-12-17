@@ -42,7 +42,6 @@ function EditProfil({ myProfilData, getMyProfil }) {
   return (
     <>
       <Button
-        // size="small"
         variant="outlined"
         endIcon={<EditIcon />}
         style={{

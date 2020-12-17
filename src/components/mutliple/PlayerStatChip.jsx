@@ -1,35 +1,23 @@
-import { Chip } from '@material-ui/core'
+import { Badge, Chip } from '@material-ui/core'
 import React from 'react'
-import ArrowDropDownCircleIcon from '@material-ui/icons/ArrowDropDownCircle'
 
 function PlayerStatChip({ statMin, statBeg, statMax, divisor }) {
+  const diff =
+    Math.round(((statMin + statMax) / 2 / divisor) * 100) -
+    Math.round(((statBeg + statMax) / 2 / divisor) * 100)
+
   return (
     <>
-      <Chip
-        avatar={
-          statMin > statBeg ? (
-            <>
-              <ArrowDropDownCircleIcon
-                style={{
-                  margin: '0px -8px 0px 5px',
-                  transform: 'rotate(180deg)',
-                  color: 'rgb(76, 175, 80)'
-                }}
-              />
-            </>
-          ) : statMin < statBeg ? (
-            <ArrowDropDownCircleIcon
-              style={{
-                margin: '0px -8px 0px 5px',
-                color: 'rgb(217, 48, 33)'
-              }}
-            />
-          ) : (
-            ''
-          )
-        }
-        label={Math.round(((statMin + statMax) / 2 / divisor) * 100)}
-      />
+      <Badge
+        invisible={statMin === statBeg || diff === 0}
+        badgeContent={`${diff > 0 ? '+' : ''}${diff}`}
+        color={diff > 0 ? 'primary' : 'secondary'}
+      >
+        <Chip
+          className={statMin > statBeg ? 'tutoMyRoster5' : 'tutoMyRoster5'}
+          label={Math.round(((statMin + statMax) / 2 / divisor) * 100)}
+        />
+      </Badge>
     </>
   )
 }

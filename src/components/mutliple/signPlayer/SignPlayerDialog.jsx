@@ -13,6 +13,8 @@ import React, { useState } from 'react'
 import updateSalaryCapLeft from '../../api calls/updateSalaryCapLeft'
 import CancelIcon from '@material-ui/icons/Cancel'
 import CheckCircleIcon from '@material-ui/icons/CheckCircle'
+import allActions from '../../../actions'
+import { useDispatch, useSelector } from 'react-redux'
 
 function SignPlayerDialog({
   signContract,
@@ -30,9 +32,10 @@ function SignPlayerDialog({
   const [open, setOpen] = useState(false)
   const [playerMood, setPlayerMood] = useState('')
   const [tooLowMoney, setTooLowMoney] = useState(false)
+  const tutorial = useSelector((state) => state.tutorial)
+  const dispatch = useDispatch()
 
   const proposeContract = () => {
-    console.log(myteamData.salaryCapLeft)
     if (interest <= 85) {
       if (interest >= 40) {
         setPlayerMood('declined')
@@ -68,6 +71,12 @@ function SignPlayerDialog({
     }
 
     setOpen(true)
+    if (tutorial.generalTutoIs === 'on') {
+      const timer = setTimeout(() => {
+        dispatch(allActions.tutorialActions.incrementGeneral())
+      }, 100)
+      return () => clearTimeout(timer)
+    }
   }
 
   const handleClose = async () => {
@@ -86,7 +95,12 @@ function SignPlayerDialog({
 
   return (
     <>
-      <Button color="primary" autoFocus onClick={proposeContract}>
+      <Button
+        color="primary"
+        autoFocus
+        onClick={proposeContract}
+        className="tutoExtensions6"
+      >
         Propose
       </Button>
       <Dialog
@@ -95,7 +109,7 @@ function SignPlayerDialog({
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogContent>
+        <DialogContent className="tutoExtensions7">
           <DialogTitle>Info</DialogTitle>
           {!hasSign ? (
             <>

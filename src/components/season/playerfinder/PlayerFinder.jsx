@@ -14,20 +14,20 @@ import RotateLeftIcon from '@material-ui/icons/RotateLeft'
 import ProgressBall from '../../mutliple/ProgressBall'
 import AccountVerify from '../../mutliple/AccountVerify'
 import PlayerValue from '../../mutliple/PlayerValue'
+import { useDispatch } from 'react-redux'
+import allActions from '../../../actions'
 
 function PlayerFinder() {
   const [playersData, setPlayersData] = useState({})
   const [userUuid] = useState(window.localStorage.getItem('uuid'))
   const [isLoading, setIsLoading] = useState(true)
   const [name, setName] = useState('')
-  // const [isSearching, setIsSearching] = useState(false)
   const [namesFiltered, SetnamesFiltered] = useState([])
+  const dispatch = useDispatch()
 
   const search = (e) => {
     e.preventDefault()
     if (name) {
-      // setIsSearching(true)
-
       const arrayFiltered = playersData.filter(
         (travel) =>
           travel.lastName.toLowerCase().includes(name.toLowerCase()) ||
@@ -36,7 +36,6 @@ function PlayerFinder() {
 
       SetnamesFiltered(arrayFiltered)
       setName('')
-      // setIsSearching(false)
     }
   }
 
@@ -44,8 +43,20 @@ function PlayerFinder() {
     SetnamesFiltered(playersData)
   }
 
+  const getAllData = async () => {
+    try {
+      dispatch(allActions.loadingActions.setLoadingTrue())
+      dispatch(allActions.tutorialActions.setGeneralStepZero())
+      await getPlayers()
+      setIsLoading(false)
+      dispatch(allActions.loadingActions.setLoadingFalse())
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   useEffect(() => {
-    getPlayers()
+    getAllData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -54,10 +65,6 @@ function PlayerFinder() {
       const res = await Axios.get(`${apiUrl}/players/${userUuid}`)
       setPlayersData(res.data)
       SetnamesFiltered(res.data)
-      const timer = setTimeout(() => {
-        setIsLoading(false)
-      }, 2000)
-      return () => clearTimeout(timer)
     } catch (err) {
       console.log(err)
     }
@@ -78,7 +85,7 @@ function PlayerFinder() {
             style={{ width: '90%', margin: '100px auto ' }}
           >
             <form onSubmit={search}>
-              <ListItem>
+              <ListItem className="tutoPlayerFinder2">
                 <TextField
                   style={{ margin: '20px' }}
                   id="outlined-basic"
@@ -126,9 +133,9 @@ function PlayerFinder() {
                   .sort(function (a, b) {
                     return new Date(b.value) - new Date(a.value)
                   })
-                  // .filter((player) => !player.isRookie)
+
                   .map((player) => (
-                    <TableRow>
+                    <TableRow className="tutoPlayerFinder1">
                       <TableCell align="center" component="th" scope="row">
                         <Avatar style={{ margin: 'auto' }} src={player.photo} />
                       </TableCell>

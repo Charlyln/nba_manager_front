@@ -13,20 +13,6 @@ import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
 
 function StatsCollapse({ player, SeasonUuid }) {
-  //   const [ptsSum, setPtsSum] = useState(
-  //     player.PlayerStats.reduce((result, number) =>
-  //       console.log(result.pts, number.pts)
-  //     ) / player.PlayerStats.length
-  //   )
-  //   const [rebSum, setrebSum] = useState(
-  //     player.PlayerStats.reduce((result, number) => result.reb + number.reb) /
-  //       player.PlayerStats.length
-  //   )
-  //   const [pasSum, setpasSum] = useState(
-  //     player.PlayerStats.reduce((result, number) => result.pas + number.pas) /
-  //       player.PlayerStats.length
-  //   )
-
   return (
     <>
       <Accordion>
@@ -56,8 +42,7 @@ function StatsCollapse({ player, SeasonUuid }) {
               <TableBody>
                 {player.PlayerStats.sort(function (a, b) {
                   return new Date(b.Game.uuid) - new Date(a.Game.uuid)
-                })
-                .map((stat, i) => (
+                }).map((stat, i) => (
                   <TableRow>
                     <TableCell>{`Match ${i + 1}`}</TableCell>
                     <TableCell>

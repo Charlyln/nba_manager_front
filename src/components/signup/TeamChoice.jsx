@@ -14,6 +14,8 @@ import TeamChoiceCard from './TeamChoiceCard'
 import { apiUrl } from '../../apiUrl'
 import CheckIcon from '@material-ui/icons/Check'
 import postProgressValue from '../api calls/postProgressValue'
+import { useDispatch } from 'react-redux'
+import allActions from '../../actions'
 
 const useStyles = makeStyles((theme) => ({
   gridList: {
@@ -40,6 +42,7 @@ function TeamChoice() {
   const [SeasonUuid] = useState(window.localStorage.getItem('SeasonUuid'))
   const [canPlay] = useState(window.localStorage.getItem('canPlay'))
   const [TeamUuidToPost, setTeamUuidToPost] = useState('')
+  const dispatch = useDispatch()
 
   const putTeamChoice = (uuid) => {
     setTeamChoice(uuid)
@@ -82,6 +85,14 @@ function TeamChoice() {
       window.localStorage.setItem('SeasonUuid', res.data.uuid)
       window.localStorage.setItem('canPlay', '1')
       window.localStorage.setItem('trainingLeft', 2)
+
+      dispatch(allActions.tutorialActions.setGeneralTutoOn())
+
+      window.localStorage.setItem(
+        'tutorial',
+        JSON.stringify({ generalTutoIs: 'on', generalStep: 0 })
+      )
+
       setRedirect(true)
     } catch (err) {
       console.log(err)

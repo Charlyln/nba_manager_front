@@ -15,6 +15,8 @@ import MonetizationOnIcon from '@material-ui/icons/MonetizationOn'
 import PlayerValue from '../../mutliple/PlayerValue'
 import TrophySnackbar from '../../mutliple/TrophySnackbar'
 import FreePlayer from './FreePlayer'
+import { useDispatch } from 'react-redux'
+import allActions from '../../../actions'
 
 function Contracts() {
   const [myteamData, setMyTeamData] = useState({})
@@ -25,6 +27,7 @@ function Contracts() {
   const [openTrophySnackbar, setOpenTrophySnackbar] = useState(false)
   const [TrophyData, setTrophyData] = useState([])
   const [trophyName] = useState('Fire a player')
+  const dispatch = useDispatch()
 
   const iOpenTrophySnackbar = () => {
     setOpenTrophySnackbar(true)
@@ -49,10 +52,22 @@ function Contracts() {
     }
   }
 
-  useEffect(() => {
-    getMyTeam()
-    getTrophy()
+  const getAllData = async () => {
+    try {
+      dispatch(allActions.loadingActions.setLoadingTrue())
+      dispatch(allActions.tutorialActions.setGeneralStepZero())
+      await getMyTeam()
+      await getTrophy()
+      await getMySeason()
+      setIsLoading(false)
+      dispatch(allActions.loadingActions.setLoadingFalse())
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
+  useEffect(() => {
+    getAllData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -69,9 +84,6 @@ function Contracts() {
     try {
       const res = await Axios.get(`${apiUrl}/teams/myteam/${UserUuid}`)
       setMyTeamData(res.data)
-      await getMySeason()
-      await getTrophy()
-      setIsLoading(false)
     } catch (err) {
       console.log(err)
     }
@@ -128,7 +140,10 @@ function Contracts() {
                   <TableCell align="center">Value</TableCell>
                   <TableCell align="center">Age</TableCell>
                   <TableCell align="center">Fire player</TableCell>
-                  <TableCell align="center">{`${mySeason.startYear} - ${mySeason.endYear}`}</TableCell>
+                  <TableCell
+                    align="center"
+                    className="tutoContracts2"
+                  >{`${mySeason.startYear} - ${mySeason.endYear}`}</TableCell>
                   <TableCell align="center">{`${mySeason.startYear + 1} - ${
                     mySeason.endYear + 1
                   }`}</TableCell>
@@ -176,6 +191,7 @@ function Contracts() {
                   <TableCell></TableCell>
                   <TableCell align="center">
                     <Chip
+                      className="tutoContracts1"
                       color="primary"
                       icon={<MonetizationOnIcon />}
                       label={` ${
@@ -188,6 +204,7 @@ function Contracts() {
                   </TableCell>
                   <TableCell align="center">
                     <Chip
+                      className="tutoContracts3"
                       color="primary"
                       icon={<MonetizationOnIcon />}
                       label={` ${
@@ -231,6 +248,7 @@ function Contracts() {
                   <TableCell></TableCell>
                   <TableCell align="center">
                     <Chip
+                      className="tutoContracts4"
                       style={{
                         backgroundColor:
                           myteamData.Players.reduce(
@@ -254,6 +272,7 @@ function Contracts() {
                   </TableCell>
                   <TableCell align="center">
                     <Chip
+                      className="tutoContracts5"
                       style={{
                         backgroundColor:
                           myteamData.Players.reduce(

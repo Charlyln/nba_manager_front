@@ -32,6 +32,7 @@ function Match({
   getAllData,
   game,
   previousItem,
+  nextItem,
   i,
   allGameLoading,
   TeamUuid,
@@ -64,9 +65,9 @@ function Match({
   const handleClickOpen = () => {
     setOpen(true)
 
-    if (tutorial && tutorial.is === 'on' && tutorial.step === 1) {
+    if (tutorial && tutorial.generalTutoIs === 'on') {
       const timer = setTimeout(() => {
-        dispatch(allActions.tutorialActions.increment())
+        dispatch(allActions.tutorialActions.incrementGeneral())
       }, 100)
       return () => clearTimeout(timer)
     }
@@ -74,22 +75,12 @@ function Match({
 
   const handleClose = () => {
     setOpen(false)
-    if (tutorial && tutorial.is === 'on') {
-      dispatch(allActions.tutorialActions.increment())
+    if (tutorial && tutorial.generalTutoIs === 'on') {
+      dispatch(allActions.tutorialActions.incrementGeneral())
     }
   }
 
   const displayButton = (game) => {
-    // const myTeamResult = game.PlayerStats.filter(
-    //   (stat) => stat.Player.TeamUuid === TeamUuid
-    // ).reduce((a, v) => (a = a + v.pts), 0)
-    // // setScore1(myTeamResult)
-
-    // const team2Result = game.PlayerStats.filter(
-    //   (stat) => stat.Player.TeamUuid !== TeamUuid
-    // ).reduce((a, v) => (a = a + v.pts), 0)
-    // // setScore2(team2Result)
-
     let difference = 0
 
     if (game.team1 > game.team2) {
@@ -162,7 +153,7 @@ function Match({
           await getAllData()
           setCountUp(true)
           setMatchLoading(false)
-          dispatch(allActions.tutorialActions.increment())
+          dispatch(allActions.tutorialActions.incrementGeneral())
         }
       } catch (err) {
         console.log(err)
@@ -174,7 +165,14 @@ function Match({
 
   return (
     <>
-      <CardActions className="seeStats">
+      <CardActions
+        className={
+          (game.team1 && nextItem && !nextItem.team1) ||
+          (game.team1 && !nextItem)
+            ? 'tutoHome2'
+            : ''
+        }
+      >
         {matchLoading ||
         (allGameLoading && game.PlayerStats.length < 1) ||
         (dataLoading && !isPlayed) ? (
@@ -192,8 +190,8 @@ function Match({
                   : 'outlined'
               }
               size="small"
+              className="tutoHome1"
               color="primary"
-              className="simulateOneGame"
               onClick={() => matchit(game.uuid)}
               endIcon={
                 previousItem.team1 ? (
@@ -219,12 +217,7 @@ function Match({
           <>
             <>{displayButton(game)}</>
 
-            <Button
-              
-              variant="outlined"
-              size="small"
-              onClick={handleClickOpen}
-            >
+            <Button variant="outlined" size="small" onClick={handleClickOpen}>
               Stats
             </Button>
           </>
@@ -232,14 +225,13 @@ function Match({
       </CardActions>
 
       <Dialog
-        onClose={tutorial && tutorial.is === 'on' ? '' : handleClose}
+        onClose={tutorial && tutorial.generalTutoIs === 'on' ? '' : handleClose}
         aria-labelledby="simple-dialog-title"
         open={open}
         fullWidth
         maxWidth="md"
-        style={{ zIndex: tutorial && tutorial.is === 'on' ? 50 : 'unset' }}
       >
-        <Grid container className="tutoGameStats">
+        <Grid container className="tutoHome3">
           <Grid item xs={12}>
             <Grid container justify="center">
               <Grid item style={{ margin: 'auto' }}>

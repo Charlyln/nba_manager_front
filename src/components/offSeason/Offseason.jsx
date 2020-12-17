@@ -11,7 +11,7 @@ import OffSeasonDialog from './OffSeasonDialog'
 import Axios from 'axios'
 import { apiUrl } from '../../apiUrl'
 import { Redirect } from 'react-router-dom'
-// import { Redirect } from 'react-router-dom'
+
 import AccountVerify from '../../components/mutliple/AccountVerify'
 import ProgressBall from '../mutliple/ProgressBall'
 import TrophySnackbar from '../mutliple/TrophySnackbar'
@@ -59,8 +59,15 @@ function Offseason() {
       } else if (step === 'Free agency') {
         trophyNameReq = 'Sign a free agent'
         setTrophyName('Sign a free agent')
+      } else if (step === 'Training Camps') {
+        trophyNameReq = 'Use a training camp'
+        setTrophyName('Use a training camp')
       }
-      if (step === 'Player options' || step === 'Free agency') {
+      if (
+        step === 'Player options' ||
+        step === 'Free agency' ||
+        step === 'Training Camps'
+      ) {
         const res = await Axios.get(
           `${apiUrl}/trophies/${trophyNameReq}/${UserUuid}`
         )
@@ -76,6 +83,7 @@ function Offseason() {
     'Draft',
     'Player options',
     'Free agency',
+    'Training Camps',
     'Player progress'
   ]
 
@@ -130,12 +138,6 @@ function Offseason() {
     setActiveStep((prevActiveStep) => prevActiveStep + 1)
     setCanGoNext(false)
     window.localStorage.setItem('offseason', offseasonStepIn + 1)
-
-    // if (nextItem === 'Player options') {
-    //   setTrophyName('Sign a player option')
-    // } else if (nextItem === 'Free agency') {
-    //   setTrophyName('Sign a free agent')
-    // }
   }
 
   const NextSeason = async (e) => {

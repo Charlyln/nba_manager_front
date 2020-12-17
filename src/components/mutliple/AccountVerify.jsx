@@ -4,17 +4,11 @@ import { Redirect } from 'react-router-dom'
 import { apiUrl } from '../../apiUrl'
 
 function AccountVerify() {
-  // const history = useHistory()
   const [UserUuid] = useState(window.localStorage.getItem('uuid'))
   const [SeasonUuid] = useState(window.localStorage.getItem('SeasonUuid'))
   const [TeamUuid] = useState(window.localStorage.getItem('TeamUuid'))
   const [canPlay] = useState(window.localStorage.getItem('canPlay'))
   const [redirect, setRedirect] = useState(false)
-
-  useEffect(() => {
-    AccountVerifyRequest()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   const AccountVerifyRequest = async () => {
     try {
@@ -31,6 +25,10 @@ function AccountVerify() {
     }
   }
 
+  useEffect(() => {
+    AccountVerifyRequest()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   if (!UserUuid || !SeasonUuid || !TeamUuid || !canPlay || redirect) {
     return <Redirect to="/" />
   }

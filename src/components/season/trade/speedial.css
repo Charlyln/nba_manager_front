@@ -1,3 +1,9 @@
 .MuiFab-primary {
-    background-color: #424242 !important;
+  background-color: #424242 !important;
+}
+.MuiBadge-colorPrimary {
+  background-color: rgb(76, 175, 80) !important;
+}
+.MuiBadge-colorSecondary {
+  background-color: rgb(217, 48, 33) !important;
 }

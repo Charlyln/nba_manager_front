@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import allActions from '../../../actions'
+import allActions from '../../actions'
 
 const TutorialInitial = () => {
   const [tutorial] = useState(window.localStorage.getItem('tutorial'))

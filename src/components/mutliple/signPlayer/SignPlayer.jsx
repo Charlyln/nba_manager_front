@@ -20,6 +20,8 @@ import SignPlayerDialog from './SignPlayerDialog'
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn'
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined'
 import getPlayerInterest from './getPlayerInterest'
+import allActions from '../../../actions'
+import { useDispatch, useSelector } from 'react-redux'
 
 function SignPlayer({
   player,
@@ -42,11 +44,11 @@ function SignPlayer({
     getPlayerInterest(player.value, initialSalary)
   )
   const [hasSign, setHasSign] = useState(false)
+  const tutorial = useSelector((state) => state.tutorial)
+  const dispatch = useDispatch()
 
   const signContract = async () => {
     if (contractLeft) {
-      // const payload = { salary, contractLeft: duration }
-
       const payload = {
         contractYear2: duration >= 1 ? salary : 0,
         contractYear3: duration >= 2 ? salary : 0,
@@ -108,17 +110,18 @@ function SignPlayer({
         iOpenTrophySnackbar()
         getTrophy(step)
       }
-      // handleClose()
-      // if (getPlayers) {
-      //   getPlayers()
-      // } else if (getMyTeamInDialog) {
-      //   getMyTeamInDialog()
-      // }
     }
   }
 
   const handleClickOpen = () => {
     setOpen(true)
+
+    if (tutorial.generalTutoIs === 'on') {
+      const timer = setTimeout(() => {
+        dispatch(allActions.tutorialActions.incrementGeneral())
+      }, 100)
+      return () => clearTimeout(timer)
+    }
   }
 
   const handleClose = () => {
@@ -159,11 +162,9 @@ function SignPlayer({
     } else if (PlayerValue >= 90) {
       pourcentage = 0.3
     }
-    const salaryExpected = 100000000 * pourcentage // 15 millions
+    const salaryExpected = 100000000 * pourcentage
 
     const valueCal = (salary / salaryExpected) * 100
-
-    // setInterest(valueCal)
 
     if (valueCal <= 0) {
       return 0
@@ -260,6 +261,7 @@ function SignPlayer({
   return (
     <>
       <Button
+        className="tutoExtensions2"
         onClick={handleClickOpen}
         color="primary"
         size="small"
@@ -293,7 +295,10 @@ function SignPlayer({
                     }}
                     src={player.photo}
                   />
-                  <div style={{ padding: '20px 30px' }}>
+                  <div
+                    style={{ padding: '20px 30px' }}
+                    className="tutoExtensions4"
+                  >
                     <Typography
                       id="discrete-slider"
                       gutterBottom
@@ -353,6 +358,7 @@ function SignPlayer({
                       Salary
                     </Typography>
                     <Slider
+                      className="tutoExtensions3"
                       aria-labelledby="discrete-slider"
                       marks={marks}
                       defaultValue={7}
@@ -371,6 +377,7 @@ function SignPlayer({
                     </Typography>
                     <Slider
                       defaultValue={3}
+                      className="tutoExtensions5"
                       aria-labelledby="discrete-slider"
                       valueLabelDisplay="on"
                       step={1}

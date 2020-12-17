@@ -5,7 +5,7 @@ function PlayerValue({ playerValue, changeBoxColor, playerTeamUuid }) {
   const [TeamUuid] = useState(window.localStorage.getItem('TeamUuid'))
   return (
     <>
-      <Box position="relative" display="inline-flex">
+      <Box position="relative" display="inline-flex" className="tutoMyRoster6">
         <CircularProgress
           color={
             changeBoxColor && playerTeamUuid !== TeamUuid

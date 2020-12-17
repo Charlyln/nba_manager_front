@@ -10,7 +10,6 @@ import {
   ListItemText,
   ListSubheader,
   Paper,
-  Switch,
   Typography
 } from '@material-ui/core'
 import Axios from 'axios'
@@ -27,8 +26,6 @@ import bronzeTrophy from '../../../images/bronzeTrophy.png'
 import silverTrophy from '../../../images/silverTrophy.png'
 import goldTrophy from '../../../images/goldTrophy.png'
 import SportsEsportsIcon from '@material-ui/icons/SportsEsports'
-import { useDispatch, useSelector } from 'react-redux'
-import allActions from '../../../actions'
 
 function Profil() {
   const [isLoading, setIsLoading] = useState(true)
@@ -37,8 +34,6 @@ function Profil() {
   const [TeamUuid] = useState(window.localStorage.getItem('TeamUuid'))
   const [SeasonUuid] = useState(window.localStorage.getItem('SeasonUuid'))
   const [multipleData, setMultipleData] = useState({})
-  const tutorial = useSelector((state) => state.tutorial)
-  const dispatch = useDispatch()
 
   useEffect(() => {
     getAllData()
@@ -118,18 +113,8 @@ function Profil() {
     }
   }
 
-  const handleChange = () => {
-    if (tutorial === 'on') {
-      dispatch(allActions.tutorialActions.setOff())
-      window.localStorage.setItem('tutorial', 'off')
-    } else if (tutorial === 'off') {
-      dispatch(allActions.tutorialActions.setOn())
-      window.localStorage.setItem('tutorial', 'on')
-    }
-  }
-
   const displayItem = (thisTrophy) => {
-    const rightDateFormat = new Date(thisTrophy.updatedAt)
+    const rightDateFormat = new Date(thisTrophy.earnedAt)
     const date = rightDateFormat.toString().slice(4, 15)
     const hour = rightDateFormat.toString().slice(15, 21).replace(':', 'h')
     const newDate = new Date()
@@ -220,24 +205,6 @@ function Profil() {
                         secondary={`${new Date(myProfilData.createdAt)
                           .toString()
                           .slice(4, 15)}`}
-                      />
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                  <ListItem>
-                    <ListItemText>Tutorial</ListItemText>
-                    <ListItemSecondaryAction>
-                      <FormControlLabel
-                        value="top"
-                        control={
-                          <Switch
-                            checked={tutorial.is === 'on'}
-                            onChange={handleChange}
-                            name="Tutorial"
-                            color="primary"
-                          />
-                        }
-                        label={tutorial.is}
-                        labelPlacement="start"
                       />
                     </ListItemSecondaryAction>
                   </ListItem>
