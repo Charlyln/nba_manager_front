@@ -33,6 +33,7 @@ function SignUp() {
     window.localStorage.removeItem('SeasonUuid')
     window.localStorage.removeItem('trainingLeft')
     window.localStorage.removeItem('canPlay')
+    window.localStorage.removeItem('tutorial')
 
     try {
       if (pseudo) {
