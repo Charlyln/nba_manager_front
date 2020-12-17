@@ -1,5 +1,5 @@
 import Axios from 'axios'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { apiUrl } from '../../../apiUrl'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
@@ -8,129 +8,41 @@ import TableContainer from '@material-ui/core/TableContainer'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
-import { Avatar, Typography, Fab, Chip } from '@material-ui/core'
-import HeadShake from 'react-reveal/HeadShake'
-import AddCircleIcon from '@material-ui/icons/AddCircle'
-import DoneIcon from '@material-ui/icons/Done'
-import PlayerValue from '../../mutliple/PlayerValue'
+import { Avatar } from '@material-ui/core'
+import ProgressBall from '../../mutliple/ProgressBall'
+import AccountVerify from '../../mutliple/AccountVerify'
+import allActions from '../../../actions'
+import { useDispatch } from 'react-redux'
+import TrainingBox from './TrainingBox'
+import ChangeTrainingSliders from './ChangeTrainingSliders'
 
-function Training({
-  myteamData,
-  getMyTeam,
-  TrophyData,
-  iOpenTrophySnackbar,
-  trophyName,
-  getTrophy,
-  step
-}) {
+function Training() {
+  const [myteamData, setMyTeamData] = useState([])
   const [UserUuid] = useState(window.localStorage.getItem('uuid'))
-  const [trainingLeft, setTrainingLeft] = useState(
-    parseFloat(window.localStorage.getItem('trainingLeft'))
-  )
-  const [counter, setCounter] = useState(0)
+  const dispatch = useDispatch()
+  const [isLoading, setIsLoading] = useState(true)
 
-  const checkTrophy = async () => {
+  useEffect(() => {
+    getAllData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const getAllData = async () => {
     try {
-      if (!TrophyData.earned) {
-        await Axios.post(`${apiUrl}/trophies/earned/${UserUuid}`, {
-          name: trophyName
-        })
-        iOpenTrophySnackbar()
-        await getTrophy(step)
-      }
+      dispatch(allActions.loadingActions.setLoadingTrue())
+      dispatch(allActions.tutorialActions.setGeneralStepZero())
+      await getMyTeam()
+      setIsLoading(false)
+      dispatch(allActions.loadingActions.setLoadingFalse())
     } catch (error) {
       console.log(error)
     }
   }
 
-  const riseUpScoring = async (playerValue, min, max, uuid) => {
+  const getMyTeam = async () => {
     try {
-      if (trainingLeft > 0 && playerValue < 99) {
-        checkTrophy()
-        if (min + max < 68) {
-          await Axios.put(`${apiUrl}/players/${uuid}`, {
-            ptsMin: min + 1,
-            ptsMax: max + 1
-          })
-
-          window.localStorage.setItem('trainingLeft', trainingLeft - 1)
-          setTrainingLeft(trainingLeft - 1)
-          await getMyTeam()
-        } else if (min + max === 68) {
-          await Axios.put(`${apiUrl}/players/${uuid}`, {
-            ptsMin: min + 1
-          })
-          window.localStorage.setItem('trainingLeft', trainingLeft - 1)
-          setTrainingLeft(trainingLeft - 1)
-          await getMyTeam()
-        }
-      } else if (playerValue >= 99) {
-        console.log('already at the max')
-      } else {
-        setCounter((counter) => counter + 1)
-      }
-    } catch (err) {
-      console.log(err)
-    }
-  }
-  const riseUpRebound = async (playerValue, min, max, uuid) => {
-    try {
-      if (trainingLeft > 0 && playerValue < 99) {
-        checkTrophy()
-        if (min + max < 25) {
-          await Axios.put(`${apiUrl}/players/${uuid}`, {
-            rebMin: min + 0.4,
-            rebMax: max + 0.3
-          })
-
-          window.localStorage.setItem('trainingLeft', trainingLeft - 1)
-          setTrainingLeft(trainingLeft - 1)
-          await getMyTeam()
-        } else if (min + max < 25.7) {
-          await Axios.put(`${apiUrl}/players/${uuid}`, {
-            rebMin: min + 0.2
-          })
-          window.localStorage.setItem('trainingLeft', trainingLeft - 1)
-          setTrainingLeft(trainingLeft - 1)
-          await getMyTeam()
-        }
-      } else if (playerValue >= 99) {
-        console.log('already at the max')
-      } else {
-        setCounter((counter) => counter + 1)
-      }
-    } catch (err) {
-      console.log(err)
-    }
-  }
-  const riseUpPass = async (playerValue, min, max, uuid) => {
-    try {
-      if (trainingLeft > 0 && playerValue < 99) {
-        checkTrophy()
-        if (min + max < 21) {
-          await Axios.put(`${apiUrl}/players/${uuid}`, {
-            pasMin: min + 0.2,
-            pasMax: max + 0.2
-          })
-
-          window.localStorage.setItem('trainingLeft', trainingLeft - 1)
-          setTrainingLeft(trainingLeft - 1)
-
-          await getMyTeam()
-        } else if (min + max < 21.7) {
-          await Axios.put(`${apiUrl}/players/${uuid}`, {
-            pasMin: min + 0.2
-          })
-          window.localStorage.setItem('trainingLeft', trainingLeft - 1)
-          setTrainingLeft(trainingLeft - 1)
-
-          await getMyTeam()
-        }
-      } else if (playerValue >= 99) {
-        console.log('already at the max')
-      } else {
-        setCounter((counter) => counter + 1)
-      }
+      const res = await Axios.get(`${apiUrl}/teams/myteam/${UserUuid}`)
+      setMyTeamData(res.data)
     } catch (err) {
       console.log(err)
     }
@@ -138,173 +50,62 @@ function Training({
 
   return (
     <>
-      <TableContainer
-        elevation={10}
-        component={Paper}
-        style={{ width: '98%', margin: 'auto' }}
-      >
-        <div style={{ float: 'right', display: 'flex', marginRight: '10px' }}>
-          <Typography
-            variant="button"
-            component="div"
-            color="textSecondary"
-            style={{
-              color: 'rgb(128 127 127)',
-              alignSelf: 'center',
-              margin: '5px 10px 0px 0px'
-            }}
+      <AccountVerify />
+      {isLoading ? (
+        <>
+          <ProgressBall />
+        </>
+      ) : (
+        <>
+          <TableContainer
+            elevation={10}
+            component={Paper}
+            style={{ width: '90%', margin: '100px auto ' }}
           >
-            <strong>Trainings left</strong>
-          </Typography>
-          <HeadShake spy={counter}>
-            <Fab
-              size="small"
-              aria-label="add"
-              style={{
-                margin: '5px 0px 0px 2px',
-                width: '35px',
-                height: '35px',
-                backgroundColor:
-                  trainingLeft === 2
-                    ? 'rgb(76, 175, 80)'
-                    : trainingLeft === 1
-                    ? '#FB8B3C'
-                    : 'rgb(217, 48, 33)'
-              }}
-            >
-              {trainingLeft}
-            </Fab>
-          </HeadShake>
-        </div>
+            <Table aria-label="simple table" className="tutoExtensions1">
+              <TableHead>
+                <TableRow>
+                  <TableCell align="center">Photo</TableCell>
+                  <TableCell align="left">Name</TableCell>
+                  <TableCell align="center">Scoring intensity</TableCell>
+                  <TableCell align="center">Rebounds intensity</TableCell>
+                  <TableCell align="center">Assists intensity</TableCell>
+                  <TableCell align="center">Change intensity</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {myteamData.Players.sort(function (a, b) {
+                  return new Date(b.salary) - new Date(a.salary)
+                }).map((player) => (
+                  <TableRow>
+                    <TableCell align="center" component="th" scope="row">
+                      <Avatar style={{ margin: 'auto' }} src={player.photo} />
+                    </TableCell>
+                    <TableCell align="left">{`${player.firstName} ${player.lastName}`}</TableCell>
 
-        <Table aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell align="center">Photo</TableCell>
-              <TableCell align="left">Name</TableCell>
-              <TableCell align="left">Value</TableCell>
-              <TableCell align="center">Scoring</TableCell>
-              <TableCell align="center">Rebound</TableCell>
-              <TableCell align="center">Pass</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {myteamData.Players.sort(function (a, b) {
-              return new Date(b.value) - new Date(a.value)
-            }).map((player) => (
-              <TableRow>
-                <TableCell align="center" component="th" scope="row">
-                  <Avatar style={{ margin: 'auto' }} src={player.photo} />
-                </TableCell>
-                <TableCell align="left">{`${player.firstName} ${player.lastName}`}</TableCell>
-                <TableCell align="left">
-                  <PlayerValue playerValue={player.value} />
-                </TableCell>
-                <TableCell align="center">
-                  {Math.round(
-                    ((player.ptsMin + player.ptsMax) / 2 / 35) * 100
-                  ) === 99 ? (
-                    <Chip
-                      label={Math.round(
-                        ((player.ptsMin + player.ptsMax) / 2 / 35) * 100
-                      )}
-                      onDelete
-                      deleteIcon={<DoneIcon />}
-                      clickable={false}
-                    />
-                  ) : (
-                    <Chip
-                      onDelete={() =>
-                        riseUpScoring(
-                          player.value,
-                          player.ptsMin,
-                          player.ptsMax,
-                          player.uuid
-                        )
-                      }
-                      deleteIcon={
-                        <AddCircleIcon
-                          fontSize="small"
-                          style={{ color: 'white', width: '19px' }}
-                        />
-                      }
-                      label={Math.round(
-                        ((player.ptsMin + player.ptsMax) / 2 / 35) * 100
-                      )}
-                    />
-                  )}
-                </TableCell>
-                <TableCell align="center">
-                  {Math.round(
-                    ((player.rebMin + player.rebMax) / 2 / 13) * 100
-                  ) === 99 ? (
-                    <Chip
-                      label={Math.round(
-                        ((player.rebMin + player.rebMax) / 2 / 13) * 100
-                      )}
-                      onDelete
-                      deleteIcon={<DoneIcon />}
-                    />
-                  ) : (
-                    <Chip
-                      onDelete={() =>
-                        riseUpRebound(
-                          player.value,
-                          player.rebMin,
-                          player.rebMax,
-                          player.uuid
-                        )
-                      }
-                      deleteIcon={
-                        <AddCircleIcon
-                          fontSize="small"
-                          style={{ color: 'white', width: '19px' }}
-                        />
-                      }
-                      label={Math.round(
-                        ((player.rebMin + player.rebMax) / 2 / 13) * 100
-                      )}
-                    />
-                  )}
-                </TableCell>
-                <TableCell align="center">
-                  {Math.round(
-                    ((player.pasMin + player.pasMax) / 2 / 11) * 100
-                  ) === 99 ? (
-                    <Chip
-                      label={Math.round(
-                        ((player.pasMin + player.pasMax) / 2 / 11) * 100
-                      )}
-                      onDelete
-                      deleteIcon={<DoneIcon />}
-                    />
-                  ) : (
-                    <Chip
-                      onDelete={() =>
-                        riseUpPass(
-                          player.value,
-                          player.pasMin,
-                          player.pasMax,
-                          player.uuid
-                        )
-                      }
-                      deleteIcon={
-                        <AddCircleIcon
-                          fontSize="small"
-                          style={{ color: 'white', width: '19px' }}
-                        />
-                      }
-                      label={Math.round(
-                        ((player.pasMin + player.pasMax) / 2 / 11) * 100
-                      )}
-                    />
-                  )}
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+                    <TableCell width="10%" align="center">
+                      <TrainingBox value={player.ptsTraining} />
+                    </TableCell>
+                    <TableCell width="10%" align="center">
+                      <TrainingBox value={player.rebTraining} />
+                    </TableCell>
+                    <TableCell width="10%" align="center">
+                      <TrainingBox value={player.pasTraining} />
+                    </TableCell>
+
+                    <TableCell align="center">
+                      <ChangeTrainingSliders
+                        getMyTeam={getMyTeam}
+                        player={player}
+                      />
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </>
+      )}
     </>
   )
 }

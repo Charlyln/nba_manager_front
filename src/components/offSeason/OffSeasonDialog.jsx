@@ -26,7 +26,7 @@ import PlayerStatChip from '../mutliple/PlayerStatChip'
 import updateSalaryCapLeft from '../api calls/updateSalaryCapLeft'
 import DraftRecap from './DraftRecap'
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined'
-import Training from '../season/training/Training'
+import TrainingCamp from './TrainingCamp'
 
 function OffSeasonDialog({
   goNext,
@@ -146,7 +146,7 @@ function OffSeasonDialog({
         <DialogTitle>{step}</DialogTitle>
 
         {step === 'Training Camps' ? (
-          <Training
+          <TrainingCamp
             myteamData={myteamData}
             getMyTeam={getMyTeam}
             TrophyData={TrophyData}
