@@ -83,7 +83,7 @@ function ChangeTrainingSliders({ player, getMyTeam }) {
         endIcon={<TuneIcon />}
         variant="contained"
       >
-        sliders
+        open
       </Button>
 
       <TrainingMessage
