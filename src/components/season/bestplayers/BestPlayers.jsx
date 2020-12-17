@@ -19,7 +19,6 @@ function BestPlayers() {
   const [UserUuid] = useState(window.localStorage.getItem('uuid'))
   const [isLoading, setIsLoading] = useState(true)
   const [SeasonUuid] = useState(window.localStorage.getItem('SeasonUuid'))
-  // // const [TeamUuid] = useState(window.localStorage.getItem('TeamUuid'))
 
   useEffect(() => {
     getPlayers()

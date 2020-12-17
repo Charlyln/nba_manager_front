@@ -15,13 +15,11 @@ function TrophySnackbar({
     <>
       <Link to={tutorial && tutorial.is === 'on' ? false : '/profil'}>
         <Snackbar
-          // className="trophy"
           open={openTrophySnackbar}
           autoHideDuration={7000}
           onClose={closeTrophySnackbar}
           message="Note archived"
           anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-          // onClose={handleClose}
         >
           <Fab variant="extended" style={{ backgroundColor: '#4CAF50' }}>
             <img

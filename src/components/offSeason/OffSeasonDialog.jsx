@@ -119,10 +119,6 @@ function OffSeasonDialog({
     getPlayers()
   }
 
-  // const addPlayerDoNotExtand = (playerId) => {
-  //   PlayersDoNotExtend.push(playerId)
-  // }
-
   return (
     <>
       <OffSeasonMessage

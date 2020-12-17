@@ -192,7 +192,6 @@ function Charts() {
           <>
             <Grid
               container
-              
               style={{
                 marginTop: '100px',
                 marginBottom: '50px',
@@ -269,7 +268,6 @@ function Charts() {
                         series={seasonSeries[i]}
                         type="line"
                         height={500}
-                        // width={600}
                         className={
                           chartWidth ? classes.chartExpanded : classes.chart
                         }
@@ -328,7 +326,6 @@ function Charts() {
                     series={progressSeries}
                     type="line"
                     height={500}
-                    // width={600}
                     className={
                       chartWidth ? classes.chartExpanded : classes.chart
                     }

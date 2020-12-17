@@ -11,7 +11,7 @@ import OffSeasonDialog from './OffSeasonDialog'
 import Axios from 'axios'
 import { apiUrl } from '../../apiUrl'
 import { Redirect } from 'react-router-dom'
-// import { Redirect } from 'react-router-dom'
+
 import AccountVerify from '../../components/mutliple/AccountVerify'
 import ProgressBall from '../mutliple/ProgressBall'
 import TrophySnackbar from '../mutliple/TrophySnackbar'
@@ -138,12 +138,6 @@ function Offseason() {
     setActiveStep((prevActiveStep) => prevActiveStep + 1)
     setCanGoNext(false)
     window.localStorage.setItem('offseason', offseasonStepIn + 1)
-
-    // if (nextItem === 'Player options') {
-    //   setTrophyName('Sign a player option')
-    // } else if (nextItem === 'Free agency') {
-    //   setTrophyName('Sign a free agent')
-    // }
   }
 
   const NextSeason = async (e) => {

@@ -28,11 +28,7 @@ function DraftRecap({ openDraftRecap, handleCloseDraftRecap, draftRecapData }) {
         <DialogTitle>Draft recap</DialogTitle>
 
         <DialogContent>
-          <TableContainer
-            elevation={10}
-            component={Paper}
-            //   style={{ width: '60%', margin: '0 auto ' }}
-          >
+          <TableContainer elevation={10} component={Paper}>
             <Table aria-label="simple table">
               <TableHead>
                 <TableRow>

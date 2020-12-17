@@ -292,11 +292,6 @@ const homehasViewed = [
       </>
     ),
     disableBeacon: true
-    // styles: {
-    //   options: {
-    //     marginTop: '100px'
-    //   }
-    // }
   },
   {
     target: '.tutoHome4',

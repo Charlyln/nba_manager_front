@@ -123,18 +123,13 @@ export default function Trade() {
       setRight(res.data.Players)
       setTeamsData(res.data)
       setwantChangeTeam(false)
-
-      // const timer = setTimeout(() => {
-      //   setIsLoading(false)
-      // }, 500)
-      // return () => clearTimeout(timer)
     } catch (err) {
       console.log(err)
     }
   }
   useEffect(() => {
     getAllData()
-    // getOtherTeams()
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -260,54 +255,50 @@ export default function Trade() {
   const customList = (items) => {
     return (
       <>
-        {items
-          // .sort(function (a, b) {
-          //   return new Date(b.value) - new Date(a.value)
-          // })
-          .map((value) => {
-            const labelId = `transfer-list-item-${value}-label`
+        {items.map((value) => {
+          const labelId = `transfer-list-item-${value}-label`
 
-            return (
-              <Grow in>
-                <ListItem
-                  key={value}
-                  role="listitem"
-                  button
-                  disabled={wantChangeTeam}
-                  onClick={handleToggle(value)}
-                >
-                  <ListItemAvatar>
-                    <Avatar src={value.photo} />
-                  </ListItemAvatar>
-                  <ListItemText
-                    style={{ marginRight: '20px' }}
-                    id={labelId}
-                    primary={`${value.firstName || ''} ${value.lastName || ''}`}
+          return (
+            <Grow in>
+              <ListItem
+                key={value}
+                role="listitem"
+                button
+                disabled={wantChangeTeam}
+                onClick={handleToggle(value)}
+              >
+                <ListItemAvatar>
+                  <Avatar src={value.photo} />
+                </ListItemAvatar>
+                <ListItemText
+                  style={{ marginRight: '20px' }}
+                  id={labelId}
+                  primary={`${value.firstName || ''} ${value.lastName || ''}`}
+                />
+
+                {value.value ? (
+                  <PlayerValue
+                    playerValue={value.value}
+                    playerTeamUuid={value.TeamUuid}
+                    changeBoxColor={true}
                   />
+                ) : (
+                  ''
+                )}
 
-                  {value.value ? (
-                    <PlayerValue
-                      playerValue={value.value}
-                      playerTeamUuid={value.TeamUuid}
-                      changeBoxColor={true}
-                    />
-                  ) : (
-                    ''
-                  )}
-
-                  <ListItemIcon>
-                    <Checkbox
-                      checked={checked.indexOf(value) !== -1}
-                      tabIndex={-1}
-                      disableRipple
-                      disabled={wantChangeTeam}
-                      inputProps={{ 'aria-labelledby': labelId }}
-                    />
-                  </ListItemIcon>
-                </ListItem>
-              </Grow>
-            )
-          })}
+                <ListItemIcon>
+                  <Checkbox
+                    checked={checked.indexOf(value) !== -1}
+                    tabIndex={-1}
+                    disableRipple
+                    disabled={wantChangeTeam}
+                    inputProps={{ 'aria-labelledby': labelId }}
+                  />
+                </ListItemIcon>
+              </ListItem>
+            </Grow>
+          )
+        })}
         <ListItem />
       </>
     )
@@ -336,7 +327,6 @@ export default function Trade() {
             </Grid>
           </Grid>
           <Grid
-            // spacing={2}
             justify="center"
             alignItems="center"
             className={classes.root}

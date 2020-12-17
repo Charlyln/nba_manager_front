@@ -81,16 +81,6 @@ function Match({
   }
 
   const displayButton = (game) => {
-    // const myTeamResult = game.PlayerStats.filter(
-    //   (stat) => stat.Player.TeamUuid === TeamUuid
-    // ).reduce((a, v) => (a = a + v.pts), 0)
-    // // setScore1(myTeamResult)
-
-    // const team2Result = game.PlayerStats.filter(
-    //   (stat) => stat.Player.TeamUuid !== TeamUuid
-    // ).reduce((a, v) => (a = a + v.pts), 0)
-    // // setScore2(team2Result)
-
     let difference = 0
 
     if (game.team1 > game.team2) {
@@ -179,14 +169,7 @@ function Match({
         className={
           (game.team1 && nextItem && !nextItem.team1) ||
           (game.team1 && !nextItem)
-            ? // ||
-              // (game.team1 && nextItem && !nextItem.team1)
-              // (!game.team1 &&
-              //   nextItem &&
-              //   !nextItem.team1 &&
-              //   previousItem &&
-              //   !previousItem.team1)
-              'tutoHome2'
+            ? 'tutoHome2'
             : ''
         }
       >

@@ -49,8 +49,6 @@ function SignPlayer({
 
   const signContract = async () => {
     if (contractLeft) {
-      // const payload = { salary, contractLeft: duration }
-
       const payload = {
         contractYear2: duration >= 1 ? salary : 0,
         contractYear3: duration >= 2 ? salary : 0,
@@ -112,12 +110,6 @@ function SignPlayer({
         iOpenTrophySnackbar()
         getTrophy(step)
       }
-      // handleClose()
-      // if (getPlayers) {
-      //   getPlayers()
-      // } else if (getMyTeamInDialog) {
-      //   getMyTeamInDialog()
-      // }
     }
   }
 
@@ -170,11 +162,9 @@ function SignPlayer({
     } else if (PlayerValue >= 90) {
       pourcentage = 0.3
     }
-    const salaryExpected = 100000000 * pourcentage // 15 millions
+    const salaryExpected = 100000000 * pourcentage
 
     const valueCal = (salary / salaryExpected) * 100
-
-    // setInterest(valueCal)
 
     if (valueCal <= 0) {
       return 0

@@ -28,8 +28,6 @@ function PlayerFinder() {
   const search = (e) => {
     e.preventDefault()
     if (name) {
-      // setIsSearching(true)
-
       const arrayFiltered = playersData.filter(
         (travel) =>
           travel.lastName.toLowerCase().includes(name.toLowerCase()) ||
@@ -38,7 +36,6 @@ function PlayerFinder() {
 
       SetnamesFiltered(arrayFiltered)
       setName('')
-      // setIsSearching(false)
     }
   }
 
@@ -136,7 +133,7 @@ function PlayerFinder() {
                   .sort(function (a, b) {
                     return new Date(b.value) - new Date(a.value)
                   })
-                  // .filter((player) => !player.isRookie)
+
                   .map((player) => (
                     <TableRow className="tutoPlayerFinder1">
                       <TableCell align="center" component="th" scope="row">
