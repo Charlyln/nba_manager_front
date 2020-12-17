@@ -230,7 +230,6 @@ function Match({
         open={open}
         fullWidth
         maxWidth="md"
-        style={{ zIndex: tutorial && tutorial.is === 'on' ? 50 : 'unset' }}
       >
         <Grid container className="tutoHome3">
           <Grid item xs={12}>
