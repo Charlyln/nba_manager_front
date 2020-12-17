@@ -1,6 +1,5 @@
 import React from 'react'
-import { Grid, Typography } from '@material-ui/core'
-import ArrowDropDownCircleIcon from '@material-ui/icons/ArrowDropDownCircle'
+import { Badge, Grid, Typography } from '@material-ui/core'
 import TouchAppIcon from '@material-ui/icons/TouchApp'
 import TrendingUpIcon from '@material-ui/icons/TrendingUp'
 import PersonIcon from '@material-ui/icons/Person'
@@ -61,24 +60,27 @@ const myRoster = [
     target: '.tutoMyRoster5',
     content: (
       <div>
-        You have a quick feedback on the player progress. If he progress, you
-        see a green arrow
-        <ArrowDropDownCircleIcon
-          style={{
-            transform: 'rotate(180deg)',
-            color: 'rgb(76, 175, 80)',
-            margin: '-5px 1px -5px 2px'
-          }}
-        />
-        . If he regress, you see a red arrow{' '}
-        <ArrowDropDownCircleIcon
-          style={{
-            transform: 'rotate(180deg)',
-            color: 'rgb(217, 48, 33)',
-            marginBottom: '-5px'
-          }}
-        />{' '}
-        . Otherwise, if he stay at his level, no arrow.
+        <Grid item xs={12}>
+          You have a quick feedback on the player progress.
+        </Grid>
+        <Grid item xs={12}>
+          If he progress, you see a green little chip with the progress value in
+          it
+          <Badge
+            style={{ margin: '-4px 0px 0px 15px' }}
+            badgeContent={'+3'}
+            color="primary"
+          />
+        </Grid>
+
+        <Grid item xs={12}>
+          If he regress, you see a red one
+          <Badge
+            style={{ margin: '-4px 0px 0px 15px' }}
+            badgeContent={'-2'}
+            color="secondary"
+          />
+        </Grid>
       </div>
     ),
     disableBeacon: true
@@ -291,7 +293,12 @@ const homehasViewed = [
         </Typography>
       </>
     ),
-    disableBeacon: true
+    disableBeacon: true,
+    styles: {
+      options: {
+        zIndex: 10000
+      }
+    }
   },
   {
     target: '.tutoHome4',
@@ -338,7 +345,7 @@ const homehasViewed = [
       </>
     ),
     disableBeacon: true,
-    placement: 'right-end',
+    placement: 'right',
     spotlightPadding: 0,
     styles: {
       options: {
