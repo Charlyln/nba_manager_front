@@ -58,7 +58,7 @@ function TeamChoice() {
         await Axios.put(`${apiUrl}/teams/${teamChoice}`, {
           choice: true
         })
-        await Axios.post(`${apiUrl}/progress/adjsutPlayerValue/${uuid}`)
+        await Axios.post(`${apiUrl}/progress/adjustPlayerValue/${uuid}`)
 
         await Axios.post(`${apiUrl}/dataCreation/games/${uuid}`)
 
