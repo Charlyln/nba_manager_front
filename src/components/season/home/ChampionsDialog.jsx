@@ -45,7 +45,7 @@ function ChampionsDialog({ teamsData, SeasonUuid, UserUuid, TeamUuid }) {
   }
 
   const getAllData = async () => {
-    await Axios.post(`${apiUrl}/progress/adjsutPlayerValue/${UserUuid}`)
+    await Axios.post(`${apiUrl}/progress/adjustPlayerValue/${UserUuid}`)
     const res = await getSeasonRewards(UserUuid, SeasonUuid)
     setOpen(true)
     setRewardsData(res.data.mvpFound)
