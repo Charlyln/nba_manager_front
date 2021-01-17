@@ -31,11 +31,7 @@ function BestPlayers() {
         `${apiUrl}/players/bestPlayers/${UserUuid}/${SeasonUuid}`
       )
       setPlayersData(res.data.bestPlayersSorted)
-
-      const timer = setTimeout(() => {
-        setIsLoading(false)
-      }, 1000)
-      return () => clearTimeout(timer)
+      setIsLoading(false)
     } catch (err) {
       console.log(err)
     }
