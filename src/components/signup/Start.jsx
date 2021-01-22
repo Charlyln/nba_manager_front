@@ -1,49 +1,25 @@
-import { AppBar, Grid, Paper, Toolbar, Typography } from '@material-ui/core'
-import React, { useEffect } from 'react'
-import { Redirect } from 'react-router-dom'
-import Jump from 'react-reveal/Jump'
-import Zoom from 'react-reveal/Zoom'
+import {
+  AppBar,
+  Button,
+  Grid,
+  Paper,
+  Toolbar,
+  Typography,
+  Grow
+} from '@material-ui/core'
+import React from 'react'
+import { Link } from 'react-router-dom'
 import logo from '../../images/logo.png'
 import { useState } from 'react'
 import styles from './start.module.css'
 
 function Start() {
-  const [isInBall, setIsInball] = useState(false)
-  const [isStart, setIsStart] = useState(false)
-  const [counter, setCounter] = useState(0)
-  const [redirect, setRedirect] = useState(false)
   const [show, setShow] = useState(true)
 
-  const inMouse = () => {
-    setIsInball(true)
-  }
-
-  const outMouse = () => {
-    setIsInball(false)
-  }
-
   const onStart = () => {
-    setIsStart(true)
-    const timer = setTimeout(() => {
-      setShow(false)
-    }, 2000)
-    const timer2 = setTimeout(() => {
-      setRedirect(true)
-    }, 4000)
-    return () => clearTimeout(timer, timer2)
+    setShow(false)
   }
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCounter((counter) => counter + 1)
-    }, 1000)
-
-    return () => clearInterval(interval)
-  }, [])
-
-  if (redirect) {
-    return <Redirect to="/signup" />
-  }
   return (
     <>
       <AppBar className="appBar">
@@ -63,31 +39,47 @@ function Start() {
       </Grid>
 
       <Grid container justify="center" style={{ marginTop: '100px' }}>
-        <Zoom when={show && counter > 0}>
-          <div
-            onMouseEnter={inMouse}
-            onMouseLeave={outMouse}
-            onClick={onStart}
-            style={{ textAlign: 'center' }}
-          >
-            <Jump spy={counter}>
-              <div>
-                <img
-                  className={
-                    isStart
-                      ? styles.logoStart
-                      : isInBall && !isStart
-                      ? styles.logoIn
-                      : styles.logo
-                  }
-                  style={{ cursor: 'pointer' }}
-                  src={logo}
-                  alt="loading..."
-                />
-              </div>
-            </Jump>
+        <Grow in={show}>
+          <div onClick={onStart} style={{ textAlign: 'center' }}>
+            <div
+              style={{
+                display: !show ? 'none' : ''
+              }}
+            >
+              <img
+                className={styles.logo}
+                style={{ cursor: 'pointer' }}
+                src={logo}
+                alt="loading..."
+              />
+            </div>
           </div>
-        </Zoom>
+        </Grow>
+        <Grow in={!show}>
+          <div
+            style={{
+              display: show ? 'none' : '',
+              marginTop: '100px'
+            }}
+          >
+            <Link
+              style={{ textDecoration: 'none', margin: '10px' }}
+              to="/signup"
+            >
+              <Button variant="contained" color="primary">
+                sign up
+              </Button>
+            </Link>
+            <Link
+              style={{ textDecoration: 'none', margin: '10px' }}
+              to="/login"
+            >
+              <Button variant="contained" color="primary">
+                sign in
+              </Button>
+            </Link>
+          </div>
+        </Grow>
       </Grid>
     </>
   )
