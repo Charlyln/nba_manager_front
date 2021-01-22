@@ -14,7 +14,7 @@ import {
   FormControlLabel,
   Switch
 } from '@material-ui/core'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useHistory, useLocation } from 'react-router-dom'
 import TodayIcon from '@material-ui/icons/Today'
 import SwapHorizIcon from '@material-ui/icons/SwapHoriz'
 import GroupIcon from '@material-ui/icons/Group'
@@ -36,6 +36,7 @@ import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered'
 import WhatshotIcon from '@material-ui/icons/Whatshot'
 import allActions from './actions'
 import { useDispatch, useSelector } from 'react-redux'
+import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 
 const useStyles = makeStyles({
   list: {
@@ -53,6 +54,7 @@ function MyAppBar() {
   const [open, setOpen] = useState(false)
   const [trophyIsSelected, setTrophyIsSelected] = useState(false)
   let location = useLocation()
+  let history = useHistory()
 
   const links = [
     {
@@ -202,6 +204,12 @@ function MyAppBar() {
     setTrophyIsSelected((trophyIsSelected) => !trophyIsSelected)
   }
 
+  const disconnect = () => {
+    localStorage.clear()
+    sessionStorage.clear()
+    history.push('/')
+  }
+
   const list = () => (
     <div role="presentation" className={classes.list}>
       <List>
@@ -233,6 +241,18 @@ function MyAppBar() {
     </div>
   )
 
+  if (
+    location.pathname === '/' ||
+    location.pathname === '/signup' ||
+    location.pathname === '/login'
+  ) {
+    return (
+      <AppBar>
+        <Toolbar></Toolbar>
+      </AppBar>
+    )
+  }
+
   return (
     <>
       <AppBar className="appBar">
@@ -253,7 +273,7 @@ function MyAppBar() {
 
           <FormControlLabel
             className="tutoSwitch"
-            style={{ marginLeft: 'auto' }}
+            style={{ marginLeft: 'auto', marginRight: '5px' }}
             control={
               <Switch
                 checked={
@@ -281,6 +301,14 @@ function MyAppBar() {
             }
             labelPlacement="start"
           />
+          <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            onClick={disconnect}
+          >
+            <ExitToAppIcon />
+          </IconButton>
         </Toolbar>
       </AppBar>
 
