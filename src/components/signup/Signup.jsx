@@ -17,7 +17,7 @@ import {
   IconButton,
   OutlinedInput
 } from '@material-ui/core'
-import { Redirect } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import CheckIcon from '@material-ui/icons/Check'
 import CheckCircleIcon from '@material-ui/icons/CheckCircle'
 import { apiUrl } from '../../apiUrl'
@@ -26,6 +26,7 @@ import Visibility from '@material-ui/icons/Visibility'
 import VisibilityOff from '@material-ui/icons/VisibilityOff'
 import { useDispatch } from 'react-redux'
 import allActions from '../../actions'
+import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace'
 
 function SignUp() {
   const [pseudo, setPseudo] = useState('')
@@ -131,7 +132,16 @@ function SignUp() {
 
         <Grow in={true}>
           <Grid container>
-            <Grid item xs={12} style={{ marginTop: '250px' }}>
+          <Grid item xs={1} style={{ marginTop: '100px' }}>
+              <Grid container alignItems="center" justify="center">
+                <Link to="/">
+                  <IconButton>
+                    <KeyboardBackspaceIcon />
+                  </IconButton>
+                </Link>
+              </Grid>
+            </Grid>u
+            <Grid item xs={12} style={{ marginTop: '50px' }}>
               <Grid container alignItems="center" justify="center">
                 <List>
                   <ListItem>

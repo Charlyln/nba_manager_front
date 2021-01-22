@@ -10,11 +10,12 @@ import {
   Typography,
   List,
   ListItem,
-  Grow
+  Grow,
+  IconButton
 } from '@material-ui/core'
-import { Redirect, useHistory } from 'react-router-dom'
+import { Link, Redirect, useHistory } from 'react-router-dom'
 import CheckIcon from '@material-ui/icons/Check'
-
+import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace'
 import { apiUrl } from '../../apiUrl'
 import allActions from '../../actions'
 import { useDispatch } from 'react-redux'
@@ -108,7 +109,16 @@ function Login() {
         </AppBar>
         <Grow in={true}>
           <Grid container>
-            <Grid item xs={12} style={{ marginTop: '200px' }}>
+            <Grid item xs={1} style={{ marginTop: '100px' }}>
+              <Grid container alignItems="center" justify="center">
+                <Link to="/">
+                  <IconButton>
+                    <KeyboardBackspaceIcon />
+                  </IconButton>
+                </Link>
+              </Grid>
+            </Grid>
+            <Grid item xs={12} style={{ marginTop: '50px' }}>
               <Grid container alignItems="center" justify="center">
                 <List>
                   <ListItem>
