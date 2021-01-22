@@ -6,15 +6,7 @@
     transform: rotate(360deg);
   }
 }
-
-.logoIn {
-  width: 50%;
-  animation: spin 2s infinite linear;
-}
-.logoStart {
-  width: 50%;
-  animation: spin 0.5s infinite linear;
-}
 .logo {
   width: 50%;
+  animation: spin 2s infinite linear;
 }
