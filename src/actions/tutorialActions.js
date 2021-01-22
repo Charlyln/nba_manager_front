@@ -11,6 +11,12 @@ const start = () => {
   }
 }
 
+const reset = () => {
+  return {
+    type: 'RESET'
+  }
+}
+
 const setGeneralTutoOn = () => {
   return {
     type: 'SETGENERALTUTOON'
@@ -55,5 +61,6 @@ export default {
   incrementGeneral,
   setGeneralStepZero,
   decrementGeneral,
-  setHasViewed
+  setHasViewed,
+  reset
 }
