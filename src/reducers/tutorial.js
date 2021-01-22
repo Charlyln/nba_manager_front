@@ -6,6 +6,8 @@ const tutorial = (state = {}, action) => {
       return { is: 'on', step: 0 }
     case 'HASVIEWED':
       return { ...state, hasViewed: true }
+    case 'RESET':
+      return {}
     case 'SETGENERALTUTOON':
       return { ...state, generalTutoIs: 'on', generalStep: 0 }
     case 'SETGENERALTUTOOFF':
