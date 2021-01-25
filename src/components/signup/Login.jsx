@@ -107,17 +107,19 @@ function Login() {
             </Typography>
           </Toolbar>
         </AppBar>
-        <Grow in={true}>
-          <Grid container>
-            <Grid item xs={1} style={{ marginTop: '100px' }}>
-              <Grid container alignItems="center" justify="center">
-                <Link to="/">
-                  <IconButton>
-                    <KeyboardBackspaceIcon />
-                  </IconButton>
-                </Link>
-              </Grid>
+
+        <Grid container>
+          <Grid item xs={1} style={{ marginTop: '100px' }}>
+            <Grid container alignItems="center" justify="center">
+              <Link to="/">
+                <IconButton>
+                  <KeyboardBackspaceIcon />
+                </IconButton>
+              </Link>
             </Grid>
+          </Grid>
+
+          <Grow in={true}>
             <Grid item xs={12} style={{ marginTop: '50px' }}>
               <Grid container alignItems="center" justify="center">
                 <List>
@@ -205,8 +207,8 @@ function Login() {
                 ''
               )}
             </Grid>
-          </Grid>
-        </Grow>
+          </Grow>
+        </Grid>
       </form>
     </>
   )

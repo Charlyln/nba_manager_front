@@ -36,7 +36,6 @@ function SignUp() {
   const [postSuccess, setPostSuccess] = useState(false)
   const [redirect, setRedirect] = useState(false)
   const [userRoleId, setUserRoleId] = useState([])
-  const [isLoading, setIsLoading] = useState(true)
   const [showPassword, setShowPassword] = useState(false)
   const dispatch = useDispatch()
 
@@ -81,7 +80,6 @@ function SignUp() {
       const Role = res.data.find((role) => role.name === 'USER')
       const RoleId = Role.uuid
       setUserRoleId(RoleId)
-      setIsLoading(false)
     } catch (err) {
       console.log(err)
     }
@@ -111,9 +109,6 @@ function SignUp() {
   if (redirect) {
     return <Redirect to="/teamchoice" />
   }
-  if (isLoading) {
-    return ''
-  }
 
   return (
     <>
@@ -130,17 +125,17 @@ function SignUp() {
           </Toolbar>
         </AppBar>
 
-        <Grow in={true}>
-          <Grid container>
+        <Grid container>
           <Grid item xs={1} style={{ marginTop: '100px' }}>
-              <Grid container alignItems="center" justify="center">
-                <Link to="/">
-                  <IconButton>
-                    <KeyboardBackspaceIcon />
-                  </IconButton>
-                </Link>
-              </Grid>
-            </Grid>u
+            <Grid container alignItems="center" justify="center">
+              <Link to="/">
+                <IconButton>
+                  <KeyboardBackspaceIcon />
+                </IconButton>
+              </Link>
+            </Grid>
+          </Grid>
+          <Grow in={true}>
             <Grid item xs={12} style={{ marginTop: '50px' }}>
               <Grid container alignItems="center" justify="center">
                 <List>
@@ -277,8 +272,8 @@ function SignUp() {
                 </Grid>
               </Grid>
             </Grid>
-          </Grid>
-        </Grow>
+          </Grow>
+        </Grid>
       </form>
     </>
   )
