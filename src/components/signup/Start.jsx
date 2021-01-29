@@ -7,11 +7,13 @@ import {
   Typography,
   Grow
 } from '@material-ui/core'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import logo from '../../images/logo.png'
 import { useState } from 'react'
 import styles from './start.module.css'
+import Axios from 'axios'
+import { apiUrl } from '../../apiUrl'
 
 function Start() {
   const [show, setShow] = useState(true)
@@ -19,6 +21,19 @@ function Start() {
   const onStart = () => {
     setShow(false)
   }
+
+  const wakeUpApi = async () => {
+    try {
+      await Axios.get(`${apiUrl}`)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  useEffect(() => {
+    wakeUpApi()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <>
