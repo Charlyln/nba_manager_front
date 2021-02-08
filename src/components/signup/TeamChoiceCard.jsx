@@ -65,7 +65,9 @@ function App({ name, logo, uuid, putTeamChoice, teamChoice, players }) {
               <List
                 style={{
                   display: !expanded ? 'none' : '',
-                  padding: 0
+                  padding: 0,
+                  width: '280px',
+                  height: '280px'
                 }}
               >
                 {players

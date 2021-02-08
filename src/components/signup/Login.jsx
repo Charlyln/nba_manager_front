@@ -10,11 +10,12 @@ import {
   Typography,
   List,
   ListItem,
-  Grow
+  Grow,
+  IconButton
 } from '@material-ui/core'
-import { Redirect, useHistory } from 'react-router-dom'
+import { Link, Redirect, useHistory } from 'react-router-dom'
 import CheckIcon from '@material-ui/icons/Check'
-
+import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace'
 import { apiUrl } from '../../apiUrl'
 import allActions from '../../actions'
 import { useDispatch } from 'react-redux'
@@ -77,13 +78,6 @@ function Login() {
     } catch (err) {
       setLoginLoading(false)
       setError(err)
-      console.log(err)
-      const timer = setTimeout(() => {
-        setError('')
-        setPseudo('')
-        setPassword('')
-      }, 5000)
-      return () => clearTimeout(timer)
     }
   }
 
@@ -106,9 +100,20 @@ function Login() {
             </Typography>
           </Toolbar>
         </AppBar>
-        <Grow in={true}>
-          <Grid container>
-            <Grid item xs={12} style={{ marginTop: '200px' }}>
+
+        <Grid container>
+          <Grid item xs={1} style={{ marginTop: '100px' }}>
+            <Grid container alignItems="center" justify="center">
+              <Link to="/">
+                <IconButton>
+                  <KeyboardBackspaceIcon />
+                </IconButton>
+              </Link>
+            </Grid>
+          </Grid>
+
+          <Grow in={true}>
+            <Grid item xs={12} style={{ marginTop: '50px' }}>
               <Grid container alignItems="center" justify="center">
                 <List>
                   <ListItem>
@@ -195,8 +200,8 @@ function Login() {
                 ''
               )}
             </Grid>
-          </Grid>
-        </Grow>
+          </Grow>
+        </Grid>
       </form>
     </>
   )

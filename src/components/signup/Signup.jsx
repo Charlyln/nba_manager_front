@@ -17,7 +17,7 @@ import {
   IconButton,
   OutlinedInput
 } from '@material-ui/core'
-import { Redirect } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import CheckIcon from '@material-ui/icons/Check'
 import CheckCircleIcon from '@material-ui/icons/CheckCircle'
 import { apiUrl } from '../../apiUrl'
@@ -26,6 +26,7 @@ import Visibility from '@material-ui/icons/Visibility'
 import VisibilityOff from '@material-ui/icons/VisibilityOff'
 import { useDispatch } from 'react-redux'
 import allActions from '../../actions'
+import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace'
 
 function SignUp() {
   const [pseudo, setPseudo] = useState('')
@@ -35,7 +36,6 @@ function SignUp() {
   const [postSuccess, setPostSuccess] = useState(false)
   const [redirect, setRedirect] = useState(false)
   const [userRoleId, setUserRoleId] = useState([])
-  const [isLoading, setIsLoading] = useState(true)
   const [showPassword, setShowPassword] = useState(false)
   const dispatch = useDispatch()
 
@@ -57,6 +57,10 @@ function SignUp() {
           password,
           RoleUuid: userRoleId
         })
+        const res2 = await Axios.get(
+          `${apiUrl}/users/getToken/${res.data.uuid}`
+        )
+        window.sessionStorage.setItem('token', res2.data)
         window.localStorage.setItem('uuid', res.data.uuid)
         const dataUuid = res.data.uuid
         await Axios.post(`${apiUrl}/dataCreation/${dataUuid}`)
@@ -80,7 +84,6 @@ function SignUp() {
       const Role = res.data.find((role) => role.name === 'USER')
       const RoleId = Role.uuid
       setUserRoleId(RoleId)
-      setIsLoading(false)
     } catch (err) {
       console.log(err)
     }
@@ -110,9 +113,6 @@ function SignUp() {
   if (redirect) {
     return <Redirect to="/teamchoice" />
   }
-  if (isLoading) {
-    return ''
-  }
 
   return (
     <>
@@ -129,9 +129,18 @@ function SignUp() {
           </Toolbar>
         </AppBar>
 
-        <Grow in={true}>
-          <Grid container>
-            <Grid item xs={12} style={{ marginTop: '250px' }}>
+        <Grid container>
+          <Grid item xs={1} style={{ marginTop: '100px' }}>
+            <Grid container alignItems="center" justify="center">
+              <Link to="/">
+                <IconButton>
+                  <KeyboardBackspaceIcon />
+                </IconButton>
+              </Link>
+            </Grid>
+          </Grid>
+          <Grow in={true}>
+            <Grid item xs={12} style={{ marginTop: '50px' }}>
               <Grid container alignItems="center" justify="center">
                 <List>
                   <ListItem>
@@ -267,8 +276,8 @@ function SignUp() {
                 </Grid>
               </Grid>
             </Grid>
-          </Grid>
-        </Grow>
+          </Grow>
+        </Grid>
       </form>
     </>
   )

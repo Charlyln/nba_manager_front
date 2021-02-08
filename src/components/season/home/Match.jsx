@@ -54,6 +54,7 @@ function Match({
   const [canDisplayColor, setCanDisplayColor] = useState(false)
   const dispatch = useDispatch()
   const tutorial = useSelector((state) => state.tutorial)
+  const [token] = useState(sessionStorage.getItem('token'))
 
   useEffect(() => {
     if (teamsData.find((game) => game.team1 && game.uuid === gameUuid)) {
@@ -140,7 +141,13 @@ function Match({
           setMatchLoading(false)
         } else {
           await Axios.post(
-            `${apiUrl}/gamePlayed/${uuid}/${SeasonUuid}/${TeamUuid}/${UserUuid}`
+            `${apiUrl}/gamePlayed/${uuid}`,
+            { SeasonUuid, TeamUuid, UserUuid },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`
+              }
+            }
           )
           if (!TrophyData.earned) {
             await Axios.post(`${apiUrl}/trophies/earned/${UserUuid}`, {

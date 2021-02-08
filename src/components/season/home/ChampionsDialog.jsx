@@ -31,6 +31,7 @@ function ChampionsDialog({ teamsData, SeasonUuid, UserUuid, TeamUuid }) {
   const [isLoading, setIsLoading] = useState(true)
   const [trophyName] = useState('You have the MVP of the season')
   const [openTrophySnackbar, setOpenTrophySnackbar] = useState(false)
+  const [token] = useState(sessionStorage.getItem('token'))
 
   const iOpenTrophySnackbar = () => {
     setOpenTrophySnackbar(true)
@@ -46,7 +47,7 @@ function ChampionsDialog({ teamsData, SeasonUuid, UserUuid, TeamUuid }) {
 
   const getAllData = async () => {
     await Axios.post(`${apiUrl}/progress/adjustPlayerValue/${UserUuid}`)
-    const res = await getSeasonRewards(UserUuid, SeasonUuid)
+    const res = await getSeasonRewards(UserUuid, SeasonUuid, token)
     setOpen(true)
     setRewardsData(res.data.mvpFound)
     console.log(res.data)

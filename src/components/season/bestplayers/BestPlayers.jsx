@@ -19,6 +19,7 @@ function BestPlayers() {
   const [UserUuid] = useState(window.localStorage.getItem('uuid'))
   const [isLoading, setIsLoading] = useState(true)
   const [SeasonUuid] = useState(window.localStorage.getItem('SeasonUuid'))
+  const [token] = useState(sessionStorage.getItem('token'))
 
   useEffect(() => {
     getPlayers()
@@ -28,7 +29,12 @@ function BestPlayers() {
   const getPlayers = async () => {
     try {
       const res = await Axios.get(
-        `${apiUrl}/players/bestPlayers/${UserUuid}/${SeasonUuid}`
+        `${apiUrl}/players/bestPlayers/${UserUuid}/${SeasonUuid}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
       )
       setPlayersData(res.data.bestPlayersSorted)
       setIsLoading(false)

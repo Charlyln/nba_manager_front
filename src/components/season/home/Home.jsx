@@ -16,6 +16,7 @@ import ChampionsDialog from './ChampionsDialog'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import allActions from '../../../actions'
+import GetSeasonDate from './GetSeasonDate'
 
 function Home() {
   const [isLoading, setIsLoading] = useState(true)
@@ -176,6 +177,7 @@ function Home() {
             closeTrophySnackbar={closeTrophySnackbar}
             trophyName={trophyName}
           />
+          <GetSeasonDate />
 
           <div
             style={{
