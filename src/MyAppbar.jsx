@@ -37,7 +37,6 @@ import WhatshotIcon from '@material-ui/icons/Whatshot'
 import allActions from './actions'
 import { useDispatch, useSelector } from 'react-redux'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
-
 const useStyles = makeStyles({
   list: {
     width: 250
@@ -51,6 +50,7 @@ function MyAppBar() {
   const classes = useStyles()
   const dispatch = useDispatch()
   const tutorial = useSelector((state) => state.tutorial)
+  const seasonDate = useSelector((state) => state.seasonDate)
   const [open, setOpen] = useState(false)
   const [trophyIsSelected, setTrophyIsSelected] = useState(false)
   let location = useLocation()
@@ -270,6 +270,18 @@ function MyAppBar() {
           <Typography style={{ color: '#2F2E2C' }} variant="h6" component="h6">
             {getPageName()}
           </Typography>
+
+          {!isNaN(seasonDate) && location.pathname === '/home' ? (
+            <Typography
+              style={{ color: 'rgb(66 66 66 / 50%)', marginLeft: '10px' }}
+              variant="h6"
+              component="h6"
+            >
+              {`${seasonDate} / ${seasonDate + 1}`}
+            </Typography>
+          ) : (
+            ''
+          )}
 
           <FormControlLabel
             className="tutoSwitch"
