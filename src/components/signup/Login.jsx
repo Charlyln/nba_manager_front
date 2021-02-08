@@ -78,13 +78,6 @@ function Login() {
     } catch (err) {
       setLoginLoading(false)
       setError(err)
-      console.log(err)
-      const timer = setTimeout(() => {
-        setError('')
-        setPseudo('')
-        setPassword('')
-      }, 5000)
-      return () => clearTimeout(timer)
     }
   }
 

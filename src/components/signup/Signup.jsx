@@ -57,6 +57,10 @@ function SignUp() {
           password,
           RoleUuid: userRoleId
         })
+        const res2 = await Axios.get(
+          `${apiUrl}/users/getToken/${res.data.uuid}`
+        )
+        window.sessionStorage.setItem('token', res2.data)
         window.localStorage.setItem('uuid', res.data.uuid)
         const dataUuid = res.data.uuid
         await Axios.post(`${apiUrl}/dataCreation/${dataUuid}`)
